@@ -10,7 +10,7 @@ addons:
       - g++-6
 
 script:
-  - cmake . -DINTERPRETER_TESTS:BOOL=TRUE
-  - cmake --build . -DINTERPRETER_TESTS:BOOL=TRUE
+  - CXX=/usr/bin/clang++-5.0 CC=/usr/bin/clang-5.0 cmake . -DINTERPRETER_TESTS:BOOL=TRUE
+  - cmake --build .
   - ls
   - ls /build
