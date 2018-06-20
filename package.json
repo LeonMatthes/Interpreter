@@ -1,0 +1,13 @@
+{
+    "name": "InterpreterNan",
+    "version": "0.0.1",
+    "description": "An Interpreter for the MrWoC language",
+    "dependencies": {
+        "bindings": "^1.3.0",
+        "cmake-js": "^3.7.3",
+        "nan": "^2.10.0"
+    },
+    "scripts": {
+        "install": "cmake-js compile --CDINTERPRETER_NAN:BOOL=TRUE --CDINTERPRETER_TESTS:BOOL=FALSE"
+    }
+}
