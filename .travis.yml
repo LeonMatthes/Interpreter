@@ -1,0 +1,16 @@
+dist: trusty
+sudo: false
+language: cpp
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-6
+
+script:
+  - cmake . -DINTERPRETER_TESTS:BOOL=TRUE
+  - cmake --build . -DINTERPRETER_TESTS:BOOL=TRUE
+  - ls
+  - ls /build
