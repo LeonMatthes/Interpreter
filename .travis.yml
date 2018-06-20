@@ -2,7 +2,6 @@ dist: trusty
 sudo: false
 language: cpp
 
-
 matrix:
   include:
     - os: linux
@@ -12,7 +11,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-5
-       env:
+      env:
         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
     - os: osx
       osx_image: xcode8
