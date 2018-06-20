@@ -27,7 +27,9 @@ before_install:
   - cd build
   - eval "${MATRIX_EVAL}"
 
-script:
+install:
   - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE
   - cmake --build .
+
+script:
   - ./Interpreter-Tests
