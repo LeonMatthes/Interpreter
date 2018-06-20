@@ -10,7 +10,10 @@ addons:
       - g++-6
 
 script:
-  - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake . -DINTERPRETER_TESTS:BOOL=TRUE
-  - cmake --build .
+  - mkdir build
+  - cd build
+  - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake .. -DINTERPRETER_TESTS:BOOL=TRUE
+  - cmake --build ..
+  - cd ..
   - ls
   - ls /build
