@@ -1,5 +1,6 @@
 #pragma once
 
 enum class Datatype {
-	DOUBLE
+	DOUBLE,
+	BOOLEAN
 };

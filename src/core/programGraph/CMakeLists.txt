@@ -9,4 +9,6 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/Datatype.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Connection.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Connection.h
+	${CMAKE_CURRENT_SOURCE_DIR}/GraphicalFunction.h
+	${CMAKE_CURRENT_SOURCE_DIR}/GraphicalFunction.cpp
 	PARENT_SCOPE)

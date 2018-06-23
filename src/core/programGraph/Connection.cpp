@@ -39,3 +39,8 @@ size_t Connection::connectedOutput()
 	return m_output;
 }
 
+Datatype Connection::connectedType() 
+{
+	return connectedBlock().outputTypes().at(m_output);
+}
+

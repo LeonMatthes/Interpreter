@@ -15,6 +15,7 @@ public:
 	bool isConnected();
 	Block& connectedBlock();
 	size_t connectedOutput();
+	Datatype connectedType();
 
 protected:
 	Block* m_block;

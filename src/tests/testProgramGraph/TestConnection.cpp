@@ -36,3 +36,16 @@ TEST(TestConnection, invalidConnectionCreation)
 	size_t connectedOutput = 0;
 	EXPECT_THROW(Connection connection(block, connectedOutput), Error::Ptr);
 }
+
+TEST(TestConnection, typeIsCorrect)
+{
+	Function function({}, { Datatype::BOOLEAN, Datatype::DOUBLE});
+	Block block(function);
+	size_t connectedOutput = 0;
+	Connection connection(block, connectedOutput);
+	ASSERT_EQ(connection.connectedType(), Datatype::BOOLEAN);
+
+	connectedOutput = 1;
+	Connection secondConnection(block, connectedOutput);
+	ASSERT_EQ(secondConnection.connectedType(), Datatype::DOUBLE);
+}

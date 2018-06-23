@@ -4,14 +4,17 @@ set(CMAKE_CXX_STANDARD 14)
 #------------------- Core --------------------
 project(Interpreter-Core)
 set(INTERPRETER_COVERAGE FALSE CACHE BOOL "Enable/Disable test coverage reporting")
+if(INTERPRETER_COVERAGE)
+	SET(CMAKE_BUILD_TYPE Debug)
+endif()
 
 add_subdirectory(src/core)
 add_library(${PROJECT_NAME} ${core_src})
 target_include_directories(${PROJECT_NAME} PUBLIC src/core)
 if (INTERPRETER_COVERAGE)
-        target_compile_options(${PROJECT_NAME} PRIVATE --coverage)
-        target_link_libraries(${PROJECT_NAME} PRIVATE --coverage)
-	endif()
+	target_compile_options(${PROJECT_NAME} PRIVATE --coverage)
+	target_link_libraries(${PROJECT_NAME} PRIVATE --coverage)
+endif()
 
 if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
 	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src/core 

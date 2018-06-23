@@ -3,12 +3,9 @@
 
 TEST(TestFunction, createEmptyFunction)
 {
-	//Put in block to test destructor
-	{
-		Function function;
-		EXPECT_EQ(function.inputs().size(), 0);
-		EXPECT_EQ(function.outputs().size(), 0);
-	}
+	Function function;
+	EXPECT_EQ(function.inputs().size(), 0);
+	EXPECT_EQ(function.outputs().size(), 0);
 }
 
 TEST(TestFunction, createFunctionWithIO)
