@@ -4,9 +4,12 @@
 
 TEST(TestBlock, blockCreationSetsFunction)
 {
-	Function function;
-	Block block(function);
-	EXPECT_EQ(&block.function(), &function);
+	//Put in block to test destructor
+	{
+		Function function;
+		Block block(function);
+		EXPECT_EQ(&block.function(), &function);
+	}
 }
 
 TEST(TestBlock, IOTypesMatchesFunction)
