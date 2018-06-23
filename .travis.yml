@@ -12,10 +12,11 @@ matrix:
           packages:
             - g++-5
       env:
-        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+        - SET_CXX="CC=gcc-5 && CXX=g++-5"
     - os: osx
       env:
-        - MATRIX_EVAL="brew cask uninstall --force oclint && brew install gcc5 && CC=gcc-5 && CXX=g++-5"
+        - INSTALL_CXX="HOMEBREW_NO_AUTO_UPDATE=1 brew cask uninstall --force oclint && brew install gcc5"
+        - SET_CXX="CC=gcc-5 && CXX=g++-5"
     - os: linux
       compiler: clang
     - os: osx
@@ -24,7 +25,8 @@ matrix:
 before_install:
   - mkdir build
   - cd build
-  - eval "${MATRIX_EVAL}"
+  - eval "${INSTALL_CXX}"
+  - eval "${SET_CXX}"
 
 install:
   - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE
