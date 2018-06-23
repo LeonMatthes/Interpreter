@@ -21,6 +21,9 @@ matrix:
         - INSTALL_CXX="HOMEBREW_NO_AUTO_UPDATE=1 brew cask uninstall --force oclint && HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc5"
     - os: linux
       compiler: clang
+      env:
+        - INSTALL_COVERALLS="pip install --user cpp-coveralls"
+        - UPLOAD_COVERAGE='coveralls --root .. --build-root . --include src/core --verbose'
     - os: osx
       compiler: clang
 
