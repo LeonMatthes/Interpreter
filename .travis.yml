@@ -14,6 +14,7 @@ matrix:
           update: false
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"
+        - CMAKE_ARGUMENTS="-DINTERPRETER_COVERAGE:BOOL=TRUE"
         - INSTALL_COVERALLS="pip install --user cpp-coveralls"
         - UPLOAD_COVERAGE="coveralls --root .. --include src/core"
     - os: osx
@@ -33,7 +34,7 @@ before_install:
   - eval "${SET_CXX}"
 
 install:
-  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE -DINTERPRETER_COVERAGE:BOOL=TRUE
+  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE ${CMAKE_ARGUMENTS}
   - cmake --build .
 
 script:
