@@ -3,10 +3,15 @@ cmake_minimum_required(VERSION 3.0.0)
 set(CMAKE_CXX_STANDARD 14)
 #------------------- Core --------------------
 project(Interpreter-Core)
+set(INTERPRETER_COVERAGE FALSE CACHE BOOL "Enable/Disable test coverage reporting")
 
 add_subdirectory(src/core)
 add_library(${PROJECT_NAME} ${core_src})
 target_include_directories(${PROJECT_NAME} PUBLIC src/core)
+if (INTERPRETER_COVERAGE)
+        target_compile_options(${PROJECT_NAME} PRIVATE --coverage)
+        target_link_libraries(${PROJECT_NAME} PRIVATE --coverage)
+	endif()
 
 if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
 	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src/core 
@@ -14,7 +19,6 @@ if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
 		FILES ${core_src})
 endif()
 
-set(INTERPRETER_COVERAGE FALSE CACHE BOOL "Enable/Disable test coverage reporting")
 #------------------- Tests -------------------
 set(INTERPRETER_TESTS FALSE CACHE BOOL "Enable/Disable build of test executable")
 if(INTERPRETER_TESTS)
@@ -26,7 +30,12 @@ if(INTERPRETER_TESTS)
 	
 	add_executable(${PROJECT_NAME} ${tests_src})
 	target_include_directories(${PROJECT_NAME} PUBLIC src/tests)
-	target_link_libraries(${PROJECT_NAME} gtest_main Interpreter-Core)
+	target_link_libraries(${PROJECT_NAME} PUBLIC gtest_main Interpreter-Core)
+	if (INTERPRETER_COVERAGE)
+        target_compile_options(${PROJECT_NAME} PRIVATE --coverage)
+        target_link_libraries(${PROJECT_NAME} PRIVATE --coverage)
+	endif()
+	
 	
 	if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
 		source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src/tests 
@@ -34,10 +43,7 @@ if(INTERPRETER_TESTS)
 			FILES ${tests_src})
 	endif()
 	
-	if (COVERAGE)
-        target_compile_options(tests PRIVATE --coverage)
-        target_link_libraries(tests PRIVATE --coverage)
-	endif()
+	
 endif()
 
 
