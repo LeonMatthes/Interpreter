@@ -1,1 +1,3 @@
-npx cmake-js rebuild --CDINTERPRETER_TESTS:BOOL=TRUE --CDINTERPRETER_NAN:BOOL=TRUE
+call npx cmake-js build --CDINTERPRETER_TESTS:BOOL=TRUE --CDINTERPRETER_NAN:BOOL=TRUE
+
+start build\InterpreterNan.sln

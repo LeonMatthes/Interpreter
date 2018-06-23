@@ -1,12 +1,11 @@
 #include <nan.h>
-#include <test.h>
 #include <string>
 
 using namespace v8;
 
 
 NAN_METHOD(Method) {
-	std::string fibonacci = std::to_string(fib(5));
+	std::string fibonacci("fibonacci");
 	info.GetReturnValue().Set(Nan::New(fibonacci).ToLocalChecked());
 }
 
