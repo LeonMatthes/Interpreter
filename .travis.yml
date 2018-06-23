@@ -13,6 +13,8 @@ matrix:
             - g++-5
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"
+        - INSTALL_COVERALLS="pip install --user cpp-coveralls"
+        - UPLOAD_COVERAGE='coveralls --root .. --include src/core -E "*.txt"'
     - os: osx
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"
@@ -25,12 +27,16 @@ matrix:
 before_install:
   - mkdir build
   - cd build
+  - eval "${INSTALL_COVERALLS}"
   - eval "${INSTALL_CXX}"
   - eval "${SET_CXX}"
 
 install:
-  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE
+  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE -DINTERPRETER_COVERAGE:BOOL=TRUE
   - cmake --build .
 
 script:
   - ./Interpreter-Tests
+  
+after_success:
+  - eval "${UPLOAD_COVERAGE}"

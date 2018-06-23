@@ -14,7 +14,7 @@ if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
 		FILES ${core_src})
 endif()
 
-
+set(INTERPRETER_COVERAGE FALSE CACHE BOOL "Enable/Disable test coverage reporting")
 #------------------- Tests -------------------
 set(INTERPRETER_TESTS FALSE CACHE BOOL "Enable/Disable build of test executable")
 if(INTERPRETER_TESTS)
@@ -32,6 +32,11 @@ if(INTERPRETER_TESTS)
 		source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src/tests 
 			PREFIX "tests" 
 			FILES ${tests_src})
+	endif()
+	
+	if (COVERAGE)
+        target_compile_options(tests PRIVATE --coverage)
+        target_link_libraries(tests PRIVATE --coverage)
 	endif()
 endif()
 
