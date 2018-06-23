@@ -8,7 +8,8 @@ class Block;
 class Connection
 {
 public:
-	Connection() = default;
+	Connection();
+	Connection(Block& block, size_t output);
 	virtual ~Connection() = default;
 
 	bool isConnected();
