@@ -15,7 +15,7 @@ matrix:
         - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
     - os: osx
       env:
-        - MATRIX_EVAL="brew install gcc5 && CC=gcc-5 && CXX=g++-5"
+        - MATRIX_EVAL="brew cask uninstall --force oclint && brew install gcc5 && CC=gcc-5 && CXX=g++-5"
     - os: linux
       compiler: clang
     - os: osx
