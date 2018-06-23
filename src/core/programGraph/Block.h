@@ -14,8 +14,6 @@ public:
 	std::vector<Datatype> inputTypes() const;
 	std::vector<Datatype> outputTypes() const;
 
-	std::vector<Connection> inputs() const;
-
 	Function& function() const;
 protected:
 

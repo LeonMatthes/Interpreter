@@ -11,10 +11,11 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-5
+          update: false
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"
         - INSTALL_COVERALLS="pip install --user cpp-coveralls"
-        - UPLOAD_COVERAGE='coveralls --root .. --include src/core --verbose'
+        - UPLOAD_COVERAGE="coveralls --root .. --include src/core"
     - os: osx
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"

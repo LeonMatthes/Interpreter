@@ -16,10 +16,6 @@ std::vector<Datatype> Block::outputTypes() const
 	return function().outputs();
 }
 
-std::vector<Connection> Block::inputs() const
-{
-	return std::vector<Connection>();
-}
 
 Function& Block::function() const
 {
