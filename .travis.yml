@@ -19,7 +19,7 @@ matrix:
     - os: osx
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"
-        - INSTALL_CXX="HOMEBREW_NO_AUTO_UPDATE=1 brew cask uninstall --force oclint && HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc5"
+        - INSTALL_CXX="brew cask uninstall --force oclint && brew update && brew install gcc5"
     - os: linux
       compiler: clang
     - os: osx
