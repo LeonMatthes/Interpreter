@@ -39,8 +39,3 @@ size_t Connection::connectedOutput()
 	return m_output;
 }
 
-Datatype Connection::datatype()
-{
-	return Datatype::DOUBLE;
-}
-

@@ -3,9 +3,7 @@
 Function::Function(std::vector<Datatype> inputs, std::vector<Datatype> outputs)
 	: m_inputs{ inputs }
 	, m_outputs{ outputs }
-{
-
-}
+{}
 
 std::vector<Datatype> Function::outputs() const
 {
