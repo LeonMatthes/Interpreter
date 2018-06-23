@@ -5,7 +5,11 @@ set(CMAKE_CXX_STANDARD 14)
 project(Interpreter-Core)
 set(INTERPRETER_COVERAGE FALSE CACHE BOOL "Enable/Disable test coverage reporting")
 if(INTERPRETER_COVERAGE)
-	SET(CMAKE_BUILD_TYPE Debug)
+	# Add -O0 to remove optimizations when using gcc
+	IF(CMAKE_COMPILER_IS_GNUCC)
+		set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+		set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
+	ENDIF(CMAKE_COMPILER_IS_GNUCC)
 endif()
 
 add_subdirectory(src/core)
