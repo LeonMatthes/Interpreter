@@ -1,1 +1,1 @@
-# Interpreter
+# Interpreter [![Build Status](https://travis-ci.org/MrModder/Interpreter.svg?branch=master)](https://travis-ci.org/MrModder/Interpreter)[![Coverage Status](https://coveralls.io/repos/github/MrModder/Interpreter/badge.svg?branch=master)](https://coveralls.io/github/MrModder/Interpreter?branch=master)
