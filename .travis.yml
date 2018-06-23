@@ -13,8 +13,6 @@ matrix:
             - g++-5
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"
-        - INSTALL_COVERALLS="pip install --user cpp-coveralls"
-        - UPLOAD_COVERAGE='coveralls --root .. --build-root . --include src/core --verbose'
     - os: osx
       env:
         - SET_CXX="CC=gcc-5 && CXX=g++-5"
@@ -23,7 +21,7 @@ matrix:
       compiler: clang
       env:
         - INSTALL_COVERALLS="pip install --user cpp-coveralls"
-        - UPLOAD_COVERAGE='coveralls --root .. --build-root . --include src/core --verbose'
+        - UPLOAD_COVERAGE='coveralls --root .. --include src/core --verbose'
     - os: osx
       compiler: clang
 
