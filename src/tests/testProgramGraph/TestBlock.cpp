@@ -12,7 +12,7 @@ TEST(TestBlock, blockCreationSetsFunction)
 	}
 }
 
-TEST(TestBlock, IOTypesMatchesFunction)
+TEST(TestBlock, IOTypesMatchFunction)
 {
 	Function function({ Datatype::DOUBLE }, { Datatype::DOUBLE, Datatype::DOUBLE });
 	Block block(function);
