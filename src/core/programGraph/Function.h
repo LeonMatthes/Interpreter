@@ -6,7 +6,7 @@
 class Function
 {
 public:
-	Function() = default;
+	Function();
 	Function(std::vector<Datatype> inputs, std::vector<Datatype> outputs);
 	virtual ~Function();
 
