@@ -35,7 +35,7 @@ before_install:
 
 install:
   - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE ${CMAKE_ARGUMENTS}
-  - cmake --build .
+  - cmake --build . --VERBOSE=1
 
 script:
   - ./Interpreter-Tests
