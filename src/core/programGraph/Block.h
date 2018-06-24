@@ -6,7 +6,7 @@
 class Block
 {
 public:
-	virtual ~Block() = default;
+	virtual ~Block();
 
 	virtual std::vector<Datatype> inputTypes() const = 0;
 	virtual std::vector<Datatype> outputTypes() const = 0;

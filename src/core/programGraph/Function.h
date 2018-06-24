@@ -8,7 +8,7 @@ class Function
 public:
 	Function() = default;
 	Function(std::vector<Datatype> inputs, std::vector<Datatype> outputs);
-	virtual ~Function() = default;
+	virtual ~Function();
 
 	std::vector<Datatype> outputs() const;
 	std::vector<Datatype> inputs() const;

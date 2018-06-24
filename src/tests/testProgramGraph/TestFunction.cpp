@@ -20,23 +20,29 @@ TEST(TestFunction, createFunctionWithIO)
 	EXPECT_EQ(function.outputs(), out);
 }
 
+TEST(TestGraphicalFunction, createFunctionWithIO)
+{
+	std::vector<Datatype> in = { Datatype::DOUBLE };
+	std::vector<Datatype> out = { Datatype::BOOLEAN, Datatype::DOUBLE };
+	GraphicalFunction function(in, out);
+	EXPECT_EQ(function.inputs(), in);
+	EXPECT_EQ(function.outputs(), out);
+}
+
 TEST(TestGraphicalFunction, testUniquePtrOwnership)
 {
 	Function function({ Datatype::DOUBLE }, {});
 	GraphicalFunction graphical;
 	
-	{
-		FunctionBlock::UPtr block = std::make_unique<FunctionBlock>(function);
-		ASSERT_TRUE(block);
-		std::vector<FunctionBlock::UPtr> blocks;
-		blocks.push_back(std::move(block));
-		ASSERT_FALSE(block);
+	FunctionBlock::UPtr block = std::make_unique<FunctionBlock>(function);
+	ASSERT_TRUE(block);
+	std::vector<FunctionBlock::UPtr> blocks;
+	blocks.push_back(std::move(block));
+	ASSERT_FALSE(block);
 		
-		ASSERT_TRUE(blocks.at(0));
-		graphical.setFunctionBlocks(std::move(blocks));
-		ASSERT_EQ(0, blocks.size());
+	ASSERT_TRUE(blocks.at(0));
+	graphical.setFunctionBlocks(std::move(blocks));
+	ASSERT_EQ(0, blocks.size());
 
-		ASSERT_TRUE(graphical.functionBlocks().at(0));
-	}
-
+	ASSERT_TRUE(graphical.functionBlocks().at(0));
 }

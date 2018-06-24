@@ -5,6 +5,11 @@ Function::Function(std::vector<Datatype> inputs, std::vector<Datatype> outputs)
 	, m_outputs{ outputs }
 {}
 
+Function::~Function()
+{
+
+}
+
 std::vector<Datatype> Function::outputs() const
 {
 	return m_outputs;

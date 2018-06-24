@@ -4,8 +4,10 @@
 FunctionBlock::FunctionBlock(Function& function)
 	: m_function{function}
 	, Block(function.inputs().size())
-{
-}
+{}
+
+FunctionBlock::~FunctionBlock()
+{}
 
 std::vector<Datatype> FunctionBlock::inputTypes() const
 {

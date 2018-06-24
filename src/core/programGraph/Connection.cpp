@@ -16,6 +16,9 @@ Connection::Connection()
 	: m_block{ nullptr }
 {}
 
+Connection::~Connection()
+{}
+
 bool Connection::isConnected()
 {
 	return m_block != nullptr;

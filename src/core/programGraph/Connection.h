@@ -10,7 +10,7 @@ class Connection
 public:
 	Connection();
 	Connection(Block& block, size_t output);
-	virtual ~Connection() = default;
+	virtual ~Connection();;
 
 	bool isConnected();
 	Block& connectedBlock();

@@ -6,11 +6,14 @@ Block::Block(size_t inputCount)
 {
 }
 
+Block::~Block()
+{}
 
 size_t Block::inputCount()
 {
 	return inputTypes().size();
 }
+
 
 std::vector<Connection> Block::inputConnections() const
 {

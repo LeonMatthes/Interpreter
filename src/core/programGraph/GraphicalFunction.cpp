@@ -3,6 +3,10 @@
 GraphicalFunction::GraphicalFunction()
 {}
 
+GraphicalFunction::GraphicalFunction(std::vector<Datatype> inputs, std::vector<Datatype> outputs)
+	: Function(inputs, outputs)
+{}
+
 GraphicalFunction::~GraphicalFunction()
 {}
 
