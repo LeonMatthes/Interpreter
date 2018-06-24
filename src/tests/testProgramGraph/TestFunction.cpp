@@ -2,6 +2,7 @@
 #include <programGraph/Function.h>
 #include <programGraph/GraphicalFunction.h>
 #include <programGraph/FunctionBlock.h>
+#include <memory>
 
 TEST(TestFunction, createEmptyFunction)
 {
