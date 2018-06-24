@@ -3,20 +3,21 @@
 #include <programGraph/Datatype.h>
 #include <programGraph/Connection.h>
 
-class Function;
-
 class Block
 {
 public:
-	Block(Function& function);
 	virtual ~Block() = default;
 
-	std::vector<Datatype> inputTypes() const;
-	std::vector<Datatype> outputTypes() const;
-
-	Function& function() const;
+	virtual std::vector<Datatype> inputTypes() const = 0;
+	virtual std::vector<Datatype> outputTypes() const = 0;
+	
+	std::vector<Connection> inputConnections() const;
+	void setInputConnections(std::vector<Connection> val);
+	
+	size_t inputCount();
 protected:
+	Block(size_t inputCount);
 
-	Function& m_function;
+	std::vector<Connection> m_inputConnections;
 private:
 };

@@ -1,23 +1,27 @@
 #include <programGraph/Block.h>
-#include <programGraph/Function.h>
+#include <error/InternalError.h>
 
-Block::Block(Function& function)
-	: m_function{function}
+Block::Block(size_t inputCount)
+	: m_inputConnections{inputCount}
 {
 }
 
-std::vector<Datatype> Block::inputTypes() const
+
+size_t Block::inputCount()
 {
-	return function().inputs();
+	return inputTypes().size();
 }
 
-std::vector<Datatype> Block::outputTypes() const
+std::vector<Connection> Block::inputConnections() const
 {
-	return function().outputs();
+	return m_inputConnections;
 }
 
-
-Function& Block::function() const
+void Block::setInputConnections(std::vector<Connection> val)
 {
-	return m_function;
+	if (val.size() != inputCount())
+	{
+		THROW_ERROR(InternalError, "Called Block::setInputConnections with incorrect number of Connections");
+	}
+	m_inputConnections = val;
 }

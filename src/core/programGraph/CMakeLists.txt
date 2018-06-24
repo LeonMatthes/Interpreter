@@ -1,7 +1,7 @@
 set(core_src
 	${core_src}
-	${CMAKE_CURRENT_SOURCE_DIR}/Block.h
-	${CMAKE_CURRENT_SOURCE_DIR}/Block.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/FunctionBlock.h
+	${CMAKE_CURRENT_SOURCE_DIR}/FunctionBlock.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Function.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Function.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Program.h
@@ -11,4 +11,6 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/Connection.h
 	${CMAKE_CURRENT_SOURCE_DIR}/GraphicalFunction.h
 	${CMAKE_CURRENT_SOURCE_DIR}/GraphicalFunction.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Block.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Block.h
 	PARENT_SCOPE)

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <programGraph/Connection.h>
 #include <programGraph/Function.h>
-#include <programGraph/Block.h>
+#include <programGraph/FunctionBlock.h>
 #include <error/Error.h>
 
 TEST(TestConnection, defaultConnectionIsEmpty)
@@ -13,7 +13,7 @@ TEST(TestConnection, defaultConnectionIsEmpty)
 TEST(TestConnection, connectionInitialization)
 {
 	Function function({}, {Datatype::DOUBLE, Datatype::DOUBLE});
-	Block block(function);
+	FunctionBlock block(function);
 
 	size_t connectedOutput = 1;
 	Connection connection(block, connectedOutput);
@@ -32,7 +32,7 @@ TEST(TestConnection, disconnectedConnectionThrowsErrors)
 TEST(TestConnection, invalidConnectionCreation)
 {
 	Function function({}, {});
-	Block block(function);
+	FunctionBlock block(function);
 	size_t connectedOutput = 0;
 	EXPECT_THROW(Connection connection(block, connectedOutput), Error::Ptr);
 }
@@ -40,7 +40,7 @@ TEST(TestConnection, invalidConnectionCreation)
 TEST(TestConnection, typeIsCorrect)
 {
 	Function function({}, { Datatype::BOOLEAN, Datatype::DOUBLE});
-	Block block(function);
+	FunctionBlock block(function);
 	size_t connectedOutput = 0;
 	Connection connection(block, connectedOutput);
 	ASSERT_EQ(connection.connectedType(), Datatype::BOOLEAN);
