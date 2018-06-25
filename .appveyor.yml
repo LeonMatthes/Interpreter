@@ -11,8 +11,8 @@ build_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
   - mkdir build
   - cd build
-  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE -DCMAKE_BUILD_TYPE=Release
-  - cmake --build .
+  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE --config Release
+  - cmake --build . --config Release
   
 test_script:
   - .\Release\Interpreter-Tests.exe
