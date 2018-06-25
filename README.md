@@ -2,5 +2,5 @@
 
 
 ## Prerequisites
-* CMake (v1.3.1 or higher)
+* CMake (v3.1.3 or higher)
 * a C++14 compatible compiler
