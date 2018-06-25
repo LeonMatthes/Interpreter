@@ -10,7 +10,7 @@ class Function;
 class FunctionBlock : public Block
 {
 public:
-	typedef std::unique_ptr<FunctionBlock> UPtr;
+	typedef std::shared_ptr<FunctionBlock> Ptr;
 
 	FunctionBlock(Function& function);
 	virtual ~FunctionBlock();

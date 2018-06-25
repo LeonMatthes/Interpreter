@@ -10,12 +10,12 @@ GraphicalFunction::GraphicalFunction(std::vector<Datatype> inputs, std::vector<D
 GraphicalFunction::~GraphicalFunction()
 {}
 
-const std::vector<FunctionBlock::UPtr>& GraphicalFunction::functionBlocks()
+std::vector<FunctionBlock::Ptr> GraphicalFunction::functionBlocks()
 {
 	return m_functionBlocks;
 }
 
-void GraphicalFunction::setFunctionBlocks(std::vector<FunctionBlock::UPtr> blocks)
+void GraphicalFunction::setFunctionBlocks(std::vector<FunctionBlock::Ptr> blocks)
 {
-	m_functionBlocks = std::move(blocks);
+	m_functionBlocks = blocks;
 }

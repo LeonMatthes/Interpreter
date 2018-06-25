@@ -13,12 +13,12 @@ TEST(TestConnection, defaultConnectionIsEmpty)
 TEST(TestConnection, connectionInitialization)
 {
 	Function function({}, {Datatype::DOUBLE, Datatype::DOUBLE});
-	FunctionBlock block(function);
+	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(function);
 
 	size_t connectedOutput = 1;
 	Connection connection(block, connectedOutput);
 	ASSERT_TRUE(connection.isConnected());
-	EXPECT_EQ(&block, &connection.connectedBlock());
+	EXPECT_EQ(block, connection.connectedBlock());
 	EXPECT_EQ(connectedOutput, connection.connectedOutput());
 }
 
@@ -32,7 +32,7 @@ TEST(TestConnection, disconnectedConnectionThrowsErrors)
 TEST(TestConnection, invalidConnectionCreation)
 {
 	Function function({}, {});
-	FunctionBlock block(function);
+	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(function);
 	size_t connectedOutput = 0;
 	EXPECT_THROW(Connection connection(block, connectedOutput), Error::Ptr);
 }
@@ -40,7 +40,8 @@ TEST(TestConnection, invalidConnectionCreation)
 TEST(TestConnection, typeIsCorrect)
 {
 	Function function({}, { Datatype::BOOLEAN, Datatype::DOUBLE});
-	FunctionBlock block(function);
+	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(function);
+	
 	size_t connectedOutput = 0;
 	Connection connection(block, connectedOutput);
 	ASSERT_EQ(connection.connectedType(), Datatype::BOOLEAN);

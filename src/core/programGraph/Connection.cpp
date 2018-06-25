@@ -2,18 +2,18 @@
 #include <programGraph/Block.h>
 #include <error/InternalError.h>
 
-Connection::Connection(Block& block, size_t output)
-	: m_block{ &block }
+Connection::Connection(std::shared_ptr<Block> block, size_t output)
+	: m_block{ block }
 	, m_output{ output }
 {
-	if (m_block->outputTypes().size() <= m_output)
+	if (block->outputTypes().size() <= m_output)
 	{
 		THROW_ERROR(InternalError, std::string("Connection created with invalid output value:") + std::to_string(m_output));
 	}
 }
 
 Connection::Connection()
-	: m_block{ nullptr }
+	: m_block{}
 {}
 
 Connection::~Connection()
@@ -21,16 +21,16 @@ Connection::~Connection()
 
 bool Connection::isConnected()
 {
-	return m_block != nullptr;
+	return !m_block.expired();
 }
 
-Block& Connection::connectedBlock()
+Block::Ptr Connection::connectedBlock()
 {
 	if (!isConnected())
 	{
 		THROW_ERROR(InternalError, "Connection::connectedBlock called, but Connection is not connected")
 	}
-	return *m_block;
+	return m_block.lock();
 }
 
 size_t Connection::connectedOutput()
@@ -44,6 +44,6 @@ size_t Connection::connectedOutput()
 
 Datatype Connection::connectedType() 
 {
-	return connectedBlock().outputTypes().at(m_output);
+	return connectedBlock()->outputTypes().at(m_output);
 }
 

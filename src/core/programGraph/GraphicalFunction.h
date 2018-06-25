@@ -11,9 +11,9 @@ public:
 	GraphicalFunction();
 	virtual ~GraphicalFunction();
 	
-	const std::vector<FunctionBlock::UPtr>& functionBlocks();
-	void setFunctionBlocks(std::vector<FunctionBlock::UPtr> blocks);
+	std::vector<FunctionBlock::Ptr> functionBlocks();
+	void setFunctionBlocks(std::vector<FunctionBlock::Ptr> blocks);
 protected:
-	std::vector<FunctionBlock::UPtr> m_functionBlocks;
+	std::vector<FunctionBlock::Ptr> m_functionBlocks;
 private:
 };

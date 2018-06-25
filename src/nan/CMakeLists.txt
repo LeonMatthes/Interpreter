@@ -1,5 +1,6 @@
-set(nan_src 
+
+set(nan_src
 	${nan_src}
-	"src/nan/Adapter.cpp" 
-	"src/nan/Adapter.h"
+	${CMAKE_CURRENT_SOURCE_DIR}/Adapter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Adapter.h
 	PARENT_SCOPE)
