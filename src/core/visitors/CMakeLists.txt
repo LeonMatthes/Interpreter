@@ -3,4 +3,7 @@ set(core_src
 	${core_src}
 	${CMAKE_CURRENT_SOURCE_DIR}/DAGChecker.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/DAGChecker.h
+	${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Visitor.h
 	PARENT_SCOPE)

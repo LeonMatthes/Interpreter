@@ -21,7 +21,7 @@ bool DAGChecker::check(GraphicalFunction& functionGraph)
 	{
 		return true;
 	}
-	bool result = depthFirstSearch(functionBlocks.at(0));
+	bool result = depthFirstSearch(functionBlocks.at(functionBlocks.size() - 1));
 	//cleanup to avoid holding pointers unnecessarily
 	finished.clear(); 
 	visited.clear();
@@ -32,12 +32,14 @@ bool DAGChecker::depthFirstSearch(Block::Ptr block)
 {
 	if (std::find(finished.begin(), finished.end(), block) != finished.end())
 	{
-		return true; //Block is already finished
+		return true;
 	}
+
 	if (std::find(visited.begin(), visited.end(), block) != visited.end()) 
 	{
 		return false; //Cyclic reference
 	}
+
 	visited.push_back(block);
 	for (Connection& connection : block->inputConnections())
 	{

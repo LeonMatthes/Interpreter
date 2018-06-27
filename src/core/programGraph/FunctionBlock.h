@@ -3,6 +3,7 @@
 #include <programGraph/Block.h>
 #include <programGraph/Datatype.h>
 #include <programGraph/Connection.h>
+#include <visitors/Visitor.h>
 #include <memory>
 
 class Function;
@@ -19,6 +20,9 @@ public:
 	virtual std::vector<Datatype> outputTypes() const override;
 
 	Function& function() const;
+	
+	MAKE_VISITABLE;
+
 protected:
 	Function& m_function;
 private:

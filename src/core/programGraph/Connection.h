@@ -1,6 +1,7 @@
 #pragma once
 #pragma once
 #include <programGraph/Datatype.h>
+#include <visitors/Visitor.h>
 #include <cstddef>
 #include <memory>
 
@@ -17,6 +18,8 @@ public:
 	std::shared_ptr<Block> connectedBlock();
 	size_t connectedOutput();
 	Datatype connectedType();
+
+	MAKE_VISITABLE;
 
 protected:
 	std::weak_ptr<Block> m_block;

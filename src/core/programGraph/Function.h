@@ -2,6 +2,7 @@
 
 #include <programGraph/Datatype.h>
 #include <vector>
+#include <visitors/Visitor.h>
 
 class Function
 {
@@ -12,6 +13,9 @@ public:
 
 	std::vector<Datatype> outputs() const;
 	std::vector<Datatype> inputs() const;
+
+	MAKE_VISITABLE;
+
 protected:
 	const std::vector<Datatype> m_inputs;
 	const std::vector<Datatype> m_outputs;

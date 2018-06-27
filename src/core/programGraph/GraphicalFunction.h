@@ -1,6 +1,7 @@
 #pragma once
 #include <programGraph/Function.h>
 #include <programGraph/FunctionBlock.h>
+#include <visitors/Visitor.h>
 #include <vector>
 
 class GraphicalFunction : public Function
@@ -13,6 +14,9 @@ public:
 	
 	std::vector<FunctionBlock::Ptr> functionBlocks();
 	void setFunctionBlocks(std::vector<FunctionBlock::Ptr> blocks);
+
+	MAKE_VISITABLE;
+
 protected:
 	std::vector<FunctionBlock::Ptr> m_functionBlocks;
 private:
