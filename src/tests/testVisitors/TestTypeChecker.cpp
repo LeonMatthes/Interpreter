@@ -12,7 +12,7 @@ public:
 TEST_F(TestTypeChecker, FunctionIsFalse)
 {
 	Function function;
-	ASSERT_FALSE(m_checker.visit(function));
+	ASSERT_FALSE(function.accept(m_checker));
 }
 
 #include <programGraph/GraphicalFunction.h>
