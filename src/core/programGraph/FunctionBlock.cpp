@@ -3,7 +3,7 @@
 
 FunctionBlock::FunctionBlock(Function& _function)
 	: Block(_function.inputs().size())
-	, m_function{_function}
+	, m_function(_function)
 {}
 
 FunctionBlock::~FunctionBlock()
