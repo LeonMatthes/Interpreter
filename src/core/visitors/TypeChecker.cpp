@@ -41,6 +41,8 @@ bool TypeChecker::checkOutputConnections(class GraphicalFunction &graphicalFunct
 			return false;
 		}
 	}
+
+	return true;
 }
 
 bool TypeChecker::visit(class GraphicalFunction& graphicalFunction)
