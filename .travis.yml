@@ -19,8 +19,8 @@ matrix:
         - UPLOAD_COVERAGE="coveralls --root .. --include src/core"
     - os: osx
       env:
-        - SET_CXX="CC=gcc-5 && CXX=g++-5"
-        - INSTALL_CXX="brew cask uninstall --force oclint && brew update && brew install gcc5"
+        - SET_CXX="CC=gcc-6 && CXX=g++-6"
+        - INSTALL_CXX="brew cask uninstall --force oclint && brew update && brew install gcc6"
     - os: linux
       addons:
         apt:
