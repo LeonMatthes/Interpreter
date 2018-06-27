@@ -1,9 +1,9 @@
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/Function.h>
 
-FunctionBlock::FunctionBlock(Function& function)
-	: m_function{function}
-	, Block(function.inputs().size())
+FunctionBlock::FunctionBlock(Function& _function)
+	: Block(_function.inputs().size())
+	, m_function{_function}
 {}
 
 FunctionBlock::~FunctionBlock()
