@@ -13,6 +13,8 @@ public:
 	virtual bool visit(class FunctionBlock& functionBlock) override;
 	virtual bool visit(class Connection& connection) override;
 
+	bool checkOutputConnections(class GraphicalFunction &graphicalFunction);
+
 protected:
 	
 private:
