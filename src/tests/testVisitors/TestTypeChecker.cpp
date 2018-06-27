@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <visitors/TypeChecker.h>
 #include <programGraph/Function.h>
-
+#include <programGraph/Connection.h>
 
 class TestTypeChecker : public ::testing::Test
 {
@@ -13,6 +13,12 @@ TEST_F(TestTypeChecker, FunctionIsFalse)
 {
 	Function function;
 	ASSERT_FALSE(function.accept(m_checker));
+}
+
+TEST_F(TestTypeChecker, ConnectionThrowsError)
+{
+	Connection connection;
+	ASSERT_ANY_THROW(connection.accept(m_checker));
 }
 
 #include <programGraph/GraphicalFunction.h>
@@ -42,6 +48,8 @@ TEST_F(TestTypeChecker, GraphicalFunctionOutput)
 	FunctionBlock::Ptr block2 = std::make_shared<FunctionBlock>(testFunction3);
 	graphical.setFunctionBlocks({ block2, block });
 	ASSERT_FALSE(graphical.accept(m_checker));
+	graphical.setFunctionBlocks({ block, block2 });
+	ASSERT_TRUE(graphical.accept(m_checker));
 }
 
 TEST_F(TestTypeChecker, GraphicalFunctionConnectionNotMatching)
