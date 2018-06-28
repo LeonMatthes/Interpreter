@@ -3,4 +3,4 @@
 
 ## Prerequisites
 * CMake (v3.1.3 or higher)
-* a C++14 compatible compiler
+* a C++11 compatible compiler
