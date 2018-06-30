@@ -1,5 +1,5 @@
 #include <visitors/TypeChecker.h>
-#include <stdexcept>
+#include <error/InternalError.h>
 #include <vector>
 #include <programGraph/GraphicalFunction.h>
 #include <programGraph/FunctionBlock.h>
@@ -21,9 +21,19 @@ bool TypeChecker::visit(class Function& function)
 }
 
 
+bool TypeChecker::visit(class ExpressionBlock& expressionBlock)
+{
+	THROW_ERROR(InternalError, "TypeChecker visited expressionBlock");
+}
+
+bool TypeChecker::visit(class ValueBlock& valueBlock)
+{
+	return true;
+}
+
 bool TypeChecker::checkOutputConnections(class GraphicalFunction &graphicalFunction)
 {
-	std::vector<FunctionBlock::Ptr> blocks = graphicalFunction.functionBlocks();
+	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.functionBlocks();
 	if (blocks.size() == 0)
 	{
 		return false;
@@ -52,7 +62,7 @@ bool TypeChecker::visit(class GraphicalFunction& graphicalFunction)
 		return false;
 	}
 
-	for (FunctionBlock::Ptr block : graphicalFunction.functionBlocks())
+	for (ExpressionBlock::Ptr block : graphicalFunction.functionBlocks())
 	{
 		if (!block->accept(*this))
 		{
@@ -78,5 +88,5 @@ bool TypeChecker::visit(class FunctionBlock& functionBlock)
 
 bool TypeChecker::visit(class Connection& connection)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	THROW_ERROR(InternalError, "Typechecker visited Connection");
 }

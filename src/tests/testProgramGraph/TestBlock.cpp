@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/Function.h>
+#include <programGraph/ValueBlock.h>
 #include <error/Error.h>
 
 
@@ -58,4 +59,17 @@ TEST(TestFunctionBlock, IOTypesMatchFunction)
 	FunctionBlock block(function);
 	EXPECT_EQ(block.inputTypes(), function.inputs());
 	EXPECT_EQ(block.outputTypes(), function.outputs());
+}
+
+
+
+TEST(TestValueBlock, creation)
+{
+	ValueBlock block(Value(false));
+	EXPECT_EQ(0, block.inputCount());
+	EXPECT_EQ(std::vector<Datatype>({ Datatype::BOOLEAN }), block.outputTypes());
+	EXPECT_EQ(std::vector<Datatype>({}), block.inputTypes());
+
+	block = ValueBlock(Value(1.0));
+	EXPECT_EQ(std::vector<Datatype>({ Datatype::DOUBLE }), block.outputTypes());
 }

@@ -10,12 +10,12 @@ GraphicalFunction::GraphicalFunction(std::vector<Datatype> inputs, std::vector<D
 GraphicalFunction::~GraphicalFunction()
 {}
 
-std::vector<FunctionBlock::Ptr> GraphicalFunction::functionBlocks()
+std::vector<ExpressionBlock::Ptr> GraphicalFunction::functionBlocks()
 {
 	return m_functionBlocks;
 }
 
-void GraphicalFunction::setFunctionBlocks(std::vector<FunctionBlock::Ptr> blocks)
+void GraphicalFunction::setFunctionBlocks(std::vector<ExpressionBlock::Ptr> blocks)
 {
 	m_functionBlocks = blocks;
 }

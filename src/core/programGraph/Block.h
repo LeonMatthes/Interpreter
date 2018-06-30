@@ -20,8 +20,9 @@ public:
 	
 	size_t inputCount();
 protected:
+	Block() = delete;
 	Block(size_t inputCount);
-
+	
 	std::vector<Connection> m_inputConnections;
 private:
 };

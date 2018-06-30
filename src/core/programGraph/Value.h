@@ -11,11 +11,10 @@ public:
 	virtual ~Value() = default;
 
 	bool getBoolean();
-
-	void assertType(Datatype type, std::string expectedType);
-
 	double getDouble();
+	Datatype type() const;
 
+	void assertType(Datatype type);
 protected:
 	Datatype m_type;
 	union {

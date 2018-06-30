@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <programGraph/Block.h>
+#include <programGraph/ExpressionBlock.h>
 #include <programGraph/Datatype.h>
 #include <programGraph/Connection.h>
 #include <visitors/Visitor.h>
@@ -8,7 +8,7 @@
 
 class Function;
 
-class FunctionBlock : public Block
+class FunctionBlock : public ExpressionBlock
 {
 public:
 	typedef std::shared_ptr<FunctionBlock> Ptr;

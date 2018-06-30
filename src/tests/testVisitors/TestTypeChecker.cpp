@@ -2,6 +2,8 @@
 #include <visitors/TypeChecker.h>
 #include <programGraph/Function.h>
 #include <programGraph/Connection.h>
+#include <programGraph/FunctionBlock.h>
+#include <programGraph/ValueBlock.h>
 
 class TestTypeChecker : public ::testing::Test
 {
@@ -84,4 +86,10 @@ TEST_F(TestTypeChecker, FunctionBlockChecksAllConnections)
 
 	block->setInputConnections({ Connection(), Connection(block, 0) });
 	ASSERT_TRUE(block->accept(m_checker));
+}
+
+TEST_F(TestTypeChecker, ValueBlockNeedsNoTypeCheck)
+{
+	ValueBlock block(Value(false));
+	EXPECT_EQ(true, block.accept(m_checker));
 }

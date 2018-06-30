@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <programGraph/FunctionBlock.h>
 #include <programGraph/GraphicalFunction.h>
 
 #include <visitors/DAGChecker.h>

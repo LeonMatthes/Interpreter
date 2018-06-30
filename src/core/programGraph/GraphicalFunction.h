@@ -1,6 +1,6 @@
 #pragma once
 #include <programGraph/Function.h>
-#include <programGraph/FunctionBlock.h>
+#include <programGraph/ExpressionBlock.h>
 #include <visitors/Visitor.h>
 #include <vector>
 
@@ -12,12 +12,12 @@ public:
 	GraphicalFunction();
 	virtual ~GraphicalFunction();
 	
-	std::vector<FunctionBlock::Ptr> functionBlocks();
-	void setFunctionBlocks(std::vector<FunctionBlock::Ptr> blocks);
+	std::vector<ExpressionBlock::Ptr> functionBlocks();
+	void setFunctionBlocks(std::vector<ExpressionBlock::Ptr> blocks);
 
 	MAKE_VISITABLE;
 
 protected:
-	std::vector<FunctionBlock::Ptr> m_functionBlocks;
+	std::vector<ExpressionBlock::Ptr> m_functionBlocks;
 private:
 };

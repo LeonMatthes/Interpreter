@@ -2,7 +2,7 @@
 #include <programGraph/Function.h>
 
 FunctionBlock::FunctionBlock(Function& _function)
-	: Block(_function.inputs().size())
+	: ExpressionBlock(_function.inputs().size())
 	, m_function(_function)
 {}
 
