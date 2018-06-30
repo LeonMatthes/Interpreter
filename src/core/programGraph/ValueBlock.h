@@ -16,6 +16,7 @@ public:
 
 	MAKE_VISITABLE;
 
+	Value value() const;
 protected:
 	Value m_value;
 

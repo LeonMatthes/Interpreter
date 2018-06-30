@@ -18,5 +18,10 @@ std::vector<Datatype> ValueBlock::inputTypes() const
 
 std::vector<Datatype> ValueBlock::outputTypes() const
 {
-	return { m_value.type() };
+	return { value().type() };
+}
+
+Value ValueBlock::value() const
+{
+	return m_value;
 }

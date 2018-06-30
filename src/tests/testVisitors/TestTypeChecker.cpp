@@ -4,6 +4,7 @@
 #include <programGraph/Connection.h>
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/ValueBlock.h>
+#include <programGraph/PrimitiveFunction.h>
 
 class TestTypeChecker : public ::testing::Test
 {
@@ -15,6 +16,11 @@ TEST_F(TestTypeChecker, FunctionIsFalse)
 {
 	Function function;
 	ASSERT_FALSE(function.accept(m_checker));
+}
+
+TEST_F(TestTypeChecker, PrimitiveFunctionIsFalse)
+{
+	ASSERT_FALSE(PrimitiveFunction::add.accept(m_checker));
 }
 
 TEST_F(TestTypeChecker, ConnectionThrowsError)

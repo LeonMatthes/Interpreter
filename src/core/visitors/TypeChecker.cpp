@@ -20,8 +20,14 @@ bool TypeChecker::visit(class Function& function)
 	return false;
 }
 
+bool TypeChecker::visit(class PrimitiveFunction& primitiveFunction)
+{
+	return false;
+}
+
 bool TypeChecker::visit(class ValueBlock& valueBlock)
 {
+	//ValueBlocks are always type safe as they don't depend on anything
 	return true;
 }
 

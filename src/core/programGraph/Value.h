@@ -10,11 +10,13 @@ public:
 	Value(double d);
 	virtual ~Value();
 
-	bool getBoolean();
-	double getDouble();
+	bool getBoolean() const;
+	double getDouble() const;
 	Datatype type() const;
 
-	void assertType(Datatype type);
+	void assertType(Datatype type) const;
+
+	bool operator==(const Value& RHS) const;
 protected:
 	Datatype m_type;
 	union {

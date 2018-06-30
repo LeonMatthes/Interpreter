@@ -18,7 +18,28 @@ Value::~Value()
 
 }
 
-void Value::assertType(Datatype type)
+bool Value::operator==(const Value& RHS) const
+{
+	if (RHS.m_type != m_type)
+	{
+		return false;
+	}
+
+	switch (m_type)
+	{
+	case Datatype::DOUBLE:
+		return getDouble() == RHS.getDouble();
+		break;
+	case Datatype::BOOLEAN:
+		return getBoolean() == RHS.getBoolean();
+		break;
+	default:
+		break;
+	}
+	THROW_ERROR(InternalError, std::string("Illegal program flow reached in function Value::operator=="));
+}
+
+void Value::assertType(Datatype type) const
 {
 	if (m_type != type)
 	{
@@ -26,14 +47,14 @@ void Value::assertType(Datatype type)
 	}
 }
 
-bool Value::getBoolean()
+bool Value::getBoolean() const
 {
 	assertType(Datatype::BOOLEAN);
 
 	return m_data.m_boolean;
 }
 
-double Value::getDouble()
+double Value::getDouble() const
 {
 	assertType(Datatype::DOUBLE);
 	return m_data.m_double;
@@ -43,4 +64,3 @@ Datatype Value::type() const
 {
 	return m_type;
 }
-

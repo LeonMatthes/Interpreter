@@ -15,6 +15,8 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/FunctionBlock.h
 	${CMAKE_CURRENT_SOURCE_DIR}/GraphicalFunction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/GraphicalFunction.h
+	${CMAKE_CURRENT_SOURCE_DIR}/PrimitiveFunction.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/PrimitiveFunction.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Program.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Program.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Value.cpp
