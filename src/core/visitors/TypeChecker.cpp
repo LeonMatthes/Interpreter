@@ -20,12 +20,6 @@ bool TypeChecker::visit(class Function& function)
 	return false;
 }
 
-
-bool TypeChecker::visit(class ExpressionBlock& expressionBlock)
-{
-	THROW_ERROR(InternalError, "TypeChecker visited expressionBlock");
-}
-
 bool TypeChecker::visit(class ValueBlock& valueBlock)
 {
 	return true;

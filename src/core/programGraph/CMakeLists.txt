@@ -7,6 +7,7 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/Connection.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Datatype.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Datatype.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ExpressionBlock.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ExpressionBlock.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Function.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Function.h

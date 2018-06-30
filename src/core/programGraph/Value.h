@@ -8,7 +8,7 @@ public:
 	Value() = delete;
 	Value(bool b);
 	Value(double d);
-	virtual ~Value() = default;
+	virtual ~Value();
 
 	bool getBoolean();
 	double getDouble();

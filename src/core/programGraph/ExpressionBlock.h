@@ -10,14 +10,11 @@ class ExpressionBlock : public Block
 public:
 	typedef std::shared_ptr<ExpressionBlock> Ptr;
 
-	ExpressionBlock(size_t inputCount)
-		: Block(inputCount)
-	{}
+	ExpressionBlock(size_t inputCount);
 	
-	virtual ~ExpressionBlock() = default;
+	virtual ~ExpressionBlock();
 
-	MAKE_VISITABLE;
+	MAKE_VISITABLE_VIRTUAL;
 protected:
-	
 private:
 };

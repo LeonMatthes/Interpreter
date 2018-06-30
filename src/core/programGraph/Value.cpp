@@ -13,6 +13,11 @@ Value::Value(double d)
 	m_data.m_double = d;
 }
 
+Value::~Value()
+{
+
+}
+
 void Value::assertType(Datatype type)
 {
 	if (m_type != type)
