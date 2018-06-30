@@ -4,7 +4,7 @@
 PrimitiveFunction PrimitiveFunction::add(
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }), 
 	std::vector<Datatype>({ Datatype::DOUBLE }), 
-	[=](std::vector<Value> inputs)
+	[](std::vector<Value> inputs)
 	{
 		double sum = inputs.at(0).getDouble() + inputs.at(1).getDouble();
 		return std::vector<Value>({Value(sum)});
@@ -13,7 +13,7 @@ PrimitiveFunction PrimitiveFunction::add(
 PrimitiveFunction PrimitiveFunction::subtract(
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }), 
 	std::vector<Datatype>({Datatype::DOUBLE}),
-	[=](std::vector<Value> inputs) 
+	[](std::vector<Value> inputs) 
 	{
 		double result = inputs.at(0).getDouble() - inputs.at(1).getDouble();
 		return std::vector<Value>({ Value(result) });
