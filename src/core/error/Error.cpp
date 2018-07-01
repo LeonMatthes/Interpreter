@@ -1,7 +1,7 @@
 #include <error/Error.h>
 
 Error::Error(std::string message)
-	: m_message{message}
+	: m_message(message)
 {
 }
 

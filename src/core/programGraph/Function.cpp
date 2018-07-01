@@ -1,8 +1,8 @@
 #include <programGraph/Function.h>
 
 Function::Function(std::vector<Datatype> inputs, std::vector<Datatype> outputs)
-	: m_inputs{ inputs }
-	, m_outputs{ outputs }
+	: m_inputs( inputs )
+	, m_outputs( outputs )
 {}
 
 Function::Function()

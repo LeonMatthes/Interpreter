@@ -2,7 +2,7 @@
 #include <error/InternalError.h>
 
 Block::Block(size_t inputCount)
-	: m_inputConnections{inputCount}
+	: m_inputConnections(inputCount)
 {
 }
 
