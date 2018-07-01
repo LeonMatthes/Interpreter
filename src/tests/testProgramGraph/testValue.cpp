@@ -28,3 +28,12 @@ TEST(TestValue, invalidGetType)
 	value = Value(10.0);
 	EXPECT_THROW(value.getBoolean(), Error::Ptr);
 }
+
+TEST(TestValue, initializeByType)
+{
+	EXPECT_EQ(Datatype::DOUBLE, Value(Datatype::DOUBLE).type());
+	EXPECT_EQ(Datatype::BOOLEAN, Value(Datatype::BOOLEAN).type());
+	EXPECT_EQ(0.0, Value(Datatype::DOUBLE).getDouble());
+	EXPECT_EQ(false, Value(Datatype::BOOLEAN).getBoolean());
+	EXPECT_THROW(Value(Datatype(-1)), Error::Ptr);
+}

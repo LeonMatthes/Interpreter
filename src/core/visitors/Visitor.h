@@ -1,5 +1,5 @@
 #pragma once
-
+#include <stdexcept>
 
 template <class R>
 class Visitor
@@ -20,3 +20,7 @@ public:
 
 #define MAKE_VISITABLE_VIRTUAL_TYPED(R) virtual R accept(Visitor<R>& visitory) = 0;
 #define MAKE_VISITABLE_VIRTUAL MAKE_VISITABLE_VIRTUAL_TYPED(bool) MAKE_VISITABLE_VIRTUAL_TYPED(std::vector<Value>)
+
+//For testing purposes
+#define MOCK_VISITABLE_TYPED(R) virtual R accept(Visitor<R>& visitor) { throw std::logic_error("Error: Function not implemented"); }
+#define MOCK_VISITABLE MOCK_VISITABLE_TYPED(bool) MOCK_VISITABLE_TYPED(std::vector<Value>)

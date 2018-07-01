@@ -8,6 +8,7 @@ public:
 	Value() = delete;
 	Value(bool b);
 	Value(double d);
+	Value(Datatype datatype);
 	virtual ~Value();
 
 	bool getBoolean() const;

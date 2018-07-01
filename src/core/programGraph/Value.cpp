@@ -13,6 +13,23 @@ Value::Value(double d)
 	m_data.m_double = d;
 }
 
+Value::Value(Datatype datatype)
+	: m_type(datatype)
+{
+	switch (m_type)
+	{
+	case Datatype::DOUBLE:
+		m_data.m_double = 0.0;
+		break;
+	case Datatype::BOOLEAN:
+		m_data.m_boolean = false;
+		break;
+	default:
+		THROW_ERROR(InternalError, std::string("Value constructed with type: ") + m_type + " does not have a default constructor");
+		break;
+	}
+}
+
 Value::~Value()
 {
 

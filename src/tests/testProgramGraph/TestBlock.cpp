@@ -17,6 +17,8 @@ public:
 	{
 		return { Datatype::BOOLEAN, Datatype::DOUBLE };
 	}
+
+	MOCK_VISITABLE;
 };
 
 TEST(TestBlock, creationSetsConnectionCount)
