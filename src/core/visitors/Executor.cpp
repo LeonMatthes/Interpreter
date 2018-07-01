@@ -21,7 +21,7 @@ std::vector<Value> Executor::visit(class GraphicalFunction& graphicalFunction)
 std::vector<Value> Executor::visit(class FunctionBlock& functionBlock)
 {
 	std::vector<Value> inputs;
-	auto& connections = functionBlock.inputConnections();
+	auto connections = functionBlock.inputConnections();
 
 	for (size_t i = 0; i < connections.size(); i++)
 	{
