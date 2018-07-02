@@ -2,20 +2,24 @@
 #include <programGraph/ValueBlock.h>
 #include <programGraph/PrimitiveFunction.h>
 #include <programGraph/FunctionBlock.h>
+#include <programGraph/GraphicalFunction.h>
+#include <error/InternalError.h>
 
 Executor::Executor()
-{
+{}
 
-}
+Executor::~Executor()
+{}
 
 std::vector<Value> Executor::visit(class Function& function)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	THROW_ERROR(InternalError, "Executor encountered Object of abstract class \"Function\"");
 }
 
 std::vector<Value> Executor::visit(class GraphicalFunction& graphicalFunction)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.functionBlocks();
+	return blocks.at(blocks.size() - 1)->accept(*this);
 }
 
 std::vector<Value> Executor::visit(class FunctionBlock& functionBlock)

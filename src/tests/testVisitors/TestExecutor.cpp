@@ -5,6 +5,7 @@
 #include <programGraph/GraphicalFunction.h>
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/PrimitiveFunction.h>
+#include <error/Error.h>
 
 class TestExecutor : public ::testing::Test
 {
@@ -56,11 +57,10 @@ TEST_F(TestExecutor, FunctionBlock)
 }
 
 
-/*
 TEST_F(TestExecutor, GraphicalFunction)
 {
 	GraphicalFunction graphical({}, {Datatype::DOUBLE});
-	FunctionBlock::Ptr functionBlock = std::make_shared<FunctionBlock>(PrimitiveFunction::add);
+	FunctionBlock::Ptr functionBlock = std::make_shared<FunctionBlock>(PrimitiveFunction::subtract);
 	
 	ValueBlock::Ptr firstValue = std::make_shared<ValueBlock>(Value(2.0));
 	ValueBlock::Ptr secondValue = std::make_shared<ValueBlock>(Value(1.0));
@@ -68,4 +68,16 @@ TEST_F(TestExecutor, GraphicalFunction)
 	
 	graphical.setFunctionBlocks({ firstValue, secondValue, functionBlock });
 	EXPECT_EQ(Value(1.0), graphical.accept(m_executor).at(0));
-}*/
+
+	functionBlock = std::make_shared<FunctionBlock>(PrimitiveFunction::add);
+	functionBlock->setInputConnections({ Connection(firstValue, 0), Connection(secondValue, 0) });
+
+	graphical.setFunctionBlocks({ firstValue, secondValue, functionBlock });
+	EXPECT_EQ(Value(3.0), graphical.accept(m_executor).at(0));
+}
+
+TEST_F(TestExecutor, Function)
+{
+	Function function;
+	EXPECT_THROW(function.accept(m_executor), Error::Ptr);
+}

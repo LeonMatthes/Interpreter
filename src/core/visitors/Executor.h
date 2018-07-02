@@ -9,7 +9,7 @@ class Executor : public Visitor<std::vector<Value>>
 {
 public:
 	Executor();
-	virtual ~Executor() = default;
+	virtual ~Executor();
 
 	virtual std::vector<Value> visit(class Function& function) override;
 	virtual std::vector<Value> visit(class GraphicalFunction& graphicalFunction) override;
