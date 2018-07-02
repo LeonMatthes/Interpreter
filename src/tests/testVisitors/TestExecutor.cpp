@@ -67,12 +67,14 @@ TEST_F(TestExecutor, GraphicalFunction)
 	functionBlock->setInputConnections({ Connection(firstValue, 0), Connection(secondValue, 0) });
 	
 	graphical.setFunctionBlocks({ firstValue, secondValue, functionBlock });
+	m_executor.pushParameters({});
 	EXPECT_EQ(Value(1.0), graphical.accept(m_executor).at(0));
 
 	functionBlock = std::make_shared<FunctionBlock>(PrimitiveFunction::add);
 	functionBlock->setInputConnections({ Connection(firstValue, 0), Connection(secondValue, 0) });
 
 	graphical.setFunctionBlocks({ firstValue, secondValue, functionBlock });
+	m_executor.pushParameters({});
 	EXPECT_EQ(Value(3.0), graphical.accept(m_executor).at(0));
 }
 

@@ -29,6 +29,14 @@ TEST(TestValue, invalidGetType)
 	EXPECT_THROW(value.getBoolean(), Error::Ptr);
 }
 
+TEST(TestValue, equality)
+{
+	EXPECT_FALSE(Value(Datatype::BOOLEAN) == Value(Datatype::DOUBLE));
+	EXPECT_FALSE(Value(1.0) == Value(0.0));
+	EXPECT_TRUE(Value(2.0) == Value(2.0));
+	EXPECT_THROW(Value(Datatype::BOOLEAN) == Value(Datatype(-1)), Error::Ptr);
+}
+
 TEST(TestValue, initializeByType)
 {
 	EXPECT_EQ(Datatype::DOUBLE, Value(Datatype::DOUBLE).type());

@@ -19,7 +19,9 @@ std::vector<Value> Executor::visit(class Function& function)
 std::vector<Value> Executor::visit(class GraphicalFunction& graphicalFunction)
 {
 	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.functionBlocks();
-	return blocks.at(blocks.size() - 1)->accept(*this);
+	std::vector<Value> returnValues = blocks.at(blocks.size() - 1)->accept(*this);
+	m_callStack.pop();
+	return returnValues;
 }
 
 std::vector<Value> Executor::visit(class FunctionBlock& functionBlock)
