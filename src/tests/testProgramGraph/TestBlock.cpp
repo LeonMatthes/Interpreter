@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include <programGraph/FunctionBlock.h>
-#include <programGraph/Function.h>
+#include <testProgramGraph/MockFunction.h>
 #include <programGraph/ValueBlock.h>
 #include <error/Error.h>
 
@@ -43,21 +43,21 @@ TEST(TestBlock, setConnectionChecksSize)
 
 TEST(TestFunctionBlock, creationSetsConnectionCount)
 {
-	Function function({ Datatype::BOOLEAN }, {});
+	MockFunction function({ Datatype::BOOLEAN }, {});
 	FunctionBlock block(function);
 	ASSERT_EQ(1, block.inputConnections().size());
 }
 
 TEST(TestFunctionBlock, creationSetsFunction)
 {
-	Function function;
+	MockFunction function;
 	FunctionBlock block(function);
 	EXPECT_EQ(&block.function(), &function);
 }
 
 TEST(TestFunctionBlock, IOTypesMatchFunction)
 {
-	Function function({ Datatype::DOUBLE }, { Datatype::DOUBLE, Datatype::DOUBLE });
+	MockFunction function({ Datatype::DOUBLE }, { Datatype::DOUBLE, Datatype::DOUBLE });
 	FunctionBlock block(function);
 	EXPECT_EQ(block.inputTypes(), function.inputs());
 	EXPECT_EQ(block.outputTypes(), function.outputs());

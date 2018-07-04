@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <visitors/Executor.h>
+#include <testProgramGraph/MockFunction.h>
 #include <programGraph/Value.h>
 #include <programGraph/ValueBlock.h>
 #include <programGraph/GraphicalFunction.h>
@@ -76,10 +77,4 @@ TEST_F(TestExecutor, GraphicalFunction)
 	graphical.setFunctionBlocks({ firstValue, secondValue, functionBlock });
 	m_executor.pushParameters({});
 	EXPECT_EQ(Value(3.0), graphical.accept(m_executor).at(0));
-}
-
-TEST_F(TestExecutor, Function)
-{
-	Function function;
-	EXPECT_THROW(function.accept(m_executor), Error::Ptr);
 }

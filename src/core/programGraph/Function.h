@@ -14,7 +14,7 @@ public:
 	std::vector<Datatype> outputs() const;
 	std::vector<Datatype> inputs() const;
 
-	MAKE_VISITABLE;
+	MAKE_VISITABLE_VIRTUAL;
 
 protected:
 	const std::vector<Datatype> m_inputs;

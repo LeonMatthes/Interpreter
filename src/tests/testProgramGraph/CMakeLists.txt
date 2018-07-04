@@ -1,6 +1,7 @@
 
 set(tests_src
 	${tests_src}
+	${CMAKE_CURRENT_SOURCE_DIR}/MockFunction.h
 	${CMAKE_CURRENT_SOURCE_DIR}/TestBlock.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/TestConnection.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/TestDatatype.cpp

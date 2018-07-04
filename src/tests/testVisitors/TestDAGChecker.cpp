@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <programGraph/FunctionBlock.h>
+#include <testProgramGraph/MockFunction.h>
 #include <programGraph/GraphicalFunction.h>
 
 #include <visitors/DAGChecker.h>
@@ -21,7 +22,7 @@ TEST_F(TestDAGChecker, emptyFunction)
 
 TEST_F(TestDAGChecker, selfReference)
 {
-	Function testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
+	MockFunction testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
 	
 	
 	FunctionBlock::Ptr firstBlock = std::make_shared<FunctionBlock>(testFunction);
@@ -43,7 +44,7 @@ TEST_F(TestDAGChecker, selfReference)
 
 TEST_F(TestDAGChecker, cyclicReference)
 {
-	Function testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
+	MockFunction testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
 	FunctionBlock::Ptr firstBlock = std::make_shared<FunctionBlock>(testFunction);
 	FunctionBlock::Ptr secondBlock = std::make_shared<FunctionBlock>(testFunction);
 
@@ -59,7 +60,7 @@ TEST_F(TestDAGChecker, cyclicReference)
 
 TEST_F(TestDAGChecker, unconnectedCyclicReference)
 {
-	Function testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
+	MockFunction testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
 	FunctionBlock::Ptr firstBlock = std::make_shared<FunctionBlock>(testFunction);
 	FunctionBlock::Ptr secondBlock = std::make_shared<FunctionBlock>(testFunction);
 	secondBlock->setInputConnections({ Connection(secondBlock, 1), Connection(secondBlock, 0) });
@@ -71,7 +72,7 @@ TEST_F(TestDAGChecker, unconnectedCyclicReference)
 
 TEST_F(TestDAGChecker, DAG)
 {
-	Function testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
+	MockFunction testFunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::BOOLEAN, Datatype::DOUBLE });
 
 	FunctionBlock::Ptr firstBlock = std::make_shared<FunctionBlock>(testFunction);
 	FunctionBlock::Ptr secondBlock = std::make_shared<FunctionBlock>(testFunction);

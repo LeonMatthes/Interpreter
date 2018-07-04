@@ -11,11 +11,6 @@ Executor::Executor()
 Executor::~Executor()
 {}
 
-std::vector<Value> Executor::visit(class Function& function)
-{
-	THROW_ERROR(InternalError, "Executor encountered Object of abstract class \"Function\"");
-}
-
 std::vector<Value> Executor::visit(class GraphicalFunction& graphicalFunction)
 {
 	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.functionBlocks();

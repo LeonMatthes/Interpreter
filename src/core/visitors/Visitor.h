@@ -5,7 +5,6 @@ template <class R>
 class Visitor
 {
 public:
-	virtual R visit(class Function& function) = 0;
 	virtual R visit(class GraphicalFunction& graphicalFunction) = 0;
 	virtual R visit(class FunctionBlock& functionBlock) = 0;
 	virtual R visit(class Connection& connection) = 0;

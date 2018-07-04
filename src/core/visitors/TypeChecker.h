@@ -8,7 +8,6 @@ public:
 	TypeChecker();
 	virtual ~TypeChecker();
 
-	virtual bool visit(class Function& function) override;
 	virtual bool visit(class GraphicalFunction& graphicalFunction) override;
 	virtual bool visit(class FunctionBlock& functionBlock) override;
 	virtual bool visit(class Connection& connection) override;

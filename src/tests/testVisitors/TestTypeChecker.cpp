@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <visitors/TypeChecker.h>
-#include <programGraph/Function.h>
+#include <testProgramGraph/MockFunction.h>
 #include <programGraph/Connection.h>
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/ValueBlock.h>
@@ -11,12 +11,6 @@ class TestTypeChecker : public ::testing::Test
 public:
 	TypeChecker m_checker;
 };
-
-TEST_F(TestTypeChecker, FunctionIsFalse)
-{
-	Function function;
-	ASSERT_FALSE(function.accept(m_checker));
-}
 
 TEST_F(TestTypeChecker, PrimitiveFunctionIsFalse)
 {
@@ -41,18 +35,18 @@ TEST_F(TestTypeChecker, GraphicalFunctionOutput)
 {
 	GraphicalFunction graphical({}, {Datatype::BOOLEAN, Datatype::DOUBLE});
 	
-	Function testFunction({}, {});
+	MockFunction testFunction({}, {});
 	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(testFunction);
 	graphical.setFunctionBlocks({ block });
 	ASSERT_FALSE(graphical.accept(m_checker));
 	
-	Function testfunction2({}, { Datatype::BOOLEAN, Datatype::BOOLEAN });
+	MockFunction testfunction2({}, { Datatype::BOOLEAN, Datatype::BOOLEAN });
 	block = std::make_shared<FunctionBlock>(testfunction2);
 	graphical.setFunctionBlocks({ block });
 	ASSERT_FALSE(graphical.accept(m_checker));
 
 	//the last block is the one being checked for matching Output
-	Function testFunction3({}, { Datatype::BOOLEAN, Datatype::DOUBLE });
+	MockFunction testFunction3({}, { Datatype::BOOLEAN, Datatype::DOUBLE });
 	FunctionBlock::Ptr block2 = std::make_shared<FunctionBlock>(testFunction3);
 	graphical.setFunctionBlocks({ block2, block });
 	ASSERT_FALSE(graphical.accept(m_checker));
@@ -64,7 +58,7 @@ TEST_F(TestTypeChecker, GraphicalFunctionConnectionNotMatching)
 {
 	GraphicalFunction graphical({}, { Datatype::BOOLEAN, Datatype::DOUBLE });
 
-	Function testFunction({Datatype::BOOLEAN, Datatype::DOUBLE}, { Datatype::BOOLEAN, Datatype::DOUBLE });
+	MockFunction testFunction({Datatype::BOOLEAN, Datatype::DOUBLE}, { Datatype::BOOLEAN, Datatype::DOUBLE });
 	FunctionBlock::Ptr firstBlock = std::make_shared<FunctionBlock>(testFunction);
 	FunctionBlock::Ptr secondBlock = std::make_shared<FunctionBlock>(testFunction);
 	firstBlock->setInputConnections({ Connection(secondBlock, 1), Connection() });
@@ -75,14 +69,14 @@ TEST_F(TestTypeChecker, GraphicalFunctionConnectionNotMatching)
 
 TEST_F(TestTypeChecker, FunctionBlockWithoutConnections)
 {
-	Function function;
+	MockFunction function;
 	FunctionBlock block(function);
 	ASSERT_TRUE(block.accept(m_checker));
 }
 
 TEST_F(TestTypeChecker, FunctionBlockChecksAllConnections)
 {
-	Function testfunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::DOUBLE});
+	MockFunction testfunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::DOUBLE});
 	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(testfunction);
 	block->setInputConnections({ Connection(block, 0), Connection() });
 	ASSERT_FALSE(block->accept(m_checker));

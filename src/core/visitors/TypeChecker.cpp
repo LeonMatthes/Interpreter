@@ -14,12 +14,6 @@ TypeChecker::~TypeChecker()
 
 }
 
-bool TypeChecker::visit(class Function& function)
-{
-	//Functions don't have an implementation
-	return false;
-}
-
 bool TypeChecker::visit(class PrimitiveFunction& primitiveFunction)
 {
 	return false;

@@ -11,7 +11,6 @@ public:
 	Executor();
 	virtual ~Executor();
 
-	virtual std::vector<Value> visit(class Function& function) override;
 	virtual std::vector<Value> visit(class GraphicalFunction& graphicalFunction) override;
 	virtual std::vector<Value> visit(class FunctionBlock& functionBlock) override;
 	virtual std::vector<Value> visit(class Connection& connection) override;

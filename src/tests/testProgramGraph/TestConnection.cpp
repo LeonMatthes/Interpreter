@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <programGraph/Connection.h>
-#include <programGraph/Function.h>
+#include <testProgramGraph/MockFunction.h>
 #include <programGraph/FunctionBlock.h>
 #include <error/Error.h>
 
@@ -12,7 +12,7 @@ TEST(TestConnection, defaultConnectionIsEmpty)
 
 TEST(TestConnection, connectionInitialization)
 {
-	Function function({}, {Datatype::DOUBLE, Datatype::DOUBLE});
+	MockFunction function({}, {Datatype::DOUBLE, Datatype::DOUBLE});
 	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(function);
 
 	size_t connectedOutput = 1;
@@ -31,7 +31,7 @@ TEST(TestConnection, disconnectedConnectionThrowsErrors)
 
 TEST(TestConnection, invalidConnectionCreation)
 {
-	Function function({}, {});
+	MockFunction function({}, {});
 	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(function);
 	size_t connectedOutput = 0;
 	EXPECT_THROW(Connection connection(block, connectedOutput), Error::Ptr);
@@ -39,7 +39,7 @@ TEST(TestConnection, invalidConnectionCreation)
 
 TEST(TestConnection, typeIsCorrect)
 {
-	Function function({}, { Datatype::BOOLEAN, Datatype::DOUBLE});
+	MockFunction function({}, { Datatype::BOOLEAN, Datatype::DOUBLE});
 	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(function);
 	
 	size_t connectedOutput = 0;
