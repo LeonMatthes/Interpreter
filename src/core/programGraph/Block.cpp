@@ -3,8 +3,7 @@
 
 Block::Block(size_t inputCount)
 	: m_inputConnections(inputCount)
-{
-}
+{}
 
 Block::~Block()
 {}

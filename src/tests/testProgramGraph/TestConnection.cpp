@@ -50,3 +50,13 @@ TEST(TestConnection, typeIsCorrect)
 	Connection secondConnection(block, connectedOutput);
 	ASSERT_EQ(secondConnection.connectedType(), Datatype::DOUBLE);
 }
+
+TEST(TestConnection, destructedBlock)
+{
+	MockFunction function({}, { Datatype::DOUBLE });
+	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(function);
+	
+	Connection connection(block, 0);
+	block = nullptr; //destructs block
+	ASSERT_FALSE(connection.isConnected());
+}

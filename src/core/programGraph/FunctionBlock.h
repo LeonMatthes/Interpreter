@@ -11,7 +11,7 @@ class Function;
 class FunctionBlock : public ExpressionBlock
 {
 public:
-	typedef std::shared_ptr<FunctionBlock> Ptr;
+	using Ptr = std::shared_ptr<FunctionBlock>;
 
 	FunctionBlock(Function& function);
 	virtual ~FunctionBlock();
@@ -22,7 +22,6 @@ public:
 	Function& function() const;
 	
 	MAKE_VISITABLE;
-
 protected:
 	Function& m_function;
 private:

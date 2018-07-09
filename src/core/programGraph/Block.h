@@ -7,8 +7,8 @@
 class Block
 {
 public:
-	typedef std::shared_ptr<Block> Ptr;
-	typedef std::weak_ptr<Block> WPtr;
+	using Ptr = std::shared_ptr<Block>;
+	using WPtr = std::weak_ptr<Block>;
 	
 	virtual ~Block();
 
