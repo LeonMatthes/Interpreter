@@ -4,3 +4,4 @@
 ## Prerequisites
 * CMake (v3.1.3 or higher)
 * a C++11 compatible compiler
+    * Note: gcc 4.8.1 is also supported, even though it does not support the \<regex\> C++11 feature
