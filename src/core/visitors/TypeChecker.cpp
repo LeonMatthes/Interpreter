@@ -27,7 +27,7 @@ bool TypeChecker::visit(class ValueBlock& valueBlock)
 
 bool TypeChecker::checkOutputConnections(class GraphicalFunction &graphicalFunction)
 {
-	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.functionBlocks();
+	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.expressionBlocks();
 	if (blocks.empty())
 	{
 		return false;
@@ -56,7 +56,7 @@ bool TypeChecker::visit(class GraphicalFunction& graphicalFunction)
 		return false;
 	}
 
-	for (const ExpressionBlock::Ptr& block : graphicalFunction.functionBlocks())
+	for (const ExpressionBlock::Ptr& block : graphicalFunction.expressionBlocks())
 	{
 		if (!block->accept(*this))
 		{

@@ -26,11 +26,14 @@ bool Connection::isConnected()
 
 Block::Ptr Connection::connectedBlock()
 {
+	//lock before checking for isConnected(), because another thread may otherwise destruct the object
+	//between the check and the lock, making the lock return nullptr, which we definitely don't want
+	Block::Ptr block = m_block.lock();
 	if (!isConnected())
 	{
 		THROW_ERROR(InternalError, "Connection::connectedBlock called, but Connection is not connected")
 	}
-	return m_block.lock();
+	return block;
 }
 
 size_t Connection::connectedOutput()

@@ -37,20 +37,20 @@ TEST_F(TestTypeChecker, GraphicalFunctionOutput)
 	
 	MockFunction testFunction({}, {});
 	FunctionBlock::Ptr block = std::make_shared<FunctionBlock>(testFunction);
-	graphical.setFunctionBlocks({ block });
+	graphical.setExpressionBlocks({ block });
 	ASSERT_FALSE(graphical.accept(m_checker));
 	
 	MockFunction testfunction2({}, { Datatype::BOOLEAN, Datatype::BOOLEAN });
 	block = std::make_shared<FunctionBlock>(testfunction2);
-	graphical.setFunctionBlocks({ block });
+	graphical.setExpressionBlocks({ block });
 	ASSERT_FALSE(graphical.accept(m_checker));
 
 	//the last block is the one being checked for matching Output
 	MockFunction testFunction3({}, { Datatype::BOOLEAN, Datatype::DOUBLE });
 	FunctionBlock::Ptr block2 = std::make_shared<FunctionBlock>(testFunction3);
-	graphical.setFunctionBlocks({ block2, block });
+	graphical.setExpressionBlocks({ block2, block });
 	ASSERT_FALSE(graphical.accept(m_checker));
-	graphical.setFunctionBlocks({ block, block2 });
+	graphical.setExpressionBlocks({ block, block2 });
 	ASSERT_TRUE(graphical.accept(m_checker));
 }
 
@@ -63,7 +63,7 @@ TEST_F(TestTypeChecker, GraphicalFunctionConnectionNotMatching)
 	FunctionBlock::Ptr secondBlock = std::make_shared<FunctionBlock>(testFunction);
 	firstBlock->setInputConnections({ Connection(secondBlock, 1), Connection() });
 
-	graphical.setFunctionBlocks({ secondBlock, firstBlock });
+	graphical.setExpressionBlocks({ secondBlock, firstBlock });
 	ASSERT_FALSE(graphical.accept(m_checker));
 }
 

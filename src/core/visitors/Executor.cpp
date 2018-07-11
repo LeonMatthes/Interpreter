@@ -13,7 +13,7 @@ Executor::~Executor()
 
 std::vector<Value> Executor::visit(class GraphicalFunction& graphicalFunction)
 {
-	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.functionBlocks();
+	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.expressionBlocks();
 	std::vector<Value> returnValues = blocks.at(blocks.size() - 1)->accept(*this);
 	m_callStack.pop();
 	return returnValues;

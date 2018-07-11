@@ -16,8 +16,8 @@ DAGChecker::~DAGChecker()
 
 bool DAGChecker::check(GraphicalFunction& functionGraph)
 {
-	std::vector<ExpressionBlock::Ptr> functionBlocks = functionGraph.functionBlocks();
-	if (functionBlocks.size() == 0)
+	std::vector<ExpressionBlock::Ptr> functionBlocks = functionGraph.expressionBlocks();
+	if (functionBlocks.empty())
 	{
 		return true;
 	}

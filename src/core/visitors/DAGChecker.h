@@ -12,9 +12,10 @@ public:
 
 	bool check(GraphicalFunction& functionGraph);
 
-	bool depthFirstSearch(Block::Ptr block);
 
 protected:
+	bool depthFirstSearch(Block::Ptr block);
+	
 	std::list<Block::Ptr> finished;
 	std::list<Block::Ptr> visited;
 private:

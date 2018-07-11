@@ -28,7 +28,7 @@ TEST_F(TestDAGChecker, selfReference)
 	FunctionBlock::Ptr firstBlock = std::make_shared<FunctionBlock>(testFunction);
 	firstBlock->setInputConnections({ Connection(), Connection(firstBlock, 0) });
 
-	m_graphical.setFunctionBlocks({ firstBlock });
+	m_graphical.setExpressionBlocks({ firstBlock });
 	ASSERT_FALSE(m_checker.check(m_graphical));
 
 	firstBlock->setInputConnections({ Connection(firstBlock, 0), Connection() });
@@ -38,7 +38,7 @@ TEST_F(TestDAGChecker, selfReference)
 	FunctionBlock::Ptr secondBlock = std::make_shared<FunctionBlock>(testFunction);
 	secondBlock->setInputConnections({ Connection(secondBlock, 0), Connection() });
 	firstBlock->setInputConnections({ Connection(secondBlock, 0), Connection() });
-	m_graphical.setFunctionBlocks({ firstBlock, secondBlock });
+	m_graphical.setExpressionBlocks({ firstBlock, secondBlock });
 	ASSERT_FALSE(m_checker.check(m_graphical));
 }
 
@@ -50,7 +50,7 @@ TEST_F(TestDAGChecker, cyclicReference)
 
 	firstBlock->setInputConnections({ Connection(secondBlock, 0), Connection() });
 	secondBlock->setInputConnections({ Connection(), Connection(firstBlock, 1) });
-	m_graphical.setFunctionBlocks({ secondBlock, firstBlock });
+	m_graphical.setExpressionBlocks({ secondBlock, firstBlock });
 	ASSERT_FALSE(m_checker.check(m_graphical));
 
 	//The checker should be able to run twice
@@ -66,7 +66,7 @@ TEST_F(TestDAGChecker, unconnectedCyclicReference)
 	secondBlock->setInputConnections({ Connection(secondBlock, 1), Connection(secondBlock, 0) });
 
 	//cyclic references not connected to last block don't matter
-	m_graphical.setFunctionBlocks({ secondBlock, firstBlock });
+	m_graphical.setExpressionBlocks({ secondBlock, firstBlock });
 	ASSERT_TRUE(m_checker.check(m_graphical));
 }
 
@@ -81,6 +81,6 @@ TEST_F(TestDAGChecker, DAG)
 	firstBlock->setInputConnections({ Connection(secondBlock, 0), Connection(thirdBlock, 0) });
 	secondBlock->setInputConnections({ Connection(thirdBlock, 0), Connection(thirdBlock, 1) });
 
-	m_graphical.setFunctionBlocks({ thirdBlock, secondBlock, firstBlock });
+	m_graphical.setExpressionBlocks({ thirdBlock, secondBlock, firstBlock });
 	ASSERT_TRUE(m_checker.check(m_graphical));
 }
