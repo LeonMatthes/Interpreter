@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <visitors/Executor.h>
+#include <visitors/Evaluator.h>
 #include <testProgramGraph/MockFunction.h>
 #include <programGraph/Value.h>
 #include <programGraph/ValueBlock.h>
@@ -8,16 +8,16 @@
 #include <programGraph/PrimitiveFunction.h>
 #include <error/Error.h>
 
-class TestExecutor : public ::testing::Test
+class TestEvaluator : public ::testing::Test
 {
 public:
-	Executor m_executor;
+	Evaluator m_executor;
 protected:
 private:
 };
 
 
-TEST_F(TestExecutor, ValueBlock)
+TEST_F(TestEvaluator, ValueBlock)
 {
 	Value value(false);
 	std::vector<Value> values({ value });
@@ -25,13 +25,13 @@ TEST_F(TestExecutor, ValueBlock)
 	EXPECT_EQ(values, block.accept(m_executor));
 }
 
-TEST_F(TestExecutor, PrimitiveFunction)
+TEST_F(TestEvaluator, PrimitiveFunction)
 {
 	m_executor.pushParameters({ Value(2.0), Value(1.0) });
 	EXPECT_EQ(Value(1.0), PrimitiveFunction::subtract.accept(m_executor).at(0));
 }
 
-TEST_F(TestExecutor, Connection)
+TEST_F(TestEvaluator, Connection)
 {
 	ValueBlock::Ptr block = std::make_shared<ValueBlock>(Value(false));
 	Connection connection(block, 0);
@@ -42,7 +42,7 @@ TEST_F(TestExecutor, Connection)
 	EXPECT_EQ(Value(true), connection.accept(m_executor).at(0));
 }
 
-TEST_F(TestExecutor, FunctionBlock)
+TEST_F(TestEvaluator, FunctionBlock)
 {
 	FunctionBlock block(PrimitiveFunction::subtract);
 	//Unconnected block uses default for input types
@@ -58,7 +58,7 @@ TEST_F(TestExecutor, FunctionBlock)
 }
 
 
-TEST_F(TestExecutor, GraphicalFunction)
+TEST_F(TestEvaluator, GraphicalFunction)
 {
 	GraphicalFunction graphical({}, {Datatype::DOUBLE});
 	FunctionBlock::Ptr functionBlock = std::make_shared<FunctionBlock>(PrimitiveFunction::subtract);

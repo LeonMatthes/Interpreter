@@ -40,7 +40,7 @@ bool DAGChecker::depthFirstSearch(Block::Ptr block)
 		return false; //Cyclic reference
 	}
 
-	visited.push_back(block);
+	visited.emplace_back(block);
 	for (Connection& connection : block->inputConnections())
 	{
 		if (connection.isConnected() && !depthFirstSearch(connection.connectedBlock()))
@@ -49,7 +49,7 @@ bool DAGChecker::depthFirstSearch(Block::Ptr block)
 		}
 	}
 	visited.remove(block);
-	finished.push_back(block);
+	finished.emplace_back(block);
 	return true;
 }
 

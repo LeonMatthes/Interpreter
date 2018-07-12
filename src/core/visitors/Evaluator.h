@@ -5,11 +5,11 @@
 #include <vector>
 #include <stack>
 
-class Executor : public Visitor<std::vector<Value>>
+class Evaluator : public Visitor<std::vector<Value>>
 {
 public:
-	Executor();
-	virtual ~Executor();
+	Evaluator();
+	virtual ~Evaluator();
 
 	virtual std::vector<Value> visit(class GraphicalFunction& graphicalFunction) override;
 	virtual std::vector<Value> visit(class FunctionBlock& functionBlock) override;
