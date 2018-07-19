@@ -1,11 +1,13 @@
 #include <visitors/Evaluator.h>
+#include <visitors/Executor.h>
 #include <programGraph/ValueBlock.h>
 #include <programGraph/PrimitiveFunction.h>
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/GraphicalFunction.h>
 #include <error/InternalError.h>
 
-Evaluator::Evaluator()
+Evaluator::Evaluator(class Executor& executor)
+	: m_executor(executor)
 {}
 
 Evaluator::~Evaluator()
@@ -59,6 +61,11 @@ std::vector<Value> Evaluator::visit(class PrimitiveFunction& primitiveFunction)
 std::vector<Value> Evaluator::visit(class ValueBlock& valueBlock)
 {
 	return { valueBlock.value() };
+}
+
+std::vector<Value> Evaluator::visit(class ReturnBlock& ReturnBlock)
+{
+	throw std::logic_error("The method or operation is not implemented.");
 }
 
 void Evaluator::pushParameters(std::vector<Value> parameters)

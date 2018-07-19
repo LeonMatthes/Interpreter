@@ -5,6 +5,8 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/DAGChecker.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Evaluator.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Evaluator.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Executor.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Executor.h
 	${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Visitor.h

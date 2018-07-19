@@ -12,7 +12,7 @@ public:
 	virtual std::vector<Datatype> inputTypes() const override;
 	virtual std::vector<Datatype> outputTypes() const override;
 
-	MOCK_VISITABLE;
+	MAKE_VISITABLE;
 
 protected:
 	Function& m_function;

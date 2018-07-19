@@ -13,9 +13,11 @@ public:
 	virtual bool visit(class Connection& connection) override;
 	virtual bool visit(class ValueBlock& valueBlock) override;
 	virtual bool visit(class PrimitiveFunction& primitiveFunction) override;
+	virtual bool visit(class ReturnBlock& returnBlock) override;
 
 	bool checkOutputConnections(class GraphicalFunction &graphicalFunction);
 protected:
 	
+	bool checkInputTypes(class Block& block);
 private:
 };

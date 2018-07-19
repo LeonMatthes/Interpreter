@@ -24,7 +24,6 @@ TEST_F(TestTypeChecker, ConnectionThrowsError)
 }
 
 #include <programGraph/GraphicalFunction.h>
-
 TEST_F(TestTypeChecker, EmptyGraphicalFunction)
 {
 	GraphicalFunction graphical;
@@ -88,8 +87,21 @@ TEST_F(TestTypeChecker, FunctionBlockChecksAllConnections)
 	ASSERT_TRUE(block->accept(m_checker));
 }
 
+
 TEST_F(TestTypeChecker, ValueBlockNeedsNoTypeCheck)
 {
 	ValueBlock block(Value(false));
 	EXPECT_EQ(true, block.accept(m_checker));
+}
+
+#include <programGraph/ReturnBlock.h>
+TEST_F(TestTypeChecker, ReturnBlock)
+{
+	MockFunction testfunction({ Datatype::BOOLEAN, Datatype::DOUBLE }, { Datatype::DOUBLE });
+	ReturnBlock returnBlock(testfunction);
+	ASSERT_TRUE(returnBlock.accept(m_checker));
+
+	ValueBlock::Ptr valueBlock = std::make_shared<ValueBlock>(Value(Datatype::BOOLEAN));
+	returnBlock.setInputConnections({ Connection(valueBlock, 0) });
+	ASSERT_FALSE(returnBlock.accept(m_checker));
 }

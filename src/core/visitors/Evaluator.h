@@ -8,7 +8,7 @@
 class Evaluator : public Visitor<std::vector<Value>>
 {
 public:
-	Evaluator();
+	Evaluator(class Executor& executor);
 	virtual ~Evaluator();
 
 	virtual std::vector<Value> visit(class GraphicalFunction& graphicalFunction) override;
@@ -16,10 +16,12 @@ public:
 	virtual std::vector<Value> visit(class Connection& connection) override;
 	virtual std::vector<Value> visit(class ValueBlock& valueBlock) override;
 	virtual std::vector<Value> visit(class PrimitiveFunction& primitiveFunction) override;
+	virtual std::vector<Value> visit(class ReturnBlock& ReturnBlock) override;
 
 	void pushParameters(std::vector<Value> parameters);
 protected:
 	std::stack<std::vector<Value>> m_callStack;
 
+	class Executor& m_executor;
 private:
 };

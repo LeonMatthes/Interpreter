@@ -3,6 +3,7 @@
 #include <vector>
 #include <programGraph/GraphicalFunction.h>
 #include <programGraph/FunctionBlock.h>
+#include <programGraph/ReturnBlock.h>
 
 TypeChecker::TypeChecker()
 {
@@ -14,6 +15,19 @@ TypeChecker::~TypeChecker()
 
 }
 
+bool TypeChecker::checkInputTypes(class Block& block)
+{
+	for (size_t i = 0; i < block.inputConnections().size(); i++)
+	{
+		Connection connection = block.inputConnections().at(i);
+		if (connection.isConnected() && connection.connectedType() != block.inputTypes().at(i))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 bool TypeChecker::visit(class PrimitiveFunction& primitiveFunction)
 {
 	return false;
@@ -23,6 +37,11 @@ bool TypeChecker::visit(class ValueBlock& valueBlock)
 {
 	//ValueBlocks are always type safe as they don't depend on anything
 	return true;
+}
+
+bool TypeChecker::visit(class ReturnBlock& returnBlock)
+{
+	return checkInputTypes(returnBlock);
 }
 
 bool TypeChecker::checkOutputConnections(class GraphicalFunction &graphicalFunction)
@@ -69,15 +88,7 @@ bool TypeChecker::visit(class GraphicalFunction& graphicalFunction)
 
 bool TypeChecker::visit(class FunctionBlock& functionBlock)
 {
-	for (size_t i = 0; i < functionBlock.inputConnections().size(); i++)
-	{
-		Connection connection = functionBlock.inputConnections().at(i);
-		if (connection.isConnected() && connection.connectedType() != functionBlock.inputTypes().at(i))
-		{
-			return false;
-		}
-	}
-	return true;
+	return checkInputTypes(functionBlock);
 }
 
 bool TypeChecker::visit(class Connection& connection)
