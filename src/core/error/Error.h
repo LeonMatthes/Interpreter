@@ -7,7 +7,7 @@
 class Error
 {
 public:
-	typedef std::shared_ptr<Error> Ptr;
+	using Ptr = std::shared_ptr<Error>;
 
 	Error(std::string message);
 	virtual ~Error() = default;

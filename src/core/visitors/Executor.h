@@ -20,9 +20,11 @@ public:
 	virtual void visit(class ValueBlock& valueBlock) override;
 	virtual void visit(class PrimitiveFunction& primitiveFunction) override;
 	virtual void visit(class ReturnBlock& returnBlock) override;
-
-protected:
 	
+	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
+protected:
 	Evaluator m_evaluator;
+
+	void throwExpressionError();
 private:
 };

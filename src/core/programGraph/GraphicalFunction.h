@@ -9,6 +9,7 @@ class GraphicalFunction : public Function
 {
 public:
 	GraphicalFunction(std::vector<Datatype> inputs, std::vector<Datatype> outputs);
+	GraphicalFunction(GraphicalFunction&& other); //Move needed for auto
 	GraphicalFunction(const GraphicalFunction&) = delete;
 	GraphicalFunction();
 	virtual ~GraphicalFunction();
