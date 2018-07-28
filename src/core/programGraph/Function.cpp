@@ -11,12 +11,12 @@ Function::Function()
 Function::~Function()
 {}
 
-std::vector<Datatype> Function::outputs() const
+const std::vector<Datatype>& Function::outputs() const
 {
 	return m_outputs;
 }
 
-std::vector<Datatype> Function::inputs() const
+const std::vector<Datatype>& Function::inputs() const
 {
 	return m_inputs;
 }

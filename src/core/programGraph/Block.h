@@ -16,11 +16,12 @@ public:
 	virtual std::vector<Datatype> outputTypes() const = 0;
 	
 	std::vector<Connection> inputConnections() const;
-	void setInputConnections(std::vector<Connection> val);
+	virtual void setInputConnections(std::vector<Connection> val);
 
 	MAKE_VISITABLE_VIRTUAL;
 	
 	size_t inputCount();
+	size_t outputCount();
 protected:
 	Block() = delete;
 	Block(size_t inputCount);

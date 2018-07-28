@@ -68,6 +68,11 @@ std::vector<Value> Evaluator::visit(class ReturnBlock& ReturnBlock)
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
+std::vector<Value> Evaluator::visit(class ExpressionStatement& expressionStatement)
+{
+	throw std::logic_error("The method or operation is not implemented.");
+}
+
 void Evaluator::pushParameters(std::vector<Value> parameters)
 {
 	m_callStack.push(parameters);

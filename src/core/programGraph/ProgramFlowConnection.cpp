@@ -19,7 +19,7 @@ bool ProgramFlowConnection::isConnected() const
 	return !m_statement.expired();
 }
 
-StatementBlock::Ptr ProgramFlowConnection::connectedStatement()
+StatementBlock::Ptr ProgramFlowConnection::connectedStatement() const
 {
 	//lock before checking for isConnected(), because another thread may otherwise destruct the object
 	//between the check and the lock, making the lock return nullptr, which we definitely don't want
@@ -29,5 +29,10 @@ StatementBlock::Ptr ProgramFlowConnection::connectedStatement()
 		THROW_ERROR(InternalError, "Called ProgramFlowConnection::connectedStatement, but it is not connected!");
 	}
 	return statement;
+}
+
+bool ProgramFlowConnection::operator==(const ProgramFlowConnection& other) const
+{
+	return m_statement.lock() == other.m_statement.lock();
 }
 

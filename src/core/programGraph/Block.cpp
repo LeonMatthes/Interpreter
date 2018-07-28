@@ -13,6 +13,10 @@ size_t Block::inputCount()
 	return inputTypes().size();
 }
 
+size_t Block::outputCount()
+{
+	return outputTypes().size();
+}
 
 std::vector<Connection> Block::inputConnections() const
 {

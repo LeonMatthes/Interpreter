@@ -44,6 +44,12 @@ bool TypeChecker::visit(class ReturnBlock& returnBlock)
 	return checkInputTypes(returnBlock);
 }
 
+#include <programGraph/ExpressionStatement.h>
+bool TypeChecker::visit(class ExpressionStatement& expressionStatement)
+{
+	return checkInputTypes(expressionStatement);
+}
+
 bool TypeChecker::checkOutputConnections(class GraphicalFunction &graphicalFunction)
 {
 	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.expressionBlocks();

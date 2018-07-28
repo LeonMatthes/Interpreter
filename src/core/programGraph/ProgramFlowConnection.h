@@ -10,7 +10,9 @@ public:
 	virtual ~ProgramFlowConnection();
 
 	bool isConnected() const;
-	std::shared_ptr<class StatementBlock> connectedStatement();
+	std::shared_ptr<class StatementBlock> connectedStatement() const;
+
+	bool operator==(const ProgramFlowConnection& other) const;
 
 protected:
 	std::weak_ptr<class StatementBlock> m_statement;

@@ -9,6 +9,8 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/Datatype.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ExpressionBlock.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ExpressionBlock.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ExpressionStatement.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ExpressionStatement.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Function.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Function.h
 	${CMAKE_CURRENT_SOURCE_DIR}/FunctionBlock.cpp

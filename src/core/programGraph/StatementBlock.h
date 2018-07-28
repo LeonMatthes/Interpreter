@@ -12,6 +12,8 @@ public:
 	size_t flowConnectionsCount();
 
 	const std::vector<ProgramFlowConnection>& flowConnections();
+	void setFlowConnections(const std::vector<ProgramFlowConnection>& connections);
+
 protected:
 	StatementBlock(size_t inputCount, size_t flowConnectionsCount = 1);
 

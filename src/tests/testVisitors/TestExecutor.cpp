@@ -3,6 +3,7 @@
 #include <testProgramGraph/MockFunction.h>
 #include <programGraph/ReturnBlock.h>
 #include <programGraph/ValueBlock.h>
+#include <error/InternalError.h>
 
 
 class TestExecutor : public ::testing::Test
@@ -99,7 +100,31 @@ TEST_F(TestExecutor, SimpleGraphicalFunctionWithReturnTypes)
 {
 	auto returnType = Datatype::BOOLEAN;
 	auto graphicalFunction = GraphicalFunction({}, { returnType });
-	graphicalFunction.setStatementBlocks({ std::make_shared<ReturnBlock>(graphicalFunction) });
+	auto returnStatement = std::make_shared<ReturnBlock>(graphicalFunction);
+	graphicalFunction.setStatementBlocks({ returnStatement });
 
-	//ASSERT_EQ(std::vector<Value>({ returnType }), m_executor.evaluate(graphicalFunction));
+	ASSERT_EQ(std::vector<Value>({ returnType }), m_executor.evaluate(graphicalFunction));
+
+	auto value = Value(2.0);
+	auto valueBlock = std::make_shared<ValueBlock>(value);
+	graphicalFunction.setExpressionBlocks({ valueBlock });
+	returnStatement->setInputConnections({ Connection(valueBlock, 0) });
+	ASSERT_EQ(value, m_executor.evaluate(graphicalFunction).at(0));
+}
+
+#include <programGraph/ExpressionStatement.h>
+TEST_F(TestExecutor, MultipleStatements)
+{
+	auto returnType = Datatype::DOUBLE;
+	auto graphical = GraphicalFunction({}, { returnType });
+	auto expressionBlock = std::unique_ptr<ExpressionBlock>(new ValueBlock(Value(0.0)));
+	auto statement = std::make_shared<ExpressionStatement>(std::move(expressionBlock));
+	graphical.setStatementBlocks({ statement });
+
+	EXPECT_THROW(m_executor.evaluate(graphical), Error::Ptr);
+
+	auto returnBlock = std::make_shared<ReturnBlock>(graphical);
+	statement->setFlowConnections({ProgramFlowConnection(returnBlock)});
+	graphical.setStatementBlocks({ statement, returnBlock });
+	ASSERT_EQ(std::vector<Value>({ returnType }), m_executor.evaluate(graphical));
 }

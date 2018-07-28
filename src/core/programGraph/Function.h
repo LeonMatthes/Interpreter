@@ -11,8 +11,8 @@ public:
 	Function(std::vector<Datatype> inputs, std::vector<Datatype> outputs);
 	virtual ~Function();
 
-	std::vector<Datatype> outputs() const;
-	std::vector<Datatype> inputs() const;
+	const std::vector<Datatype>& outputs() const;
+	const std::vector<Datatype>& inputs() const;
 
 	MAKE_VISITABLE_VIRTUAL;
 

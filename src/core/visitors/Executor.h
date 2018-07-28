@@ -20,6 +20,7 @@ public:
 	virtual void visit(class ValueBlock& valueBlock) override;
 	virtual void visit(class PrimitiveFunction& primitiveFunction) override;
 	virtual void visit(class ReturnBlock& returnBlock) override;
+	virtual void visit(class ExpressionStatement& expressionStatement) override;
 	
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
 protected:

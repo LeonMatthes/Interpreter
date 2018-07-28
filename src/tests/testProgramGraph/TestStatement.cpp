@@ -59,10 +59,21 @@ TEST(TestStatementBlock, flowConnections)
 	EXPECT_EQ(0, statementBlock.flowConnections().size());
 }
 
+#include <programGraph/ProgramFlowConnection.h>
+TEST(TestStatementBlock, setFlowConnections)
+{
+	auto statementBlock = MockStatementBlock(0, 1);
+	EXPECT_THROW(statementBlock.setFlowConnections({}), Error::Ptr);
+	
+	auto secondStatement = std::make_shared<MockStatementBlock>(0);
+	auto connections = std::vector<ProgramFlowConnection>({ ProgramFlowConnection(secondStatement) });
+	statementBlock.setFlowConnections(connections);
+	EXPECT_EQ(connections, statementBlock.flowConnections());
+}
+
 //////////////////////////////////////////////////////////////////////////
 //						Test ProgramFlowConnection
 //////////////////////////////////////////////////////////////////////////
-#include <programGraph/ProgramFlowConnection.h>
 
 TEST(TestProgramFlowConnection, isConnected)
 {

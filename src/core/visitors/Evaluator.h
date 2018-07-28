@@ -17,8 +17,11 @@ public:
 	virtual std::vector<Value> visit(class ValueBlock& valueBlock) override;
 	virtual std::vector<Value> visit(class PrimitiveFunction& primitiveFunction) override;
 	virtual std::vector<Value> visit(class ReturnBlock& ReturnBlock) override;
+	virtual std::vector<Value> visit(class ExpressionStatement& expressionStatement) override;
 
 	void pushParameters(std::vector<Value> parameters);
+
+
 protected:
 	std::stack<std::vector<Value>> m_callStack;
 
