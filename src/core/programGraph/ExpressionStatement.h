@@ -14,9 +14,11 @@ public:
 
 	virtual void setInputConnections(std::vector<Connection> val) override;
 
+	class ExpressionBlock& expression();
+
 	MAKE_VISITABLE;
 protected:
 	
-	std::unique_ptr<ExpressionBlock> m_expression;
+	std::unique_ptr<class ExpressionBlock> m_expression;
 private:
 };

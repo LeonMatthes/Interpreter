@@ -18,11 +18,16 @@ std::vector<Datatype> ExpressionStatement::inputTypes() const
 
 std::vector<Datatype> ExpressionStatement::outputTypes() const
 {
-	return m_expression->inputTypes();
+	return m_expression->outputTypes();
 }
 
 void ExpressionStatement::setInputConnections(std::vector<Connection> val)
 {
 	StatementBlock::setInputConnections(val);
 	m_expression->setInputConnections(val);
+}
+
+ExpressionBlock& ExpressionStatement::expression()
+{
+	return *m_expression;
 }

@@ -2,6 +2,9 @@
 
 #include <visitors/Visitor.h>
 #include <visitors/Evaluator.h>
+#include <vector>
+#include <programGraph/Value.h>
+#include <unordered_map>
 
 struct Return
 {
@@ -22,9 +25,11 @@ public:
 	virtual void visit(class ReturnBlock& returnBlock) override;
 	virtual void visit(class ExpressionStatement& expressionStatement) override;
 	
+	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
 protected:
 	Evaluator m_evaluator;
+	std::unordered_map<class StatementBlock*, std::vector<Value>> m_executedStatements;
 
 	void throwExpressionError();
 private:

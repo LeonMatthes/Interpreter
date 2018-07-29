@@ -4,6 +4,8 @@
 #include <programGraph/ReturnBlock.h>
 #include <programGraph/ValueBlock.h>
 #include <error/InternalError.h>
+#include <error/RuntimeError.h>
+#include <testUtility/CustomAssert.h>
 
 
 class TestExecutor : public ::testing::Test
@@ -70,16 +72,16 @@ TEST_F(TestExecutor, ExpressionBlocksNotCorrect)
 {
 	auto emptyFunction = MockFunction({}, {});
 	auto functionBlock = FunctionBlock(emptyFunction);
-	ASSERT_THROW(functionBlock.accept(m_executor), Error::Ptr);
+	ASSERT_THROW_INTERPRETER(functionBlock.accept(m_executor), InternalError);
 
 	auto primitive = PrimitiveFunction::add;
-	ASSERT_THROW(primitive.accept(m_executor), Error::Ptr);
+	ASSERT_THROW_INTERPRETER(primitive.accept(m_executor), InternalError);
 
 	auto connection = Connection();
-	ASSERT_THROW(connection.accept(m_executor), Error::Ptr);
+	ASSERT_THROW_INTERPRETER(connection.accept(m_executor), InternalError);
 
 	auto valueBlock = ValueBlock(false);
-	ASSERT_THROW(valueBlock.accept(m_executor), Error::Ptr);
+	ASSERT_THROW_INTERPRETER(valueBlock.accept(m_executor), InternalError);
 }
 
 #include <programGraph/GraphicalFunction.h>
@@ -93,7 +95,7 @@ TEST_F(TestExecutor, EmptyGraphicalFunction)
 TEST_F(TestExecutor, EmptyGraphicalFunctionWithReturnTypes)
 {
 	auto graphicalFunction = GraphicalFunction({}, { Datatype::BOOLEAN });
-	ASSERT_THROW(m_executor.evaluate(graphicalFunction), Error::Ptr);
+	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphicalFunction), RuntimeError);
 }
 
 TEST_F(TestExecutor, SimpleGraphicalFunctionWithReturnTypes)
@@ -121,7 +123,7 @@ TEST_F(TestExecutor, MultipleStatements)
 	auto statement = std::make_shared<ExpressionStatement>(std::move(expressionBlock));
 	graphical.setStatementBlocks({ statement });
 
-	EXPECT_THROW(m_executor.evaluate(graphical), Error::Ptr);
+	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical), RuntimeError);
 
 	auto returnBlock = std::make_shared<ReturnBlock>(graphical);
 	statement->setFlowConnections({ProgramFlowConnection(returnBlock)});
@@ -131,7 +133,7 @@ TEST_F(TestExecutor, MultipleStatements)
 
 TEST_F(TestExecutor, MultipleConnectedStatements)
 {
-	/*auto returnType = Datatype::DOUBLE;
+	auto returnType = Datatype::DOUBLE;
 	auto graphical = GraphicalFunction({}, { returnType });
 	auto value = Value(20.0);
 	auto expressionBlock = std::unique_ptr<ExpressionBlock>(new ValueBlock(value));
@@ -142,5 +144,21 @@ TEST_F(TestExecutor, MultipleConnectedStatements)
 	returnBlock->setInputConnections({ Connection(expressionStatement, 0) });
 	graphical.setStatementBlocks({ expressionStatement, returnBlock });
 
-	ASSERT_EQ(std::vector<Value>({ value }), m_executor.evaluate(graphical));*/
+	ASSERT_EQ(std::vector<Value>({ value }), m_executor.evaluate(graphical));
 }
+
+/*
+TEST_F(TestExecutor, ForwardDataConnection)
+{
+	auto functionBlock = std::unique_ptr<ExpressionBlock>(new FunctionBlock(PrimitiveFunction::add));
+	auto firstStatement = std::make_shared<ExpressionStatement>(std::move(functionBlock));
+	
+	auto valueBlock = std::unique_ptr<ExpressionBlock>(new ValueBlock(2.0));
+	auto secondStatement = std::make_shared<ExpressionStatement>(std::move(valueBlock));
+	
+	firstStatement->setInputConnections({ Connection(secondStatement, 0), Connection()});
+	auto graphical = GraphicalFunction();
+	graphical.setStatementBlocks({ firstStatement, secondStatement });
+
+	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical), RuntimeError);
+}*/

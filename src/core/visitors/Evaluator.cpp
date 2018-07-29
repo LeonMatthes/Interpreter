@@ -4,6 +4,7 @@
 #include <programGraph/PrimitiveFunction.h>
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/GraphicalFunction.h>
+#include <programGraph/ExpressionStatement.h>
 #include <error/InternalError.h>
 
 Evaluator::Evaluator(class Executor& executor)
@@ -70,7 +71,7 @@ std::vector<Value> Evaluator::visit(class ReturnBlock& ReturnBlock)
 
 std::vector<Value> Evaluator::visit(class ExpressionStatement& expressionStatement)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	return m_executor.evaluate(expressionStatement);
 }
 
 void Evaluator::pushParameters(std::vector<Value> parameters)

@@ -3,6 +3,8 @@
 #include <error/InternalError.h>
 #include <programGraph/GraphicalFunction.h>
 
+#include <programGraph/ExpressionStatement.h>
+#include <error/RuntimeError.h>
 Executor::Executor()
 	: m_evaluator(*this)
 {}
@@ -60,9 +62,9 @@ void Executor::visit(class ReturnBlock& returnBlock)
 	throw returnValues;
 }
 
-#include <programGraph/ExpressionStatement.h>
 void Executor::visit(class ExpressionStatement& expressionStatement)
 {
+	m_executedStatements[&expressionStatement] = expressionStatement.expression().accept(m_evaluator);
 	const auto& connectionToNext = expressionStatement.flowConnections().front();
 	if (connectionToNext.isConnected())
 	{
@@ -71,7 +73,6 @@ void Executor::visit(class ExpressionStatement& expressionStatement)
 }
 
 
-#include <error/RuntimeError.h>
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction)
 {
 	try
@@ -89,6 +90,11 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 	}
 
 	return {};
+}
+
+std::vector<Value> Executor::evaluate(class StatementBlock& statement)
+{
+	return m_executedStatements.at(&statement);
 }
 
 void Executor::throwExpressionError()
