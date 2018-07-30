@@ -16,10 +16,7 @@ Evaluator::~Evaluator()
 
 std::vector<Value> Evaluator::visit(class GraphicalFunction& graphicalFunction)
 {
-	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.expressionBlocks();
-	std::vector<Value> returnValues = blocks.at(blocks.size() - 1)->accept(*this);
-	m_callStack.pop();
-	return returnValues;
+	return m_executor.evaluate(graphicalFunction);
 }
 
 std::vector<Value> Evaluator::visit(class FunctionBlock& functionBlock)
@@ -32,18 +29,19 @@ std::vector<Value> Evaluator::visit(class FunctionBlock& functionBlock)
 		Connection& connection = connections.at(i);
 		if (connection.isConnected())
 		{
-			inputs.push_back(connection.accept(*this).at(0));
+			inputs.emplace_back(connection.accept(*this).front());
 		}
 		else
 		{
 			Value defaultValue(functionBlock.inputTypes().at(i));
-			inputs.push_back(defaultValue);
+			inputs.emplace_back(defaultValue);
 		}
 	}
 
 	m_callStack.push(inputs);
-
-	return functionBlock.function().accept(*this);
+	auto returnValues = functionBlock.function().accept(*this);
+	m_callStack.pop();
+	return returnValues;
 }
 
 std::vector<Value> Evaluator::visit(class Connection& connection)
@@ -54,9 +52,7 @@ std::vector<Value> Evaluator::visit(class Connection& connection)
 
 std::vector<Value> Evaluator::visit(class PrimitiveFunction& primitiveFunction)
 {
-	std::vector<Value> results = primitiveFunction(m_callStack.top());
-	m_callStack.pop();
-	return results;
+	return primitiveFunction(m_callStack.top());
 }
 
 std::vector<Value> Evaluator::visit(class ValueBlock& valueBlock)

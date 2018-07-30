@@ -94,7 +94,12 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 
 std::vector<Value> Executor::evaluate(class StatementBlock& statement)
 {
-	return m_executedStatements.at(&statement);
+	auto savedState = m_executedStatements.find(&statement);
+	if (savedState == m_executedStatements.end())
+	{
+		THROW_ERROR(RuntimeError, "Forward data connection detected!");
+	}
+	return savedState->second;
 }
 
 void Executor::throwExpressionError()

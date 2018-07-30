@@ -14,10 +14,10 @@ public:
 	GraphicalFunction();
 	virtual ~GraphicalFunction();
 	
-	std::vector<ExpressionBlock::Ptr> expressionBlocks();
+	const std::vector<ExpressionBlock::Ptr>& expressionBlocks() const;
 	void setExpressionBlocks(std::vector<ExpressionBlock::Ptr> blocks);
 
-	std::vector<StatementBlock::Ptr> statementBlocks();
+	const std::vector<StatementBlock::Ptr>& statementBlocks() const;
 	void setStatementBlocks(std::vector<StatementBlock::Ptr> blocks);
 
 	MAKE_VISITABLE;

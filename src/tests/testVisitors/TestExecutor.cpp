@@ -147,7 +147,6 @@ TEST_F(TestExecutor, MultipleConnectedStatements)
 	ASSERT_EQ(std::vector<Value>({ value }), m_executor.evaluate(graphical));
 }
 
-/*
 TEST_F(TestExecutor, ForwardDataConnection)
 {
 	auto functionBlock = std::unique_ptr<ExpressionBlock>(new FunctionBlock(PrimitiveFunction::add));
@@ -160,5 +159,28 @@ TEST_F(TestExecutor, ForwardDataConnection)
 	auto graphical = GraphicalFunction();
 	graphical.setStatementBlocks({ firstStatement, secondStatement });
 
+	//Throw error when forward-connecting data, as its pretty much always a bug!
 	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical), RuntimeError);
-}*/
+}
+
+TEST_F(TestExecutor, GraphicalFunctionInExpressionStatement)
+{
+	auto insideGraphical = GraphicalFunction({}, { Datatype::DOUBLE, Datatype::DOUBLE });
+	
+	auto firstValue = std::make_shared<ValueBlock>(Value(2.0));
+	auto secondValue = std::make_shared<ValueBlock>(Value(1.0));
+	insideGraphical.setExpressionBlocks({ firstValue, secondValue});
+
+	auto returnBlock = std::make_shared<ReturnBlock>(insideGraphical);
+	returnBlock->setInputConnections({ Connection(firstValue, 0), Connection(secondValue, 0) });
+	insideGraphical.setStatementBlocks({ returnBlock });
+
+	auto outsideGraphical = GraphicalFunction({}, { Datatype::DOUBLE, Datatype::DOUBLE });
+	auto statement = ExpressionStatement::make_shared<FunctionBlock>(insideGraphical);
+	auto outsideReturn = std::make_shared<ReturnBlock>(outsideGraphical);
+	outsideReturn->setInputConnections({ Connection(statement, 0), Connection(statement, 1) });
+	statement->setFlowConnections({ ProgramFlowConnection(outsideReturn) });
+	outsideGraphical.setStatementBlocks({ statement, outsideReturn });
+
+	ASSERT_EQ(std::vector<Value>({ 2.0, 1.0 }), m_executor.evaluate(outsideGraphical));
+}

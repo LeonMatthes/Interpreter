@@ -17,7 +17,7 @@ GraphicalFunction::GraphicalFunction(GraphicalFunction&& other)
 GraphicalFunction::~GraphicalFunction()
 {}
 
-std::vector<ExpressionBlock::Ptr> GraphicalFunction::expressionBlocks()
+const std::vector<ExpressionBlock::Ptr>& GraphicalFunction::expressionBlocks() const
 {
 	return m_expressionBlocks;
 }
@@ -27,7 +27,7 @@ void GraphicalFunction::setExpressionBlocks(std::vector<ExpressionBlock::Ptr> bl
 	m_expressionBlocks = blocks;
 }
 
-std::vector<StatementBlock::Ptr> GraphicalFunction::statementBlocks()
+const std::vector<StatementBlock::Ptr>& GraphicalFunction::statementBlocks() const
 {
 	return m_statementBlocks;
 }

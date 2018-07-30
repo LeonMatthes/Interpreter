@@ -16,16 +16,23 @@ DAGChecker::~DAGChecker()
 
 bool DAGChecker::check(GraphicalFunction& functionGraph)
 {
-	std::vector<ExpressionBlock::Ptr> functionBlocks = functionGraph.expressionBlocks();
-	if (functionBlocks.empty())
+	const auto& blocks = functionGraph.statementBlocks();
+	if (blocks.empty())
 	{
 		return true;
 	}
-	bool result = depthFirstSearch(functionBlocks.at(functionBlocks.size() - 1));
-	//cleanup to avoid holding pointers unnecessarily
-	finished.clear(); 
-	visited.clear();
-	return result;
+	 
+	for (const auto& block : blocks)
+	{
+		if (!depthFirstSearch(block))
+		{
+			cleanUp();
+			return false;
+		}
+	}
+
+	cleanUp();
+	return true;
 }
 
 bool DAGChecker::depthFirstSearch(Block::Ptr block)
@@ -51,5 +58,12 @@ bool DAGChecker::depthFirstSearch(Block::Ptr block)
 	visited.remove(block);
 	finished.emplace_back(block);
 	return true;
+}
+
+void DAGChecker::cleanUp()
+{
+	//cleanup to avoid holding pointers unnecessarily
+	finished.clear();
+	visited.clear();
 }
 

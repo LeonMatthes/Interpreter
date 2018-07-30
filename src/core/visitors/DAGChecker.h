@@ -15,6 +15,7 @@ public:
 
 protected:
 	bool depthFirstSearch(Block::Ptr block);
+	void cleanUp();
 	
 	std::list<Block::Ptr> finished;
 	std::list<Block::Ptr> visited;

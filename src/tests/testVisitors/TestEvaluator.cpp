@@ -93,25 +93,3 @@ TEST_F(TestEvaluator, FunctionBlock)
 	block.setInputConnections({ Connection(firstValue, 0), Connection() });
 	EXPECT_EQ(Value(2.0), block.accept(m_evaluator).at(0));
 }
-
-
-TEST_F(TestEvaluator, GraphicalFunction)
-{
-	GraphicalFunction graphical({}, {Datatype::DOUBLE});
-	FunctionBlock::Ptr functionBlock = std::make_shared<FunctionBlock>(PrimitiveFunction::subtract);
-	
-	ValueBlock::Ptr firstValue = std::make_shared<ValueBlock>(Value(2.0));
-	ValueBlock::Ptr secondValue = std::make_shared<ValueBlock>(Value(1.0));
-	functionBlock->setInputConnections({ Connection(firstValue, 0), Connection(secondValue, 0) });
-	
-	graphical.setExpressionBlocks({ firstValue, secondValue, functionBlock });
-	m_evaluator.pushParameters({});
-	EXPECT_EQ(Value(1.0), graphical.accept(m_evaluator).at(0));
-
-	functionBlock = std::make_shared<FunctionBlock>(PrimitiveFunction::add);
-	functionBlock->setInputConnections({ Connection(firstValue, 0), Connection(secondValue, 0) });
-
-	graphical.setExpressionBlocks({ firstValue, secondValue, functionBlock });
-	m_evaluator.pushParameters({});
-	EXPECT_EQ(Value(3.0), graphical.accept(m_evaluator).at(0));
-}

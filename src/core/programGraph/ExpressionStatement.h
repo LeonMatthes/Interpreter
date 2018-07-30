@@ -5,6 +5,13 @@
 class ExpressionStatement : public StatementBlock
 {
 public:
+	template<class T, class... Args>
+	static std::shared_ptr<ExpressionStatement> make_shared(Args&&... args)
+	{
+		auto expression = std::unique_ptr<ExpressionBlock>(new T(std::forward<Args>(args)... /*copied from make_shared in <memory>*/));
+		return std::make_shared<ExpressionStatement>(std::move(expression));
+	}
+
 	ExpressionStatement(std::unique_ptr<class ExpressionBlock> expression);
 	ExpressionStatement(const ExpressionStatement&) = delete;
 	virtual ~ExpressionStatement();
