@@ -1,4 +1,6 @@
 #include <programGraph/GraphicalFunction.h>
+#include <error/InternalError.h>
+#include <utility/Literals.h>
 
 GraphicalFunction::GraphicalFunction()
 {}
@@ -35,4 +37,23 @@ const std::vector<StatementBlock::Ptr>& GraphicalFunction::statementBlocks() con
 void GraphicalFunction::setStatementBlocks(std::vector<StatementBlock::Ptr> blocks)
 {
 	m_statementBlocks = blocks;
+}
+
+void GraphicalFunction::addVariable(VariableIdentifier identifier, Datatype type)
+{
+	m_variables[identifier] = type;
+}
+
+Datatype GraphicalFunction::variableType(VariableIdentifier identifier) const
+{
+	if (!hasVariable(identifier))
+	{
+		THROW_ERROR(InternalError, "Tried to access variable type of variable: "_s + identifier + ", which does not exist!");
+	}
+	return m_variables.at(identifier);
+}
+
+bool GraphicalFunction::hasVariable(VariableIdentifier identifier) const
+{
+	return m_variables.find(identifier) != m_variables.end();
 }

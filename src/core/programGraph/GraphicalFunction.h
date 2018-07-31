@@ -4,6 +4,10 @@
 #include <programGraph/StatementBlock.h>
 #include <visitors/Visitor.h>
 #include <vector>
+#include <string>
+#include <unordered_map>
+
+using VariableIdentifier = std::string;
 
 class GraphicalFunction : public Function
 {
@@ -20,10 +24,17 @@ public:
 	const std::vector<StatementBlock::Ptr>& statementBlocks() const;
 	void setStatementBlocks(std::vector<StatementBlock::Ptr> blocks);
 
+	void addVariable(VariableIdentifier identifier, Datatype type);
+	Datatype variableType(VariableIdentifier identifier) const;
+	bool hasVariable(VariableIdentifier identifier) const;
+
+
 	MAKE_VISITABLE;
 
 protected:
 	std::vector<ExpressionBlock::Ptr> m_expressionBlocks;
 	std::vector<StatementBlock::Ptr> m_statementBlocks;
+
+	std::unordered_map<VariableIdentifier, Datatype> m_variables;
 private:
 };

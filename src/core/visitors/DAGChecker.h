@@ -12,7 +12,6 @@ public:
 
 	bool check(GraphicalFunction& functionGraph);
 
-
 protected:
 	bool depthFirstSearch(Block::Ptr block);
 	void cleanUp();

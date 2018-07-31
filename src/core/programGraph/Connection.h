@@ -14,8 +14,8 @@ public:
 	Connection(std::shared_ptr<Block> block, size_t output);
 	virtual ~Connection();;
 
-	bool isConnected();
-	std::shared_ptr<Block> connectedBlock();
+	bool isConnected() const;
+	std::shared_ptr<Block> connectedBlock() const;
 	size_t connectedOutput();
 	Datatype connectedType();
 

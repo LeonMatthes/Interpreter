@@ -2,6 +2,8 @@
 #include <testProgramGraph/MockFunction.h>
 #include <programGraph/GraphicalFunction.h>
 #include <programGraph/FunctionBlock.h>
+#include <testUtility/CustomAssert.h>
+#include <error/InternalError.h>
 #include <memory>
 
 TEST(TestFunction, createEmptyFunction)
@@ -27,4 +29,16 @@ TEST(TestGraphicalFunction, createFunctionWithIO)
 	GraphicalFunction function(in, out);
 	EXPECT_EQ(function.inputs(), in);
 	EXPECT_EQ(function.outputs(), out);
+}
+
+TEST(TestGraphicalFunction, Variables)
+{
+	auto graphical = GraphicalFunction({}, {});
+	auto variableName = "MyVariable";
+	auto type = Datatype::DOUBLE;
+
+	ASSERT_THROW_INTERPRETER(graphical.variableType(variableName), InternalError);
+	graphical.addVariable(variableName, type);
+	ASSERT_TRUE(graphical.hasVariable(variableName));
+	ASSERT_EQ(graphical.variableType(variableName), type);
 }

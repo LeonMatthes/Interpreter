@@ -48,7 +48,7 @@ bool DAGChecker::depthFirstSearch(Block::Ptr block)
 	}
 
 	visited.emplace_back(block);
-	for (Connection& connection : block->inputConnections())
+	for (const auto& connection : block->inputConnections())
 	{
 		if (connection.isConnected() && !depthFirstSearch(connection.connectedBlock()))
 		{

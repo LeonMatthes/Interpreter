@@ -19,12 +19,12 @@ Connection::Connection()
 Connection::~Connection()
 {}
 
-bool Connection::isConnected()
+bool Connection::isConnected() const
 {
 	return !m_block.expired();
 }
 
-Block::Ptr Connection::connectedBlock()
+std::shared_ptr<Block> Connection::connectedBlock() const
 {
 	//lock before checking for isConnected(), because another thread may otherwise destruct the object
 	//between the check and the lock, making the lock return nullptr, which we definitely don't want
