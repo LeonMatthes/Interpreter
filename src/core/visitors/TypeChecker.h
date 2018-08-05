@@ -17,9 +17,6 @@ public:
 	virtual bool visit(class ExpressionStatement& expressionStatement) override;
 	virtual bool visit(class VariableReadBlock& variableAccessBlock) override;
 
-	bool checkOutputConnections(class GraphicalFunction &graphicalFunction);
-
-
 protected:
 	
 	bool checkInputTypes(class Block& block);
