@@ -33,6 +33,8 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/Value.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ValueBlock.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ValueBlock.h
-	${CMAKE_CURRENT_SOURCE_DIR}/VariableAccessBlock.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/VariableAccessBlock.h
+	${CMAKE_CURRENT_SOURCE_DIR}/VariableReadBlock.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/VariableReadBlock.h
+	${CMAKE_CURRENT_SOURCE_DIR}/VariableWriteBlock.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/VariableWriteBlock.h
 	PARENT_SCOPE)

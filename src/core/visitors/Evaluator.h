@@ -18,6 +18,7 @@ public:
 	virtual std::vector<Value> visit(class PrimitiveFunction& primitiveFunction) override;
 	virtual std::vector<Value> visit(class ReturnBlock& ReturnBlock) override;
 	virtual std::vector<Value> visit(class ExpressionStatement& expressionStatement) override;
+	virtual std::vector<Value> visit(class VariableReadBlock& variableReadBlock) override;
 
 	void pushParameters(std::vector<Value> parameters);
 

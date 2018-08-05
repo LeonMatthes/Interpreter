@@ -50,45 +50,30 @@ bool TypeChecker::visit(class ExpressionStatement& expressionStatement)
 	return checkInputTypes(expressionStatement);
 }
 
-bool TypeChecker::checkOutputConnections(class GraphicalFunction &graphicalFunction)
+bool TypeChecker::visit(class VariableReadBlock& variableAccessBlock)
 {
-	std::vector<ExpressionBlock::Ptr> blocks = graphicalFunction.expressionBlocks();
-	if (blocks.empty())
-	{
-		return false;
-	}
-	std::vector<Datatype> outputTypes = blocks.at(blocks.size() - 1)->outputTypes();
-	if (outputTypes.size() != graphicalFunction.outputs().size())
-	{
-		return false;
-	}
-
-	for (size_t i = 0; i < outputTypes.size(); i++)
-	{
-		if (outputTypes.at(i) != graphicalFunction.outputs().at(i))
-		{
-			return false;
-		}
-	}
-
 	return true;
 }
 
 bool TypeChecker::visit(class GraphicalFunction& graphicalFunction)
 {
-	if (!checkOutputConnections(graphicalFunction))
+	const auto& expressionBlocks = graphicalFunction.expressionBlocks();
+	for (auto& expression : expressionBlocks)
 	{
-		return false;
-	}
-
-	for (const ExpressionBlock::Ptr& block : graphicalFunction.expressionBlocks())
-	{
-		if (!block->accept(*this))
+		if (!expression->accept(*this))
 		{
 			return false;
 		}
 	}
 
+	const auto& statementBlocks = graphicalFunction.statementBlocks();
+	for (auto& statement : statementBlocks)
+	{
+		if (!statement->accept(*this))
+		{
+			return false;
+		}
+	}
 	return true;
 }
 

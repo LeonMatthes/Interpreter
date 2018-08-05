@@ -15,6 +15,7 @@ public:
 	virtual bool visit(class PrimitiveFunction& primitiveFunction) override;
 	virtual bool visit(class ReturnBlock& returnBlock) override;
 	virtual bool visit(class ExpressionStatement& expressionStatement) override;
+	virtual bool visit(class VariableReadBlock& variableAccessBlock) override;
 
 	bool checkOutputConnections(class GraphicalFunction &graphicalFunction);
 

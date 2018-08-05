@@ -1,8 +1,8 @@
-#include <programGraph/VariableAccessBlock.h>
+#include <programGraph/VariableReadBlock.h>
 #include <error/InternalError.h>
 #include <utility/Literals.h>
 
-VariableAccessBlock::VariableAccessBlock(const GraphicalFunction& owningFunction, VariableIdentifier identifier) : ExpressionBlock(0)
+VariableReadBlock::VariableReadBlock(const GraphicalFunction& owningFunction, VariableIdentifier identifier) : ExpressionBlock(0)
 	, m_owningFunction(owningFunction)
 	, m_identifier(std::move(identifier))
 {
@@ -12,15 +12,15 @@ VariableAccessBlock::VariableAccessBlock(const GraphicalFunction& owningFunction
 	}
 }
 
-VariableAccessBlock::~VariableAccessBlock()
+VariableReadBlock::~VariableReadBlock()
 {}
 
-std::vector<Datatype> VariableAccessBlock::inputTypes() const
+std::vector<Datatype> VariableReadBlock::inputTypes() const
 {
 	return {};
 }
 
-std::vector<Datatype> VariableAccessBlock::outputTypes() const
+std::vector<Datatype> VariableReadBlock::outputTypes() const
 {
 	return { m_owningFunction.variableType(m_identifier) };
 }
