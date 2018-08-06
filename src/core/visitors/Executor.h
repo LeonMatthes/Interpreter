@@ -22,9 +22,11 @@ public:
 	virtual void visit(class Connection& connection) override;
 	virtual void visit(class ValueBlock& valueBlock) override;
 	virtual void visit(class PrimitiveFunction& primitiveFunction) override;
+	virtual void visit(class VariableReadBlock& variableReadBlock) override;
+
 	virtual void visit(class ReturnBlock& returnBlock) override;
 	virtual void visit(class ExpressionStatement& expressionStatement) override;
-	virtual void visit(class VariableReadBlock& variableReadBlock) override;
+	virtual void visit(class VariableWriteBlock& variableWriteBlock) override;
 	
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);

@@ -11,10 +11,9 @@ GraphicalFunction::GraphicalFunction(std::vector<Datatype> inputs, std::vector<D
 
 GraphicalFunction::GraphicalFunction(GraphicalFunction&& other)
 	: Function(other)
-{
-	m_expressionBlocks = std::move(other.m_expressionBlocks);
-	m_statementBlocks = std::move(other.m_statementBlocks);
-}
+	, m_expressionBlocks(std::move(other.m_expressionBlocks))
+	, m_statementBlocks(std::move(other.m_statementBlocks))
+{}
 
 GraphicalFunction::~GraphicalFunction()
 {}

@@ -12,4 +12,5 @@ set(tests_src
 	${CMAKE_CURRENT_SOURCE_DIR}/TestStatement.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/testValue.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/TestVariableReadBlock.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/TestVariableWriteBlock.cpp
 	PARENT_SCOPE)

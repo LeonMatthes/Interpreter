@@ -13,9 +13,11 @@ public:
 	virtual bool visit(class Connection& connection) override;
 	virtual bool visit(class ValueBlock& valueBlock) override;
 	virtual bool visit(class PrimitiveFunction& primitiveFunction) override;
+	virtual bool visit(class VariableReadBlock& variableReadBlock) override;
+
 	virtual bool visit(class ReturnBlock& returnBlock) override;
 	virtual bool visit(class ExpressionStatement& expressionStatement) override;
-	virtual bool visit(class VariableReadBlock& variableAccessBlock) override;
+	virtual bool visit(class VariableWriteBlock& variableWriteBlock) override;
 
 protected:
 	

@@ -50,7 +50,7 @@ bool TypeChecker::visit(class ExpressionStatement& expressionStatement)
 	return checkInputTypes(expressionStatement);
 }
 
-bool TypeChecker::visit(class VariableReadBlock& variableAccessBlock)
+bool TypeChecker::visit(class VariableReadBlock& variableReadBlock)
 {
 	return true;
 }
@@ -85,4 +85,10 @@ bool TypeChecker::visit(class FunctionBlock& functionBlock)
 bool TypeChecker::visit(class Connection& connection)
 {
 	THROW_ERROR(InternalError, "Typechecker visited Connection");
+}
+
+#include <programGraph/VariableWriteBlock.h>
+bool TypeChecker::visit(VariableWriteBlock& variableWriteBlock)
+{
+	return checkInputTypes(variableWriteBlock);
 }

@@ -78,6 +78,11 @@ void Executor::visit(class VariableReadBlock& variableReadBlock)
 	throwExpressionError();
 }
 
+void Executor::visit(class VariableWriteBlock& variableWriteBlock)
+{
+	
+}
+
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction)
 {
 	try
