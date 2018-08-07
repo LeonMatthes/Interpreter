@@ -5,6 +5,8 @@
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/GraphicalFunction.h>
 #include <programGraph/ExpressionStatement.h>
+#include <programGraph/VariableReadBlock.h>
+#include <programGraph/VariableWriteBlock.h>
 #include <error/InternalError.h>
 
 Evaluator::Evaluator(class Executor& executor)
@@ -72,15 +74,22 @@ std::vector<Value> Evaluator::visit(class ExpressionStatement& expressionStateme
 
 std::vector<Value> Evaluator::visit(class VariableReadBlock& variableReadBlock)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	return { m_executor.variableValue(variableReadBlock.variableIdentifier()) };
 }
 
 std::vector<Value> Evaluator::visit(class VariableWriteBlock& variableWriteBlock)
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	return m_executor.evaluate(variableWriteBlock);
 }
 
 void Evaluator::pushParameters(std::vector<Value> parameters)
 {
 	m_callStack.push(parameters);
+}
+
+Value Evaluator::evaluateConnection(class Connection& connection, Datatype type)
+{
+	return connection.isConnected() ?
+		connection.accept(*this).front() :
+		Value(type);
 }

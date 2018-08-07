@@ -25,3 +25,8 @@ std::vector<Datatype> VariableReadBlock::outputTypes() const
 	return { m_owningFunction.variableType(m_identifier) };
 }
 
+const VariableIdentifier& VariableReadBlock::variableIdentifier() const
+{
+	return m_identifier;
+}
+

@@ -2,9 +2,10 @@
 #include <programGraph/ReturnBlock.h>
 #include <error/InternalError.h>
 #include <programGraph/GraphicalFunction.h>
-
 #include <programGraph/ExpressionStatement.h>
 #include <error/RuntimeError.h>
+#include <programGraph/VariableWriteBlock.h>
+
 Executor::Executor()
 	: m_evaluator(*this)
 {}
@@ -44,19 +45,13 @@ void Executor::visit(class PrimitiveFunction& primitiveFunction)
 
 void Executor::visit(class ReturnBlock& returnBlock)
 {
-	Return returnValues;
-	std::vector<Connection> connections = returnBlock.inputConnections();
+	auto returnValues = Return();
+	auto connections = returnBlock.inputConnections();
 	for (size_t i = 0; i < connections.size(); i++)
 	{
-		Connection connection = connections.at(i);
-		if (connection.isConnected())
-		{
-			returnValues.m_values.emplace_back(connection.accept(m_evaluator).at(0));
-		}
-		else
-		{
-			returnValues.m_values.emplace_back(Value(returnBlock.inputTypes().at(i)));
-		}
+		auto connection = connections.at(i);
+		auto type = returnBlock.inputTypes().at(i);
+		returnValues.m_values.emplace_back(m_evaluator.evaluateConnection(connection, type));
 	}
 
 	throw returnValues;
@@ -80,11 +75,31 @@ void Executor::visit(class VariableReadBlock& variableReadBlock)
 
 void Executor::visit(class VariableWriteBlock& variableWriteBlock)
 {
-	
+	auto& currentStackFrame = m_callStack.top();
+	auto inputConnection = variableWriteBlock.inputConnections().front();
+	auto inputType = variableWriteBlock.inputTypes().front();
+	auto variableValue = m_evaluator.evaluateConnection(inputConnection, inputType);
+
+	currentStackFrame.at(variableWriteBlock.variableIdentifier()) = variableValue;
+	m_executedStatements[&variableWriteBlock] = { variableValue };
+
+
+	auto next = variableWriteBlock.flowConnections().front();
+	if (next.isConnected())
+	{
+		next.connectedStatement()->accept(*this);
+	}
 }
 
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction)
 {
+	auto currentStackFrame = std::map<VariableIdentifier, Value>();
+	for (const auto& id : graphicalFunction.variables())
+	{
+		currentStackFrame.emplace(id.first, Value(id.second));
+	}
+	m_callStack.push(std::move(currentStackFrame));
+
 	try
 	{
 		graphicalFunction.accept(*this);
@@ -93,6 +108,8 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 	{
 		return returnValues.m_values;
 	}
+
+	m_callStack.pop();
 
 	if (!graphicalFunction.outputs().empty())
 	{
@@ -110,6 +127,11 @@ std::vector<Value> Executor::evaluate(class StatementBlock& statement)
 		THROW_ERROR(RuntimeError, "Forward data connection detected!");
 	}
 	return savedState->second;
+}
+
+Value Executor::variableValue(VariableIdentifier identifier)
+{
+	return m_callStack.top().at(identifier);
 }
 
 void Executor::throwExpressionError()

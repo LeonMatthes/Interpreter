@@ -24,6 +24,7 @@ public:
 	virtual std::vector<Value> visit(class VariableWriteBlock& variableWriteBlock) override;
 
 	void pushParameters(std::vector<Value> parameters);
+	Value evaluateConnection(class Connection& connection, Datatype type);
 
 
 protected:

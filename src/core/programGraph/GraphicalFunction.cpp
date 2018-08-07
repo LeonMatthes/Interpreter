@@ -56,3 +56,8 @@ bool GraphicalFunction::hasVariable(VariableIdentifier identifier) const
 {
 	return m_variables.find(identifier) != m_variables.end();
 }
+
+const std::unordered_map<VariableIdentifier, Datatype>& GraphicalFunction::variables() const
+{
+	return m_variables;
+}

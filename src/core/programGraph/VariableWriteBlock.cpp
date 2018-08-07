@@ -23,3 +23,8 @@ std::vector<Datatype> VariableWriteBlock::outputTypes() const
 	return { m_owningFunction.variableType(m_identifier) };
 }
 
+const VariableIdentifier& VariableWriteBlock::variableIdentifier() const
+{
+	return m_identifier;
+}
+

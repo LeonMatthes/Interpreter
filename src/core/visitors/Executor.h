@@ -4,7 +4,10 @@
 #include <visitors/Evaluator.h>
 #include <vector>
 #include <programGraph/Value.h>
+#include <programGraph/GraphicalFunction.h>
 #include <unordered_map>
+#include <map>
+#include <stack>
 
 struct Return
 {
@@ -30,9 +33,13 @@ public:
 	
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
+	Value variableValue(VariableIdentifier identifier);
+
 protected:
 	Evaluator m_evaluator;
 	std::unordered_map<class StatementBlock*, std::vector<Value>> m_executedStatements;
+	using StackFrame = std::map<VariableIdentifier, Value>;
+	std::stack<StackFrame, std::vector<StackFrame>> m_callStack;
 
 	void throwExpressionError();
 private:

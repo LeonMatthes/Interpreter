@@ -184,3 +184,69 @@ TEST_F(TestExecutor, GraphicalFunctionInExpressionStatement)
 
 	ASSERT_EQ(std::vector<Value>({ 2.0, 1.0 }), m_executor.evaluate(outsideGraphical));
 }
+
+#include <programGraph/VariableReadBlock.h>
+TEST_F(TestExecutor, ReadUninitializedVariable)
+{
+	auto type = Datatype::DOUBLE;
+	auto variableID = "a Variable";
+	auto graphical = GraphicalFunction({}, {type});
+	graphical.addVariable(variableID, type);
+
+	auto variableRead = std::make_shared<VariableReadBlock>(graphical, variableID);
+	auto returnBlock = std::make_shared<ReturnBlock>(graphical);
+	returnBlock->setInputConnections({ Connection(variableRead, 0) });
+	graphical.setStatementBlocks({ returnBlock });
+	graphical.setExpressionBlocks({ variableRead });
+	ASSERT_EQ(std::vector<Value>({ Value(type) }), m_executor.evaluate(graphical));
+}
+
+#include <programGraph/VariableWriteBlock.h>
+TEST_F(TestExecutor, ReadWriteVariable)
+{
+	auto type = Datatype::DOUBLE;
+	auto variableID = "a Variable";
+	auto graphical = GraphicalFunction({}, { type });
+	auto value = -1.0;
+	graphical.addVariable(variableID, type);
+
+	auto variableWrite = std::make_shared<VariableWriteBlock>(graphical, variableID);
+	auto valueBlock = std::make_shared<ValueBlock>(value);
+	variableWrite->setInputConnections({ Connection(valueBlock, 0) });
+
+	auto variableRead = std::make_shared<VariableReadBlock>(graphical, variableID);
+	auto returnBlock = std::make_shared<ReturnBlock>(graphical);
+	returnBlock->setInputConnections({ Connection(variableRead, 0) });
+	variableWrite->setFlowConnections({ ProgramFlowConnection(returnBlock) });
+
+	graphical.setStatementBlocks({ variableWrite, returnBlock });
+	graphical.setExpressionBlocks({ valueBlock, variableRead });
+	ASSERT_EQ(std::vector<Value>({ Value(value) }), m_executor.evaluate(graphical));
+
+	auto secondValue = -2.0;
+	valueBlock = std::make_shared<ValueBlock>(secondValue);
+	variableWrite->setInputConnections({ Connection(valueBlock, 0) });
+	graphical.setExpressionBlocks({ valueBlock, variableRead });
+	ASSERT_EQ(std::vector<Value>({ Value(secondValue) }), m_executor.evaluate(graphical));
+}
+
+TEST_F(TestExecutor, VariableWriteOutput)
+{
+	auto type = Datatype::DOUBLE;
+	auto variableID = "a Variable";
+	auto graphical = GraphicalFunction({}, { type });
+	auto value = -1.0;
+	graphical.addVariable(variableID, type);
+
+	auto variableWrite = std::make_shared<VariableWriteBlock>(graphical, variableID);
+	auto valueBlock = std::make_shared<ValueBlock>(value);
+	variableWrite->setInputConnections({ Connection(valueBlock, 0) });
+
+	auto returnBlock = std::make_shared<ReturnBlock>(graphical);
+	returnBlock->setInputConnections({ Connection(variableWrite, 0) });
+	variableWrite->setFlowConnections({ ProgramFlowConnection(returnBlock) });
+
+	graphical.setExpressionBlocks({ valueBlock });
+	graphical.setStatementBlocks({ variableWrite, returnBlock });
+	ASSERT_EQ(std::vector<Value>({ Value(value) }), m_executor.evaluate(graphical));
+}

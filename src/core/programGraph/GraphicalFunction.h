@@ -27,6 +27,7 @@ public:
 	void addVariable(VariableIdentifier identifier, Datatype type);
 	Datatype variableType(VariableIdentifier identifier) const;
 	bool hasVariable(VariableIdentifier identifier) const;
+	const std::unordered_map<VariableIdentifier, Datatype>& variables() const;
 
 
 	MAKE_VISITABLE;

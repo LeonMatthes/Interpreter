@@ -12,6 +12,8 @@ public:
 	virtual std::vector<Datatype> inputTypes() const override;
 	virtual std::vector<Datatype> outputTypes() const override;
 
+	const VariableIdentifier& variableIdentifier() const;
+
 	MAKE_VISITABLE;
 
 protected:
