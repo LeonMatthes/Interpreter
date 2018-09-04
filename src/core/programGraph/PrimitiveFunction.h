@@ -34,7 +34,7 @@ public:
 
 	static PrimitiveFunction smaller;
 
-	static PrimitiveFunction and;
-	static PrimitiveFunction or;
-	static PrimitiveFunction not;
+	static PrimitiveFunction logicalAnd;
+	static PrimitiveFunction logicalOr;
+	static PrimitiveFunction logicalNot;
 };
