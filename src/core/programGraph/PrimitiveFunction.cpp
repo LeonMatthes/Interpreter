@@ -1,6 +1,8 @@
 #include <programGraph/PrimitiveFunction.h>
 
-
+//////////////////////////////////////////////////////////////////////////
+//					Math Primitives
+//////////////////////////////////////////////////////////////////////////
 PrimitiveFunction PrimitiveFunction::add(
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }), 
 	std::vector<Datatype>({ Datatype::DOUBLE }), 
@@ -16,6 +18,66 @@ PrimitiveFunction PrimitiveFunction::subtract(
 	[](std::vector<Value> inputs) 
 	{
 		double result = inputs.at(0).getDouble() - inputs.at(1).getDouble();
+		return std::vector<Value>({ Value(result) });
+	});
+
+PrimitiveFunction PrimitiveFunction::multiply(
+	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }),
+	std::vector<Datatype>({ Datatype::DOUBLE }),
+	[](std::vector<Value> inputs)
+	{
+		double result = inputs.at(0).getDouble() * inputs.at(1).getDouble();
+		return std::vector<Value>({ Value(result) });
+	});
+
+PrimitiveFunction PrimitiveFunction::divide(
+	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }),
+	std::vector<Datatype>({ Datatype::DOUBLE }),
+	[](std::vector<Value> inputs)
+	{
+		double result = inputs.at(0).getDouble() / inputs.at(1).getDouble();
+		return std::vector<Value>({ Value(result) });
+	});
+
+//////////////////////////////////////////////////////////////////////////
+//				Comparison Primitives
+//////////////////////////////////////////////////////////////////////////
+PrimitiveFunction PrimitiveFunction::smaller(
+	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }),
+	std::vector<Datatype>({ Datatype::BOOLEAN }),
+	[](std::vector<Value> inputs)
+	{
+		bool result = inputs.at(0).getDouble() < inputs.at(1).getDouble();
+		return std::vector<Value>({ Value(result) });
+	});
+
+//////////////////////////////////////////////////////////////////////////
+//				Boolean Primitives
+//////////////////////////////////////////////////////////////////////////
+PrimitiveFunction PrimitiveFunction::and(
+	std::vector<Datatype>({ Datatype::BOOLEAN, Datatype::BOOLEAN }),
+	std::vector<Datatype>({ Datatype::BOOLEAN }),
+	[](std::vector<Value> inputs)
+	{
+		bool result = inputs.at(0).getBoolean() && inputs.at(1).getBoolean();
+		return std::vector<Value>({ Value(result) });
+	});
+
+PrimitiveFunction PrimitiveFunction::or(
+	std::vector<Datatype>({ Datatype::BOOLEAN, Datatype::BOOLEAN }),
+	std::vector<Datatype>({ Datatype::BOOLEAN }),
+	[](std::vector<Value> inputs)
+	{
+		bool result = inputs.at(0).getBoolean() || inputs.at(1).getBoolean();
+		return std::vector<Value>({ Value(result) });
+	});
+
+PrimitiveFunction PrimitiveFunction::not(
+	std::vector<Datatype>({ Datatype::BOOLEAN }),
+	std::vector<Datatype>({ Datatype::BOOLEAN }),
+	[](std::vector<Value> inputs)
+	{
+		bool result = !inputs.front().getBoolean();
 		return std::vector<Value>({ Value(result) });
 	});
 

@@ -60,11 +60,8 @@ void Executor::visit(class ReturnBlock& returnBlock)
 void Executor::visit(class ExpressionStatement& expressionStatement)
 {
 	m_executedStatements[&expressionStatement] = expressionStatement.expression().accept(m_evaluator);
-	const auto& connectionToNext = expressionStatement.flowConnections().front();
-	if (connectionToNext.isConnected())
-	{
-		connectionToNext.connectedStatement()->accept(*this);
-	}
+	
+	executeNext(expressionStatement);
 }
 
 
@@ -83,11 +80,15 @@ void Executor::visit(class VariableWriteBlock& variableWriteBlock)
 	currentStackFrame.at(variableWriteBlock.variableIdentifier()) = variableValue;
 	m_executedStatements[&variableWriteBlock] = { variableValue };
 
+	executeNext(variableWriteBlock);
+}
 
-	auto next = variableWriteBlock.flowConnections().front();
-	if (next.isConnected())
+void Executor::executeNext(class StatementBlock& statement)
+{
+	auto nextStatement = statement.flowConnections().front();
+	if (nextStatement.isConnected())
 	{
-		next.connectedStatement()->accept(*this);
+		nextStatement.connectedStatement()->accept(*this);
 	}
 }
 

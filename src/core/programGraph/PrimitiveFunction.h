@@ -29,4 +29,12 @@ private:
 public:
 	static PrimitiveFunction add;
 	static PrimitiveFunction subtract;
+	static PrimitiveFunction multiply;
+	static PrimitiveFunction divide;
+
+	static PrimitiveFunction smaller;
+
+	static PrimitiveFunction and;
+	static PrimitiveFunction or;
+	static PrimitiveFunction not;
 };

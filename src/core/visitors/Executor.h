@@ -31,6 +31,8 @@ public:
 	virtual void visit(class ExpressionStatement& expressionStatement) override;
 	virtual void visit(class VariableWriteBlock& variableWriteBlock) override;
 	
+	void executeNext(class StatementBlock& statement);
+
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
 	Value variableValue(VariableIdentifier identifier);
