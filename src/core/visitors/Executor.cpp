@@ -5,6 +5,7 @@
 #include <programGraph/ExpressionStatement.h>
 #include <error/RuntimeError.h>
 #include <programGraph/VariableWriteBlock.h>
+#include <programGraph/IfStatement.h>
 
 Executor::Executor()
 	: m_evaluator(*this)
@@ -83,14 +84,34 @@ void Executor::visit(class VariableWriteBlock& variableWriteBlock)
 	executeNext(variableWriteBlock);
 }
 
-void Executor::executeNext(class StatementBlock& statement)
+void Executor::visit(class IfStatement& ifStatement)
 {
-	auto nextStatement = statement.flowConnections().front();
-	if (nextStatement.isConnected())
+	auto inputConnection = ifStatement.inputConnections().front();
+	auto conditionValue = inputConnection.accept(m_evaluator).front();
+	if (conditionValue.getBoolean())
 	{
-		nextStatement.connectedStatement()->accept(*this);
+		executeNext(ifStatement, 0);
+	}
+	else
+	{
+		executeNext(ifStatement, 1);
 	}
 }
+
+void Executor::executeNext(class StatementBlock& statement, size_t flowConnectionIndex)
+{
+	auto& statementConnection = statement.flowConnections().at(flowConnectionIndex);
+	if (statementConnection.isConnected())
+	{
+		statementConnection.connectedStatement()->accept(*this);
+	}
+}
+
+void Executor::executeNext(class StatementBlock& statement)
+{
+	executeNext(statement, 0);
+}
+
 
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction)
 {

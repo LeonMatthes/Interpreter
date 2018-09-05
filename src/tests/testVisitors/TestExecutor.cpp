@@ -250,3 +250,28 @@ TEST_F(TestExecutor, VariableWriteOutput)
 	graphical.setStatementBlocks({ variableWrite, returnBlock });
 	ASSERT_EQ(std::vector<Value>({ Value(value) }), m_executor.evaluate(graphical));
 }
+
+
+#include <programGraph/IfStatement.h>
+TEST_F(TestExecutor, IfStatement)
+{
+	auto ifStatement = std::make_shared<IfStatement>();
+	auto ifInput = std::make_shared<ValueBlock>(true);
+	ifStatement->setInputConnections({ Connection(ifInput, 0) });
+
+	auto returnType = Datatype::DOUBLE;
+	auto graphical = GraphicalFunction({}, {returnType});
+	
+	auto returnStatement = std::make_shared<ReturnBlock>(graphical);
+	ifStatement->setFlowConnections({ ProgramFlowConnection(returnStatement), ProgramFlowConnection() });
+
+	graphical.setStatementBlocks({ ifStatement, returnStatement });
+	graphical.setExpressionBlocks({ ifInput });
+
+	ASSERT_EQ(m_executor.evaluate(graphical).front(), Value(returnType));
+
+	ifInput = std::make_shared<ValueBlock>(false);
+	ifStatement->setInputConnections({ Connection(ifInput, 0) });
+	graphical.setExpressionBlocks({ifInput});
+	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical), RuntimeError);
+}

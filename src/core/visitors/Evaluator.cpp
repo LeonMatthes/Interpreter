@@ -82,6 +82,11 @@ std::vector<Value> Evaluator::visit(class VariableWriteBlock& variableWriteBlock
 	return m_executor.evaluate(variableWriteBlock);
 }
 
+std::vector<Value> Evaluator::visit(class IfStatement& ifStatement)
+{
+	throw std::logic_error("The method or operation is not implemented.");
+}
+
 void Evaluator::pushParameters(std::vector<Value> parameters)
 {
 	m_callStack.push(parameters);

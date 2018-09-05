@@ -17,6 +17,7 @@ public:
 	virtual R visit(class ReturnBlock& returnBlock) = 0;
 	virtual R visit(class ExpressionStatement& expressionStatement) = 0;
 	virtual R visit(class VariableWriteBlock& variableWriteBlock) = 0;
+	virtual R visit(class IfStatement& ifStatement) = 0;
 };
 
 #include <vector>

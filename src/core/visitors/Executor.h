@@ -30,13 +30,14 @@ public:
 	virtual void visit(class ReturnBlock& returnBlock) override;
 	virtual void visit(class ExpressionStatement& expressionStatement) override;
 	virtual void visit(class VariableWriteBlock& variableWriteBlock) override;
+	virtual void visit(class IfStatement& ifStatement) override;
 	
 	void executeNext(class StatementBlock& statement);
+	void executeNext(class StatementBlock& statement, size_t flowConnectionIndex);
 
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
 	Value variableValue(VariableIdentifier identifier);
-
 protected:
 	Evaluator m_evaluator;
 	std::unordered_map<class StatementBlock*, std::vector<Value>> m_executedStatements;

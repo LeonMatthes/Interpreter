@@ -4,6 +4,7 @@
 #include <programGraph/GraphicalFunction.h>
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/ReturnBlock.h>
+#include <programGraph/IfStatement.h>
 
 TypeChecker::TypeChecker()
 {
@@ -91,4 +92,9 @@ bool TypeChecker::visit(class Connection& connection)
 bool TypeChecker::visit(VariableWriteBlock& variableWriteBlock)
 {
 	return checkInputTypes(variableWriteBlock);
+}
+
+bool TypeChecker::visit(class IfStatement& ifStatement)
+{
+	return checkInputTypes(ifStatement);
 }
