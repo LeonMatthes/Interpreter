@@ -75,3 +75,13 @@ TEST(TestValueBlock, creation)
 	block = ValueBlock(Value(1.0));
 	EXPECT_EQ(std::vector<Datatype>({ Datatype::DOUBLE }), block.outputTypes());
 }
+
+
+#include <programGraph/WhileStatement.h>
+TEST(TestWhileBlock, IOTypes)
+{
+	WhileStatement whileStatment;
+	EXPECT_EQ(whileStatment.outputCount(), 0);
+	EXPECT_EQ(whileStatment.inputTypes(), std::vector<Datatype>({ Datatype::BOOLEAN }));
+	EXPECT_EQ(whileStatment.flowConnectionsCount(), 2);
+}
