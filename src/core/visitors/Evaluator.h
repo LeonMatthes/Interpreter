@@ -23,10 +23,10 @@ public:
 	virtual std::vector<Value> visit(class VariableReadBlock& variableReadBlock) override;
 	virtual std::vector<Value> visit(class VariableWriteBlock& variableWriteBlock) override;
 	virtual std::vector<Value> visit(class IfStatement& ifStatement) override;
+	virtual std::vector<Value> visit(class WhileStatement& whileStatement) override;
 
 	void pushParameters(std::vector<Value> parameters);
 	Value evaluateConnection(class Connection& connection, Datatype type);
-
 protected:
 	std::stack<std::vector<Value>> m_callStack;
 

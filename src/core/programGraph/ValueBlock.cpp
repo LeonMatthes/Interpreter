@@ -25,3 +25,8 @@ Value ValueBlock::value() const
 {
 	return m_value;
 }
+
+void ValueBlock::value(Value val)
+{
+	m_value = val;
+}

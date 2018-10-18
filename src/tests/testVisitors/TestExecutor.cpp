@@ -275,3 +275,25 @@ TEST_F(TestExecutor, IfStatement)
 	graphical.setExpressionBlocks({ifInput});
 	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical), RuntimeError);
 }
+
+#include <programGraph/WhileStatement.h>
+TEST_F(TestExecutor, WhileStatement)
+{
+	auto whileStatement = std::make_shared<WhileStatement>();
+	auto whileInput = std::make_shared<ValueBlock>(false);
+	whileStatement->setInputConnections({ Connection(whileInput, 0) });
+
+	auto returnType = Datatype::DOUBLE;
+	auto graphical = GraphicalFunction({}, { returnType });
+
+	auto returnStatement = std::make_shared<ReturnBlock>(graphical);
+	whileStatement->setFlowConnections({ ProgramFlowConnection(returnStatement), ProgramFlowConnection() });
+
+	graphical.setStatementBlocks({ whileStatement, returnStatement });
+	ASSERT_EQ(m_executor.evaluate(graphical).front(), Value(returnType));
+
+	//As it would be a lot of effort at the moment to show that a loop works, testing will be done later!
+
+	//whileInput->value(true);
+	//ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical), RuntimeError);
+}

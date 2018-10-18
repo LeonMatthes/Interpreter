@@ -19,6 +19,7 @@ public:
 	virtual bool visit(class ExpressionStatement& expressionStatement) override;
 	virtual bool visit(class VariableWriteBlock& variableWriteBlock) override;
 	virtual bool visit(class IfStatement& ifStatement) override;
+	virtual bool visit(class WhileStatement& whileStatement) override;
 
 protected:
 	

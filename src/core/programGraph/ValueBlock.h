@@ -17,6 +17,8 @@ public:
 	MAKE_VISITABLE;
 
 	Value value() const;
+	//do not use during Runtime!
+	void value(Value val); 
 protected:
 	Value m_value;
 

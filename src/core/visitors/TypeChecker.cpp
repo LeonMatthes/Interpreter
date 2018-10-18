@@ -5,6 +5,7 @@
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/ReturnBlock.h>
 #include <programGraph/IfStatement.h>
+#include <programGraph/WhileStatement.h>
 
 TypeChecker::TypeChecker()
 {
@@ -97,4 +98,9 @@ bool TypeChecker::visit(VariableWriteBlock& variableWriteBlock)
 bool TypeChecker::visit(class IfStatement& ifStatement)
 {
 	return checkInputTypes(ifStatement);
+}
+
+bool TypeChecker::visit(class WhileStatement& whileStatement)
+{
+	return checkInputTypes(whileStatement);
 }

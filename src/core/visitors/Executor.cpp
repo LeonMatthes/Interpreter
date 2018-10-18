@@ -6,6 +6,7 @@
 #include <error/RuntimeError.h>
 #include <programGraph/VariableWriteBlock.h>
 #include <programGraph/IfStatement.h>
+#include <programGraph/WhileStatement.h>
 
 Executor::Executor()
 	: m_evaluator(*this)
@@ -98,18 +99,32 @@ void Executor::visit(class IfStatement& ifStatement)
 	}
 }
 
-void Executor::executeNext(class StatementBlock& statement, size_t flowConnectionIndex)
+void Executor::visit(class WhileStatement& whileStatement)
+{
+	auto conditionConnection = whileStatement.inputConnections().front();
+	auto conditionType = whileStatement.inputTypes().front();
+	while (m_evaluator.evaluateConnection(conditionConnection, conditionType).getBoolean())
+	{
+		executeNext(whileStatement, 1);
+	}
+
+	executeNext(whileStatement);
+}
+
+bool Executor::executeNext(class StatementBlock& statement, size_t flowConnectionIndex)
 {
 	auto& statementConnection = statement.flowConnections().at(flowConnectionIndex);
-	if (statementConnection.isConnected())
+	auto connected = statementConnection.isConnected();
+	if (connected)
 	{
 		statementConnection.connectedStatement()->accept(*this);
 	}
+	return connected;
 }
 
-void Executor::executeNext(class StatementBlock& statement)
+bool Executor::executeNext(class StatementBlock& statement)
 {
-	executeNext(statement, 0);
+	return executeNext(statement, 0);
 }
 
 

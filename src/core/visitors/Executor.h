@@ -31,9 +31,10 @@ public:
 	virtual void visit(class ExpressionStatement& expressionStatement) override;
 	virtual void visit(class VariableWriteBlock& variableWriteBlock) override;
 	virtual void visit(class IfStatement& ifStatement) override;
+	virtual void visit(class WhileStatement& whileStatement) override;
 	
-	void executeNext(class StatementBlock& statement);
-	void executeNext(class StatementBlock& statement, size_t flowConnectionIndex);
+	bool executeNext(class StatementBlock& statement);
+	bool executeNext(class StatementBlock& statement, size_t flowConnectionIndex);
 
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);

@@ -21,8 +21,6 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/IfStatement.h
 	${CMAKE_CURRENT_SOURCE_DIR}/PrimitiveFunction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/PrimitiveFunction.h
-	${CMAKE_CURRENT_SOURCE_DIR}/ProcedureBlock.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/ProcedureBlock.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Program.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Program.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ProgramFlowConnection.cpp
@@ -39,4 +37,6 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/VariableReadBlock.h
 	${CMAKE_CURRENT_SOURCE_DIR}/VariableWriteBlock.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/VariableWriteBlock.h
+	${CMAKE_CURRENT_SOURCE_DIR}/WhileStatement.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/WhileStatement.h
 	PARENT_SCOPE)
