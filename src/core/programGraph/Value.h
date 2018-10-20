@@ -5,7 +5,7 @@
 class Value
 {
 public:
-	Value() = delete;
+	Value();
 	Value(bool b);
 	Value(double d);
 	Value(Datatype datatype);

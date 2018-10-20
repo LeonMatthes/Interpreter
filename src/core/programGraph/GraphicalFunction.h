@@ -6,12 +6,15 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <memory>
 
 using VariableIdentifier = std::string;
 
 class GraphicalFunction : public Function
 {
 public:
+	using UPtr = std::unique_ptr<GraphicalFunction>;
+
 	GraphicalFunction(std::vector<Datatype> inputs, std::vector<Datatype> outputs);
 	GraphicalFunction(GraphicalFunction&& other); //Move needed for auto
 	GraphicalFunction(const GraphicalFunction&) = delete;

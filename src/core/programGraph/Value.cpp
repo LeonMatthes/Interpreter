@@ -1,6 +1,12 @@
 #include <programGraph/Value.h>
 #include <error/InternalError.h>
 
+Value::Value()
+	: Value(false)
+{
+
+}
+
 Value::Value(bool b)
 	: m_type(Datatype::BOOLEAN)
 {
