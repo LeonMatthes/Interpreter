@@ -5,7 +5,7 @@
 class ParameterAccessBlock : public ExpressionBlock
 {
 public:
-	ParameterAccessBlock(GraphicalFunction& function);
+	ParameterAccessBlock(const GraphicalFunction& function);
 	virtual ~ParameterAccessBlock() = default;
 
 	virtual std::vector<Datatype> inputTypes() const override;
@@ -14,6 +14,6 @@ public:
 	MAKE_VISITABLE;
 
 protected:
-	GraphicalFunction& m_function;
+	const GraphicalFunction& m_function;
 private:
 };

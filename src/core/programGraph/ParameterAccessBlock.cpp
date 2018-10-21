@@ -3,9 +3,9 @@
 #include <error/Error.h>
 #include <utility/Literals.h>
 
-ParameterAccessBlock::ParameterAccessBlock(GraphicalFunction& function)
+ParameterAccessBlock::ParameterAccessBlock(const GraphicalFunction& graphical)
 	: ExpressionBlock(0)
-	, m_function{function}
+	, m_function(graphical)
 {
 	if (m_function.inputs().empty())
 	{
