@@ -310,5 +310,36 @@ TEST_F(TestExecutor, ParameterAccessBlock)
 	graphical.setStatementBlocks({ returnStatement });
 	graphical.setExpressionBlocks({ parameterAccess });
 
-	EXPECT_EQ(std::vector<Value>({ Value(input1), Value(input2) }), m_executor.evaluate(graphical));
+	auto inputValue1 = Value(false);
+	auto inputValue2 = Value(2.0);
+	EXPECT_EQ(std::vector<Value>({ inputValue1, inputValue2 }), m_executor.evaluate(graphical, {inputValue1, inputValue2}));
+}
+
+TEST_F(TestExecutor, ParameterCount)
+{
+	auto input1 = Datatype::BOOLEAN;
+	auto input2 = Datatype::DOUBLE;
+	auto graphical = GraphicalFunction({ input1, input2 }, { input1, input2 });
+	auto returnStatement = std::make_shared<ReturnBlock>(graphical);
+	auto parameterAccess = std::make_shared<ParameterAccessBlock>(graphical);
+	returnStatement->setInputConnections({ Connection(parameterAccess, 0), Connection(parameterAccess, 1) });
+	graphical.setStatementBlocks({ returnStatement });
+	graphical.setExpressionBlocks({ parameterAccess });
+
+	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical, { Value(input1), Value(input2), Value(false) }), RuntimeError);
+	ASSERT_NO_THROW(m_executor.evaluate(graphical, { Value(input1), Value(input2) }));
+}
+
+TEST_F(TestExecutor, ParameterTypes)
+{
+	auto input1 = Datatype::BOOLEAN;
+	auto input2 = Datatype::DOUBLE;
+	auto graphical = GraphicalFunction({ input1, input2 }, { input1, input2 });
+	auto returnStatement = std::make_shared<ReturnBlock>(graphical);
+	auto parameterAccess = std::make_shared<ParameterAccessBlock>(graphical);
+	returnStatement->setInputConnections({ Connection(parameterAccess, 0), Connection(parameterAccess, 1) });
+	graphical.setStatementBlocks({ returnStatement });
+	graphical.setExpressionBlocks({ parameterAccess });
+
+	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical, { Value(input2), Value(input1) }), RuntimeError);
 }

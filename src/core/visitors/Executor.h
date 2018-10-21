@@ -45,6 +45,7 @@ public:
 
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
+	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction, std::vector<Value> parameters);
 	Value variableValue(VariableIdentifier identifier);
 	std::vector<Value> parameters() const;
 protected:

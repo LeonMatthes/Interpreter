@@ -7,6 +7,8 @@
 #include <programGraph/VariableWriteBlock.h>
 #include <programGraph/IfStatement.h>
 #include <programGraph/WhileStatement.h>
+#include <algorithm>
+#include <utility/Literals.h>
 
 Executor::Executor()
 	: m_evaluator(*this)
@@ -135,17 +137,41 @@ bool Executor::executeNext(class StatementBlock& statement)
 
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction)
 {
+	const auto& parameterTypes = graphicalFunction.inputs();
+	auto parameters = std::vector<Value>(parameterTypes.size());
+	std::transform(parameterTypes.begin(), parameterTypes.end(), parameters.begin(), [](Datatype type) {
+		return Value(type);
+	});
+
+	return evaluate(graphicalFunction, parameters);
+}
+
+std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction, std::vector<Value> parameters)
+{
+	if (parameters.size() != graphicalFunction.inputs().size())
+	{
+		THROW_ERROR(RuntimeError, "Incorrect number of arguments pushed to function!");
+	}
+
+	for (size_t i = 0; i < parameters.size(); i++)
+	{
+		const auto& parameter = parameters.at(i);
+		if (parameter.type() != graphicalFunction.inputs().at(i))
+		{
+			THROW_ERROR(RuntimeError, "Incorrect parameter type at parameter index: "_s + std::to_string(i));
+		}
+
+	}
+
 	auto currentStackFrame = StackFrame();
+	currentStackFrame.m_parameters = parameters;
 	auto& variables = currentStackFrame.m_variables;
+	//Initialize all variables with their datatypes default Value
 	for (const auto& id : graphicalFunction.variables())
 	{
 		variables.emplace(id.first, Value(id.second));
 	}
-	auto& parameters = currentStackFrame.m_parameters;
-	for (const auto& type : graphicalFunction.inputs())
-	{
-		parameters.emplace_back(type);
-	}
+
 	m_callStack.push(std::move(currentStackFrame));
 
 	try
