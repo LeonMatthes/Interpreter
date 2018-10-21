@@ -79,7 +79,7 @@ void Executor::visit(class VariableWriteBlock& variableWriteBlock)
 	auto inputType = variableWriteBlock.inputTypes().front();
 	auto variableValue = m_evaluator.evaluateConnection(inputConnection, inputType);
 
-	currentStackFrame.at(variableWriteBlock.variableIdentifier()) = variableValue;
+	currentStackFrame.m_variables.at(variableWriteBlock.variableIdentifier()) = variableValue;
 	m_executedStatements[&variableWriteBlock] = { variableValue };
 
 	executeNext(variableWriteBlock);
@@ -111,6 +111,11 @@ void Executor::visit(class WhileStatement& whileStatement)
 	executeNext(whileStatement);
 }
 
+void Executor::visit(class ParameterAccessBlock& parameterAccess)
+{
+	throwExpressionError();
+}
+
 bool Executor::executeNext(class StatementBlock& statement, size_t flowConnectionIndex)
 {
 	auto& statementConnection = statement.flowConnections().at(flowConnectionIndex);
@@ -131,9 +136,15 @@ bool Executor::executeNext(class StatementBlock& statement)
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction)
 {
 	auto currentStackFrame = StackFrame();
+	auto& variables = currentStackFrame.m_variables;
 	for (const auto& id : graphicalFunction.variables())
 	{
-		currentStackFrame.emplace(id.first, Value(id.second));
+		variables.emplace(id.first, Value(id.second));
+	}
+	auto& parameters = currentStackFrame.m_parameters;
+	for (const auto& type : graphicalFunction.inputs())
+	{
+		parameters.emplace_back(type);
 	}
 	m_callStack.push(std::move(currentStackFrame));
 
@@ -143,6 +154,7 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 	}
 	catch (const Return& returnValues)
 	{
+		m_callStack.pop();
 		return returnValues.m_values;
 	}
 
@@ -168,7 +180,12 @@ std::vector<Value> Executor::evaluate(class StatementBlock& statement)
 
 Value Executor::variableValue(VariableIdentifier identifier)
 {
-	return m_callStack.top().at(identifier);
+	return m_callStack.top().m_variables.at(identifier);
+}
+
+std::vector<Value> Executor::parameters() const
+{
+	return m_callStack.top().m_parameters;
 }
 
 void Executor::throwExpressionError()

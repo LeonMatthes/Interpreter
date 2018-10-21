@@ -19,6 +19,8 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/GraphicalFunction.h
 	${CMAKE_CURRENT_SOURCE_DIR}/IfStatement.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/IfStatement.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ParameterAccessBlock.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ParameterAccessBlock.h
 	${CMAKE_CURRENT_SOURCE_DIR}/PrimitiveFunction.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/PrimitiveFunction.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Program.cpp

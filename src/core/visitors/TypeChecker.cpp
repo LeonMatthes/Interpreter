@@ -104,3 +104,8 @@ bool TypeChecker::visit(class WhileStatement& whileStatement)
 {
 	return checkInputTypes(whileStatement);
 }
+
+bool TypeChecker::visit(class ParameterAccessBlock& parameterAccess)
+{
+	return true;
+}

@@ -1,3 +1,4 @@
+#pragma once
 #include <programGraph/GraphicalFunction.h>
 #include <vector>
 #include <programGraph/Value.h>

@@ -14,6 +14,12 @@ struct Return
 	std::vector<Value> m_values;
 };
 
+struct StackFrame
+{
+	std::map<VariableIdentifier, Value> m_variables;
+	std::vector<Value> m_parameters;
+};
+
 class Executor : public Visitor<void>
 {
 public:
@@ -26,6 +32,7 @@ public:
 	virtual void visit(class ValueBlock& valueBlock) override;
 	virtual void visit(class PrimitiveFunction& primitiveFunction) override;
 	virtual void visit(class VariableReadBlock& variableReadBlock) override;
+	virtual void visit(class ParameterAccessBlock& parameterAccess) override;
 
 	virtual void visit(class ReturnBlock& returnBlock) override;
 	virtual void visit(class ExpressionStatement& expressionStatement) override;
@@ -39,10 +46,10 @@ public:
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
 	Value variableValue(VariableIdentifier identifier);
+	std::vector<Value> parameters() const;
 protected:
 	Evaluator m_evaluator;
 	std::unordered_map<class StatementBlock*, std::vector<Value>> m_executedStatements;
-	using StackFrame = std::map<VariableIdentifier, Value>;
 	std::stack<StackFrame, std::vector<StackFrame>> m_callStack;
 
 	void throwExpressionError();

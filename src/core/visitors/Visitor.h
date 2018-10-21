@@ -12,6 +12,7 @@ public:
 	virtual R visit(class ValueBlock& valueBlock) = 0;
 	virtual R visit(class PrimitiveFunction& primitiveFunction) = 0;
 	virtual R visit(class VariableReadBlock& variableReadBlock) = 0;
+	virtual R visit(class ParameterAccessBlock& parameterAccess) = 0;
 
 	//StatementBlocks
 	virtual R visit(class ReturnBlock& returnBlock) = 0;

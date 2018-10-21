@@ -16,6 +16,7 @@ public:
 	virtual std::vector<Value> visit(class Connection& connection) override;
 	virtual std::vector<Value> visit(class ValueBlock& valueBlock) override;
 	virtual std::vector<Value> visit(class PrimitiveFunction& primitiveFunction) override;
+	virtual std::vector<Value> visit(class ParameterAccessBlock& parameterAccess) override;
 
 
 	virtual std::vector<Value> visit(class ReturnBlock& ReturnBlock) override;
@@ -27,6 +28,8 @@ public:
 
 	void pushParameters(std::vector<Value> parameters);
 	Value evaluateConnection(class Connection& connection, Datatype type);
+
+
 protected:
 	std::stack<std::vector<Value>> m_callStack;
 

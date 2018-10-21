@@ -85,3 +85,24 @@ TEST(TestWhileBlock, IOTypes)
 	EXPECT_EQ(whileStatment.inputTypes(), std::vector<Datatype>({ Datatype::BOOLEAN }));
 	EXPECT_EQ(whileStatment.flowConnectionsCount(), 2);
 }
+
+#include <programGraph/ParameterAccessBlock.h>
+#include <error/InternalError.h>
+#include <testUtility/CustomAssert.h>
+#include <programGraph/ReturnBlock.h>
+TEST(TestParameterAccessBlock, FunctionWithoutInputs)
+{
+	auto graphical = GraphicalFunction({}, {});
+	ASSERT_THROW_INTERPRETER(ParameterAccessBlock(graphical), InternalError);
+}
+
+TEST(TestParameterAccessBlock, ValidCreation)
+{
+	auto input1 = Datatype::BOOLEAN;
+	auto input2 = Datatype::DOUBLE;
+	auto graphical = GraphicalFunction({input1, input2}, {});
+
+	auto parameterAccess1 = ParameterAccessBlock(graphical);
+	EXPECT_EQ(std::vector<Datatype>({ input1, input2 }), parameterAccess1.outputTypes());
+}
+
