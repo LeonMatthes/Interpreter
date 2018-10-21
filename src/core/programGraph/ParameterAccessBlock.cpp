@@ -3,7 +3,7 @@
 #include <error/Error.h>
 #include <utility/Literals.h>
 
-ParameterAccessBlock::ParameterAccessBlock(const GraphicalFunction& function)
+ParameterAccessBlock::ParameterAccessBlock(GraphicalFunction& function)
 	: ExpressionBlock(0)
 	, m_function{function}
 {
