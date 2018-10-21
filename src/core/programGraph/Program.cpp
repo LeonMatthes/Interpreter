@@ -17,8 +17,10 @@ Program::Program(Program&& other)
 	m_functions = std::move(other.m_functions);
 }
 
+#include <visitors/Executor.h>
 std::vector<Value> Program::run(std::vector<Value> parameters)
 {
-	return { false };
+	auto executor = Executor();
+	return executor.evaluate(*m_startFunction);
 }
 

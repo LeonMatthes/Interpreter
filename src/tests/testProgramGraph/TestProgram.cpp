@@ -32,7 +32,6 @@ TEST(TestProgram, TestRunFalseReturn)
 #include <programGraph/Connection.h>
 #include <programGraph/ValueBlock.h>
 
-/*
 TEST(TestProgram, TestRunTrueReturn)
 {
 	auto returnType = Datatype::BOOLEAN;
@@ -46,4 +45,4 @@ TEST(TestProgram, TestRunTrueReturn)
 
 	auto program = Program(std::move(graphical), {});
 	ASSERT_EQ(std::vector<Value>({ returnValue }), program.run({}));
-}*/
+}

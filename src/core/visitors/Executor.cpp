@@ -130,7 +130,7 @@ bool Executor::executeNext(class StatementBlock& statement)
 
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction)
 {
-	auto currentStackFrame = std::map<VariableIdentifier, Value>();
+	auto currentStackFrame = StackFrame();
 	for (const auto& id : graphicalFunction.variables())
 	{
 		currentStackFrame.emplace(id.first, Value(id.second));
