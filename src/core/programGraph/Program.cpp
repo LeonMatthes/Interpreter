@@ -21,6 +21,5 @@ Program::Program(Program&& other)
 std::vector<Value> Program::run(std::vector<Value> parameters)
 {
 	auto executor = Executor();
-	return executor.evaluate(*m_startFunction);
+	return executor.evaluate(*m_startFunction, parameters);
 }
-

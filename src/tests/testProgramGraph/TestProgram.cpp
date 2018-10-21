@@ -46,3 +46,22 @@ TEST(TestProgram, TestRunTrueReturn)
 	auto program = Program(std::move(graphical), {});
 	ASSERT_EQ(std::vector<Value>({ returnValue }), program.run({}));
 }
+
+#include <programGraph/ParameterAccessBlock.h>
+TEST(TestProgram, TestRunParameters)
+{
+	auto input1 = Datatype::BOOLEAN;
+	auto input2 = Datatype::DOUBLE;
+	auto graphical = GraphicalFunction::UPtr(new GraphicalFunction({ input1, input2 }, { input1, input2 }));
+	auto returnStatement = std::make_shared<ReturnBlock>(*graphical);
+	auto parameterAccess = std::make_shared<ParameterAccessBlock>(*graphical);
+	returnStatement->setInputConnections({ Connection(parameterAccess, 0), Connection(parameterAccess, 1) });
+	graphical->setStatementBlocks({ returnStatement });
+	graphical->setExpressionBlocks({ parameterAccess });
+
+	auto program = Program(std::move(graphical), {});
+
+	auto inputValue1 = Value(false);
+	auto inputValue2 = Value(2.0);
+	EXPECT_EQ(std::vector<Value>({ inputValue1, inputValue2 }), program.run({ inputValue1, inputValue2 }));
+}
