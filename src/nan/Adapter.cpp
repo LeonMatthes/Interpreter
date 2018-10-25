@@ -1,19 +1,23 @@
 #include <nan.h>
 #include <string>
+#include <JSProgram.h>
+#include <iostream>
+#include <JSProgramTranslator.h>
 
-using namespace v8;
+NAN_METHOD(Testing)
+{
+	auto translator = JSProgramTranslator();
+	auto keys = translator.accessMapKeys(info[0]->ToObject(), "Some error occured!");
+	std::cout << keys.size() << std::endl;
 
-
-NAN_METHOD(Method) {
-	std::string fibonacci("fibonacci");
-	info.GetReturnValue().Set(Nan::New(fibonacci).ToLocalChecked());
+	info.GetReturnValue().Set(true);
 }
-
 
 NAN_MODULE_INIT(Init)
 {
-    Nan::Set(target, Nan::New("hello").ToLocalChecked(), 
-        Nan::GetFunction(Nan::New<FunctionTemplate>(Method)).ToLocalChecked());
+	JSProgram::Init(target);
+	Nan::Set(target, Nan::New("Testing").ToLocalChecked(), 
+		Nan::GetFunction(Nan::New<v8::FunctionTemplate>(Testing)).ToLocalChecked());
 }
 
 NODE_MODULE(InterpreterNan, Init)

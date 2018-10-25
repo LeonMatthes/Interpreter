@@ -59,9 +59,12 @@ if(INTERPRETER_NAN)
 	add_subdirectory(src/nan)
 	add_library(${PROJECT_NAME} SHARED ${nan_src})
 	target_include_directories(${PROJECT_NAME} PUBLIC src/nan)
-	source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src/nan
-		PREFIX "nan"
-		FILES ${nan_src})
+	
+	if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
+		source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/src/nan 
+			PREFIX "nan"
+			FILES ${nan_src})
+	endif()
 	
 	# Gives our library file a .node extension without any "lib" prefix
 	set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "" SUFFIX ".node")
