@@ -32,7 +32,7 @@ bool TypeChecker::checkInputTypes(class Block& block)
 
 bool TypeChecker::visit(class PrimitiveFunction& primitiveFunction)
 {
-	return false;
+	THROW_ERROR(InternalError, "TypeChecker visited PrimitiveFunction!");
 }
 
 bool TypeChecker::visit(class ValueBlock& valueBlock)

@@ -5,6 +5,8 @@
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/ValueBlock.h>
 #include <programGraph/PrimitiveFunction.h>
+#include <error/InternalError.h>
+#include <testUtility/CustomAssert.h>
 
 class TestTypeChecker : public ::testing::Test
 {
@@ -12,9 +14,9 @@ public:
 	TypeChecker m_checker;
 };
 
-TEST_F(TestTypeChecker, PrimitiveFunctionIsFalse)
+TEST_F(TestTypeChecker, PrimitiveFunctionCanNotBeVisited)
 {
-	ASSERT_FALSE(PrimitiveFunction::add.accept(m_checker));
+	ASSERT_THROW_INTERPRETER(PrimitiveFunction::add.accept(m_checker), InternalError);
 }
 
 TEST_F(TestTypeChecker, ConnectionThrowsError)

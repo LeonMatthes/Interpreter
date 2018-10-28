@@ -42,6 +42,44 @@ class JSProgram* JSProgramTranslator::translateProgram(v8::Local<v8::Object> jav
 	return new JSProgram(std::move(startFunction), std::move(functions));
 }
 
+std::vector<v8::Local<v8::Value>> JSProgramTranslator::accessMapKeys(v8::Local<v8::Object> javascriptMap, const char* errorMessage)
+{
+	auto keysFunctionValue = Nan::Get(javascriptMap, Nan::New("keys").ToLocalChecked()).ToLocalChecked();
+	if (!keysFunctionValue->IsFunction())
+	{
+		throw TranslationError(errorMessage);
+	}
+	auto keysFunction = v8::Handle<v8::Function>::Cast(keysFunctionValue);
+	auto keys = keysFunction->Call(javascriptMap, 0, nullptr);
+	if (!keys->IsObject())
+	{
+		throw TranslationError(errorMessage);
+	}
+	
+	auto arrayPrototype = Nan::To<v8::Object>(v8::Isolate::GetCurrent()->GetCurrentContext()->Global()->Get(Nan::New("Array").ToLocalChecked())).ToLocalChecked();
+	auto fromFunctionValue = Nan::Get(arrayPrototype, Nan::New("from").ToLocalChecked()).ToLocalChecked();
+	if (!fromFunctionValue->IsFunction())
+	{
+		throw TranslationError(errorMessage);
+	}
+	auto fromFunction = v8::Handle<v8::Function>::Cast(fromFunctionValue);
+
+	auto keysArrayValue = fromFunction->Call(arrayPrototype, 1, &keys);
+	if (!keysArrayValue->IsArray())
+	{
+		throw TranslationError(errorMessage);
+	}
+	auto keysArray = v8::Local<v8::Array>::Cast(keysArrayValue);
+
+	auto result = std::vector<v8::Local<v8::Value>>();
+	for (uint32_t i = 0; i < keysArray->Length(); i++)
+	{
+		result.push_back(keysArray->Get(i));
+	}
+
+	return result;
+}
+
 std::map<JSProgramTranslator::Identifier, v8::Local<v8::Value>> JSProgramTranslator::translateMap(v8::Local<v8::Value> jsMapValue)
 {
 	if (!jsMapValue->IsObject())
@@ -57,7 +95,7 @@ std::map<JSProgramTranslator::Identifier, v8::Local<v8::Value>> JSProgramTransla
 	}
 	auto getFunction = v8::Handle<v8::Function>::Cast(getFunctionValue);
 
-	auto keys = accessMapKeys(jsMap, "Tried to convert a Map, but it does not contain keys!");
+	auto keys = accessMapKeys(jsMap, "Tried to convert a Map, but keys were not accessible!");
 	auto result = std::map<Identifier, v8::Local<v8::Value>>();
 	for (auto key : keys)
 	{
@@ -264,38 +302,4 @@ Datatype JSProgramTranslator::translateDatatype(v8::Local<v8::Value> jsDatatype,
 	{
 		throw TranslationError("Datatype name not supported!\nSupported types: 'Double', 'Boolean'!", currentFunctionID);
 	}
-}
-
-std::vector<v8::Local<v8::Value>> JSProgramTranslator::accessMapKeys(v8::Local<v8::Object> javascriptMap, const char* errorMessage)
-{
-	auto keysFunctionValue = Nan::Get(javascriptMap, Nan::New("keys").ToLocalChecked()).ToLocalChecked();
-	if (!keysFunctionValue->IsFunction())
-	{
-		throw TranslationError(errorMessage);
-	}
-	auto keysFunction = v8::Handle<v8::Function>::Cast(keysFunctionValue);
-	auto keys = keysFunction->Call(javascriptMap, 0, nullptr);
-	
-	auto arrayPrototype = Nan::To<v8::Object>(v8::Isolate::GetCurrent()->GetCurrentContext()->Global()->Get(Nan::New("Array").ToLocalChecked())).ToLocalChecked();
-	auto fromFunctionValue = Nan::Get(arrayPrototype, Nan::New("from").ToLocalChecked()).ToLocalChecked();
-	if (!fromFunctionValue->IsFunction())
-	{
-		throw TranslationError(errorMessage);
-	}
-	auto fromFunction = v8::Handle<v8::Function>::Cast(fromFunctionValue);
-
-	auto keysArrayValue = fromFunction->Call(arrayPrototype, 1, &keys);
-	if (!keysArrayValue->IsArray())
-	{
-		throw TranslationError(errorMessage);
-	}
-	auto keysArray = v8::Local<v8::Array>::Cast(keysArrayValue);
-
-	auto result = std::vector<v8::Local<v8::Value>>();
-	for (uint32_t i = 0; i < keysArray->Length(); i++)
-	{
-		result.push_back(keysArray->Get(i));
-	}
-
-	return result;
 }
