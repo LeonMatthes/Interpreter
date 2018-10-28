@@ -9,6 +9,7 @@ class Block
 public:
 	using Ptr = std::shared_ptr<Block>;
 	using WPtr = std::weak_ptr<Block>;
+	using UPtr = std::unique_ptr<Block>;
 	
 	virtual ~Block();
 

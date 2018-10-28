@@ -66,7 +66,7 @@ void Value::assertType(Datatype type) const
 {
 	if (m_type != type)
 	{
-		THROW_ERROR(InternalError, std::string("Type mismatch: trying to access value with type ") + type + ", but actual type is: " + m_type);
+		THROW_ERROR(InternalError, std::string("Type mismatch: trying to access value with type: '") + type + "', but actual type is: '" + m_type + "'!");
 	}
 }
 

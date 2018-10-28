@@ -6,11 +6,11 @@ std::string operator+(std::string str, Datatype type)
 	switch (type)
 	{
 	case Datatype::DOUBLE:
-		return "double";
+		return str + "Double";
 		break;
 	case Datatype::BOOLEAN:
-		return "boolean";
+		return str + "Boolean";
 		break;
 	}
-	THROW_ERROR(InternalError, "Trying to convert Datatype to string, which is not supported");
+	THROW_ERROR(InternalError, "Trying to convert unsupported Datatype to string!");
 }

@@ -18,5 +18,7 @@ public:
 
 protected:
 	Program m_program;
+
+	v8::Local<v8::Value> translateValue(Value& value);
 private:
 };

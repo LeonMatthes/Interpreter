@@ -1,9 +1,9 @@
 #include <programGraph/ExpressionStatement.h>
 #include <programGraph/ExpressionBlock.h>
 
-ExpressionStatement::ExpressionStatement(std::unique_ptr<class ExpressionBlock> expression)
+ExpressionStatement::ExpressionStatement(std::shared_ptr<class ExpressionBlock> expression)
 	: StatementBlock(expression->outputCount())
-	, m_expression(std::move(expression))
+	, m_expression(expression)
 {}
 
 ExpressionStatement::~ExpressionStatement()

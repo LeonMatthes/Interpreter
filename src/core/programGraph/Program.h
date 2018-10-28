@@ -11,6 +11,9 @@ public:
 	virtual ~Program() = default;
 
 	std::vector<Value> run(std::vector<Value> parameters);
+
+	std::vector<GraphicalFunction::UPtr>& functions();
+	GraphicalFunction::UPtr& startFunction();
 protected:
 	std::vector<GraphicalFunction::UPtr> m_functions;
 	GraphicalFunction::UPtr m_startFunction;

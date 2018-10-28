@@ -8,11 +8,12 @@ public:
 	template<class T, class... Args>
 	static std::shared_ptr<ExpressionStatement> make_shared(Args&&... args)
 	{
-		auto expression = std::unique_ptr<ExpressionBlock>(new T(std::forward<Args>(args)... /*copied from make_shared in <memory>*/));
+		auto expression = std::shared_ptr<ExpressionBlock>(new T(std::forward<Args>(args)... /*copied from make_shared in <memory>*/));
 		return std::make_shared<ExpressionStatement>(std::move(expression));
 	}
 
-	ExpressionStatement(std::unique_ptr<class ExpressionBlock> expression);
+	//This should probably be a unique_ptr, rather than a shared_ptr, but it does not quite fit with the Translator architecture
+	ExpressionStatement(std::shared_ptr<class ExpressionBlock> expression);
 	ExpressionStatement(const ExpressionStatement&) = delete;
 	virtual ~ExpressionStatement();
 
@@ -26,6 +27,6 @@ public:
 	MAKE_VISITABLE;
 protected:
 	
-	std::unique_ptr<class ExpressionBlock> m_expression;
+	std::shared_ptr<class ExpressionBlock> m_expression;
 private:
 };

@@ -23,3 +23,13 @@ std::vector<Value> Program::run(std::vector<Value> parameters)
 	auto executor = Executor();
 	return executor.evaluate(*m_startFunction, parameters);
 }
+
+std::vector<GraphicalFunction::UPtr>& Program::functions()
+{
+	return m_functions;
+}
+
+GraphicalFunction::UPtr& Program::startFunction()
+{
+	return m_startFunction;
+}

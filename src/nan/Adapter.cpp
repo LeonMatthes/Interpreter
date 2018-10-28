@@ -3,21 +3,16 @@
 #include <JSProgram.h>
 #include <iostream>
 #include <JSProgramTranslator.h>
+#include <TranslationError.h>
 
 NAN_METHOD(Testing)
 {
-	auto translator = JSProgramTranslator();
-	auto keys = translator.accessMapKeys(info[0]->ToObject(), "Some error occured!");
-	std::cout << keys.size() << std::endl;
-
-	info.GetReturnValue().Set(true);
+	TranslationError t("Test!", 0);
 }
 
 NAN_MODULE_INIT(Init)
 {
 	JSProgram::Init(target);
-	Nan::Set(target, Nan::New("Testing").ToLocalChecked(), 
-		Nan::GetFunction(Nan::New<v8::FunctionTemplate>(Testing)).ToLocalChecked());
 }
 
 NODE_MODULE(InterpreterNan, Init)
