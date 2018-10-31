@@ -186,7 +186,7 @@ void JSProgramTranslator::fillFunctionDefinition(Identifier ID, v8::Local<v8::Va
 
 	if (blocksMap.count(startBlock) == 0)
 	{
-		throw TranslationError("Function.start is not a valid Identifier!", ID);
+		throw TranslationError("Function.start is not a valid block Identifier!", ID);
 	}
 
 	auto statementsList = std::vector<StatementBlock::Ptr>();
