@@ -21,7 +21,7 @@ public:
 	
 	Value translateValue(v8::Local<v8::Value> jsValueValue, Nan::Maybe<Identifier> currentFunction, Nan::Maybe<Identifier> currentBlock);
 protected:
-	static v8::Local<v8::Array> JSProgramTranslator::datatypeArrayToJS(v8::Isolate* isolate, std::vector<Datatype> datatypes);
+	static v8::Local<v8::Array> datatypeArrayToJS(v8::Isolate* isolate, std::vector<Datatype> datatypes);
 	
 	
 	std::map<Identifier, GraphicalFunction::UPtr> m_functions;

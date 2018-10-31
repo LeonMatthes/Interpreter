@@ -600,7 +600,7 @@ Datatype JSProgramTranslator::translateDatatype(v8::Local<v8::Value> jsDatatype,
 
 
 
-v8::Local<v8::Array> JSProgramTranslator::translateDatatypeArray(v8::Isolate* isolate, std::vector<Datatype> datatypes)
+v8::Local<v8::Array> JSProgramTranslator::datatypeArrayToJS(v8::Isolate* isolate, std::vector<Datatype> datatypes)
 {
 	auto jsArray = v8::Array::New(isolate, datatypes.size());
 	for (size_t i = 0; i < datatypes.size(); i++)
@@ -639,8 +639,8 @@ NAN_METHOD(JSProgramTranslator::Primitives)
 
 			auto primitiveObject = v8::Object::New(info.GetIsolate());
 			Nan::Set(primitiveObject, Nan::New("ID").ToLocalChecked(), Nan::New(identifier.first));
-			Nan::Set(primitiveObject, Nan::New("inputs").ToLocalChecked(), JSProgramTranslator::translateDatatypeArray(info.GetIsolate(), primitiveFunction.inputs()));
-			Nan::Set(primitiveObject, Nan::New("outputs").ToLocalChecked(), JSProgramTranslator::translateDatatypeArray(info.GetIsolate(), primitiveFunction.outputs()));
+			Nan::Set(primitiveObject, Nan::New("inputs").ToLocalChecked(), JSProgramTranslator::datatypeArrayToJS(info.GetIsolate(), primitiveFunction.inputs()));
+			Nan::Set(primitiveObject, Nan::New("outputs").ToLocalChecked(), JSProgramTranslator::datatypeArrayToJS(info.GetIsolate(), primitiveFunction.outputs()));
 			Nan::Set(primitiveObject, Nan::New("name").ToLocalChecked(), Nan::New(primitiveFunction.name()).ToLocalChecked());
 		
 			Nan::Set(primitivesArray, count++, primitiveObject);
