@@ -27,7 +27,7 @@ protected:
 	std::map<Identifier, GraphicalFunction::UPtr> m_functions;
 	std::map<Identifier, v8::Local<v8::Value>> m_jsFunctionValues;
 
-	std::map<Identifier, v8::Local<v8::Value>> translateMap(v8::Local<v8::Value> jsMapValue);
+	std::map<Identifier, v8::Local<v8::Value>> translateMap(v8::Local<v8::Value> jsMapValue, std::string errorMessage);
 
 	std::vector<Datatype> translateDatatypeArray(v8::Local<v8::Value> jsArrayValue, std::string errorMessage, Identifier currentFunctionID);
 	Datatype translateDatatype(v8::Local<v8::Value> jsDatatype, Identifier currentFunctionID);
