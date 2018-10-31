@@ -10,6 +10,12 @@
 #include <programGraph/ValueBlock.h>
 #include <programGraph/ProgramFlowConnection.h>
 #include <programGraph/IfStatement.h>
+#include <programGraph/WhileStatement.h>
+#include <programGraph/ParameterAccessBlock.h>
+#include <programGraph/ExpressionStatement.h>
+#include <programGraph/PrimitiveFunction.h>
+#include <utility/Literals.h>
+#include <error/Error.h>
 
 JSProgramTranslator::JSProgramTranslator()
 {}
@@ -233,14 +239,14 @@ std::map<JSProgramTranslator::Identifier, Block::Ptr> JSProgramTranslator::trans
 	auto blocks = std::map<Identifier, Block::Ptr>();
 	for (const auto& block : jsBlockValues)
 	{
-		blocks[block.first] = translateBlockDeclaration(block.first, block.second, currentFunctionID);
+		blocks[block.first] = translateBlockDeclaration(Nan::Just<Identifier>(block.first), block.second, currentFunctionID);
 	}
 
 	return blocks;
 }
 
 
-Block::Ptr JSProgramTranslator::translateBlockDeclaration(Identifier ID, v8::Local<v8::Value> jsBlockValue, Identifier currentFunctionID)
+Block::Ptr JSProgramTranslator::translateBlockDeclaration(Nan::Maybe<Identifier> ID, v8::Local<v8::Value> jsBlockValue, Identifier currentFunctionID)
 {
 	if (!jsBlockValue->IsObject())
 	{
@@ -255,18 +261,40 @@ Block::Ptr JSProgramTranslator::translateBlockDeclaration(Identifier ID, v8::Loc
 	}
 	auto type = typeValue->ToString();
 
-	if (type->Equals(Nan::New("Return").ToLocalChecked()))
-	{
-		return std::make_shared<ReturnBlock>(*m_functions.at(currentFunctionID));
-	}
-	else if(type->Equals(Nan::New("Value").ToLocalChecked()))
+	auto& currentFunction = *m_functions.at(currentFunctionID);
+	//Expressions
+	if (type->Equals(Nan::New("Value").ToLocalChecked()))
 	{
 		auto value = translateValue(Nan::Get(jsBlock, Nan::New("value").ToLocalChecked()).ToLocalChecked(), currentFunctionID, ID);
 		return std::make_shared<ValueBlock>(value);
 	}
+	else if (type->Equals(Nan::New("ParameterAccess").ToLocalChecked()))
+	{
+		return std::make_shared<ParameterAccessBlock>(currentFunction);
+	}
+	else if (type->Equals(Nan::New("Return").ToLocalChecked())) //Statements
+	{
+		return std::make_shared<ReturnBlock>(currentFunction);
+	}
 	else if (type->Equals(Nan::New("If").ToLocalChecked()))
 	{
 		return std::make_shared<IfStatement>();
+	}
+	else if (type->Equals(Nan::New("While").ToLocalChecked()))
+	{
+		return std::make_shared<WhileStatement>();
+	}
+	else if (type->Equals(Nan::New("ExpressionStatement").ToLocalChecked()))
+	{
+		auto expressionValue = Nan::Get(jsBlock, Nan::New("expression").ToLocalChecked()).ToLocalChecked();
+		auto expressionMaybe = translateBlockDeclaration(ID, expressionValue, currentFunctionID);
+		auto expression = std::dynamic_pointer_cast<ExpressionBlock>(expressionMaybe);
+		if (expression == nullptr)
+		{
+			throw TranslationError("ExpressionStatement.expression is not an Expression!", currentFunctionID, ID);
+		}
+
+		return std::make_shared<ExpressionStatement>(expression);
 	}
 	else
 	{
@@ -376,7 +404,7 @@ void JSProgramTranslator::translateBlockConnection(v8::Local<v8::Value> jsConnec
 	endBlock->setInputConnection(endPort, Connection(startBlock, startPort));
 }
 
-Value JSProgramTranslator::translateValue(v8::Local<v8::Value> jsValueValue, Identifier currentFunction, Identifier currentBlock)
+Value JSProgramTranslator::translateValue(v8::Local<v8::Value> jsValueValue, Identifier currentFunction, Nan::Maybe<Identifier> currentBlock)
 {
 	if (jsValueValue->IsNumber())
 	{
@@ -436,5 +464,73 @@ Datatype JSProgramTranslator::translateDatatype(v8::Local<v8::Value> jsDatatype,
 	else
 	{
 		throw TranslationError("Datatype name not supported!\nSupported types: 'Double', 'Boolean'!", currentFunctionID);
+	}
+}
+
+
+
+v8::Local<v8::Array> JSProgramTranslator::translateDatatypeArray(v8::Isolate* isolate, std::vector<Datatype> datatypes)
+{
+	auto jsArray = v8::Array::New(isolate, datatypes.size());
+	for (size_t i = 0; i < datatypes.size(); i++)
+	{
+		auto jsType = Nan::New(""_s + datatypes.at(i)).ToLocalChecked();
+		Nan::Set(jsArray, i, jsType);
+	}
+	return jsArray;
+}
+
+std::map<JSProgramTranslator::Identifier, PrimitiveFunction&> JSProgramTranslator::primitiveIdentifiers()
+{
+	return std::map<JSProgramTranslator::Identifier, PrimitiveFunction&>({
+			{ 0, PrimitiveFunction::add },
+			{ 1, PrimitiveFunction::subtract },
+			{ 2, PrimitiveFunction::multiply },
+			{ 3, PrimitiveFunction::divide },
+			{ 4, PrimitiveFunction::smaller },
+			{ 5, PrimitiveFunction::logicalAnd },
+			{ 6, PrimitiveFunction::logicalOr },
+			{ 7, PrimitiveFunction::logicalNot}
+		});
+}
+
+NAN_METHOD(JSProgramTranslator::Primitives)
+{
+	try
+	{
+		auto identifiers = JSProgramTranslator::primitiveIdentifiers();
+		auto primitivesArray = v8::Array::New(info.GetIsolate(), identifiers.size());
+		auto count = 0;
+
+		for (const auto& identifier : identifiers)
+		{
+			auto& primitiveFunction = identifier.second;
+
+			auto primitiveObject = v8::Object::New(info.GetIsolate());
+			Nan::Set(primitiveObject, Nan::New("ID").ToLocalChecked(), Nan::New(identifier.first));
+			Nan::Set(primitiveObject, Nan::New("inputs").ToLocalChecked(), JSProgramTranslator::translateDatatypeArray(info.GetIsolate(), primitiveFunction.inputs()));
+			Nan::Set(primitiveObject, Nan::New("outputs").ToLocalChecked(), JSProgramTranslator::translateDatatypeArray(info.GetIsolate(), primitiveFunction.outputs()));
+			Nan::Set(primitiveObject, Nan::New("name").ToLocalChecked(), Nan::New(primitiveFunction.name()).ToLocalChecked());
+		
+			Nan::Set(primitivesArray, count++, primitiveObject);
+		}
+
+		info.GetReturnValue().Set(primitivesArray);
+	}
+	catch (std::exception& e)
+	{
+		TranslationError(e.what());
+	}
+	catch (Error::Ptr e)
+	{
+		TranslationError(e->message());
+	}
+	catch (TranslationError e)
+	{
+		;
+	}
+	catch (...)
+	{
+		TranslationError("Unknown C++ exception thrown!");
 	}
 }

@@ -14,8 +14,14 @@ public:
 	virtual ~JSProgramTranslator() = default;
 
 	class JSProgram* translateProgram(v8::Local<v8::Object> javascriptProgram);
+
+	static NAN_METHOD(Primitives);
+	static std::map<Identifier, PrimitiveFunction&> primitiveIdentifiers();
 	
 protected:
+	static v8::Local<v8::Array> JSProgramTranslator::translateDatatypeArray(v8::Isolate* isolate, std::vector<Datatype> datatypes);
+	
+	
 	std::map<Identifier, GraphicalFunction::UPtr> m_functions;
 	std::map<Identifier, v8::Local<v8::Value>> m_jsFunctionValues;
 
@@ -33,13 +39,13 @@ protected:
 	std::vector<v8::Local<v8::Value>> accessMapKeys(v8::Local<v8::Object> javascriptMap, const char* errorMessage);
 	
 	std::map<Identifier, Block::Ptr> translateBlockDeclarations(std::map<Identifier, v8::Local<v8::Value>> jsBlockValues, Identifier currentFunctionID);
+	Block::Ptr translateBlockDeclaration(Nan::Maybe<Identifier> ID, v8::Local<v8::Value> jsBlockValue, Identifier currentFunctionID);
 
-private:
-	Block::Ptr translateBlockDeclaration(Identifier ID, v8::Local<v8::Value> jsBlock, Identifier currentFunctionID);
-	Value translateValue(v8::Local<v8::Value> jsValueValue, Identifier currentFunction, Identifier currentBlock);
 	void translateBlockConnections(v8::Local<v8::Value> jsConnections, std::map<JSProgramTranslator::Identifier, Block::Ptr>& blocksMap, Identifier currentFunction);
 	void translateBlockConnection(v8::Local<v8::Value> jsConnectionValue, std::map<Identifier, Block::Ptr>& blocksMap, Identifier currentFunction);
 
+	Value translateValue(v8::Local<v8::Value> jsValueValue, Identifier currentFunction, Nan::Maybe<Identifier> currentBlock);
 	Identifier translateIdentifier(v8::Local<v8::Value> numberValue, std::string errorMessage, Identifier currentFunction);
+private:
 
 };

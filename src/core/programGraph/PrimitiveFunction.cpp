@@ -4,6 +4,7 @@
 //					Math Primitives
 //////////////////////////////////////////////////////////////////////////
 PrimitiveFunction PrimitiveFunction::add(
+	"+",
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }), 
 	std::vector<Datatype>({ Datatype::DOUBLE }), 
 	[](std::vector<Value> inputs)
@@ -13,6 +14,7 @@ PrimitiveFunction PrimitiveFunction::add(
 	});
 
 PrimitiveFunction PrimitiveFunction::subtract(
+	"-",
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }), 
 	std::vector<Datatype>({Datatype::DOUBLE}),
 	[](std::vector<Value> inputs) 
@@ -22,6 +24,7 @@ PrimitiveFunction PrimitiveFunction::subtract(
 	});
 
 PrimitiveFunction PrimitiveFunction::multiply(
+	"*",
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }),
 	std::vector<Datatype>({ Datatype::DOUBLE }),
 	[](std::vector<Value> inputs)
@@ -31,6 +34,7 @@ PrimitiveFunction PrimitiveFunction::multiply(
 	});
 
 PrimitiveFunction PrimitiveFunction::divide(
+	"/",
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }),
 	std::vector<Datatype>({ Datatype::DOUBLE }),
 	[](std::vector<Value> inputs)
@@ -43,6 +47,7 @@ PrimitiveFunction PrimitiveFunction::divide(
 //				Comparison Primitives
 //////////////////////////////////////////////////////////////////////////
 PrimitiveFunction PrimitiveFunction::smaller(
+	"<",
 	std::vector<Datatype>({ Datatype::DOUBLE, Datatype::DOUBLE }),
 	std::vector<Datatype>({ Datatype::BOOLEAN }),
 	[](std::vector<Value> inputs)
@@ -55,6 +60,7 @@ PrimitiveFunction PrimitiveFunction::smaller(
 //				Boolean Primitives
 //////////////////////////////////////////////////////////////////////////
 PrimitiveFunction PrimitiveFunction::logicalAnd(
+	"and",
 	std::vector<Datatype>({ Datatype::BOOLEAN, Datatype::BOOLEAN }),
 	std::vector<Datatype>({ Datatype::BOOLEAN }),
 	[](std::vector<Value> inputs)
@@ -64,6 +70,7 @@ PrimitiveFunction PrimitiveFunction::logicalAnd(
 	});
 
 PrimitiveFunction PrimitiveFunction::logicalOr(
+	"or",
 	std::vector<Datatype>({ Datatype::BOOLEAN, Datatype::BOOLEAN }),
 	std::vector<Datatype>({ Datatype::BOOLEAN }),
 	[](std::vector<Value> inputs)
@@ -73,6 +80,7 @@ PrimitiveFunction PrimitiveFunction::logicalOr(
 	});
 
 PrimitiveFunction PrimitiveFunction::logicalNot(
+	"not",
 	std::vector<Datatype>({ Datatype::BOOLEAN }),
 	std::vector<Datatype>({ Datatype::BOOLEAN }),
 	[](std::vector<Value> inputs)
@@ -81,13 +89,19 @@ PrimitiveFunction PrimitiveFunction::logicalNot(
 		return std::vector<Value>({ Value(result) });
 	});
 
-PrimitiveFunction::PrimitiveFunction(std::vector<Datatype> inputTypes, std::vector<Datatype> outputTypes, std::function<std::vector<Value>(std::vector<Value>)> executeFunction)
+PrimitiveFunction::PrimitiveFunction(std::string name, std::vector<Datatype> inputTypes, std::vector<Datatype> outputTypes, std::function<std::vector<Value>(std::vector<Value>)> executeFunction)
 	: Function(inputTypes, outputTypes)
 	, m_executeFunction{executeFunction}
+	, m_name{name}
 {}
 
 
 std::vector<Value> PrimitiveFunction::operator()(std::vector<Value> inputs) const
 {
 	return m_executeFunction(inputs);
+}
+
+std::string PrimitiveFunction::name() const
+{
+	return m_name;
 }
