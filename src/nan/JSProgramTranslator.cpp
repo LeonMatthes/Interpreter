@@ -6,6 +6,10 @@
 #include <JSProgram.h>
 #include <visitors/TypeChecker.h>
 #include <visitors/DAGChecker.h>
+#include <programGraph/Value.h>
+#include <programGraph/ValueBlock.h>
+#include <programGraph/ProgramFlowConnection.h>
+#include <programGraph/IfStatement.h>
 
 JSProgramTranslator::JSProgramTranslator()
 {}
@@ -155,6 +159,10 @@ void JSProgramTranslator::fillFunctionDefinition(Identifier ID, v8::Local<v8::Va
 	auto jsBlockValues = translateMap(Nan::Get(jsFunction, Nan::New("blocks").ToLocalChecked()).ToLocalChecked());
 	auto blocksMap = translateBlockDeclarations(jsBlockValues, ID);
 
+	auto jsConnections = Nan::Get(jsFunction, Nan::New("connections").ToLocalChecked()).ToLocalChecked();
+	translateBlockConnections(jsConnections, blocksMap, ID);
+
+
 	auto startBlockValue = Nan::Get(jsFunction, Nan::New("start").ToLocalChecked()).ToLocalChecked();
 	if (!startBlockValue->IsNumber())
 	{
@@ -251,6 +259,15 @@ Block::Ptr JSProgramTranslator::translateBlockDeclaration(Identifier ID, v8::Loc
 	{
 		return std::make_shared<ReturnBlock>(*m_functions.at(currentFunctionID));
 	}
+	else if(type->Equals(Nan::New("Value").ToLocalChecked()))
+	{
+		auto value = translateValue(Nan::Get(jsBlock, Nan::New("value").ToLocalChecked()).ToLocalChecked(), currentFunctionID, ID);
+		return std::make_shared<ValueBlock>(value);
+	}
+	else if (type->Equals(Nan::New("If").ToLocalChecked()))
+	{
+		return std::make_shared<IfStatement>();
+	}
 	else
 	{
 		Nan::Utf8String typeString(type);
@@ -264,6 +281,124 @@ Block::Ptr JSProgramTranslator::translateBlockDeclaration(Identifier ID, v8::Loc
 			throw TranslationError("Unsupported type: '" + std::string(*typeString, length) + "'!", currentFunctionID, ID);
 		}
 	}
+}
+
+void JSProgramTranslator::translateBlockConnections(v8::Local<v8::Value> jsConnectionsValue, std::map<JSProgramTranslator::Identifier, Block::Ptr>& blocksMap, Identifier currentFunction)
+{
+	if (!jsConnectionsValue->IsArray())
+	{
+		throw TranslationError("Function.connections must be an Array!");
+	}
+	auto jsConnections = v8::Local<v8::Array>::Cast(jsConnectionsValue);
+
+	for (size_t i = 0; i < jsConnections->Length(); i++)
+	{
+		translateBlockConnection(jsConnections->Get(i), blocksMap, currentFunction);
+	}
+}
+
+void JSProgramTranslator::translateBlockConnection(v8::Local<v8::Value> jsConnectionValue, std::map<JSProgramTranslator::Identifier, Block::Ptr>& blocksMap, JSProgramTranslator::Identifier currentFunction)
+{
+	if (!jsConnectionValue->IsObject())
+	{
+		throw TranslationError("Connection is not an Object!", currentFunction);
+	}
+	auto jsConnection = jsConnectionValue->ToObject();
+
+	auto startBlockValue = Nan::Get(jsConnection, Nan::New("startBlock").ToLocalChecked()).ToLocalChecked();
+	auto startBlockID = translateIdentifier(startBlockValue, "Connection.startBlock must be an Identifier!", currentFunction);
+
+	auto startPortValue = Nan::Get(jsConnection, Nan::New("startPort").ToLocalChecked()).ToLocalChecked();
+	auto startPort = translateIdentifier(startPortValue, "Connection.startPort must be a Number!", currentFunction);
+
+	auto endBlockValue = Nan::Get(jsConnection, Nan::New("endBlock").ToLocalChecked()).ToLocalChecked();
+	auto endBlockID = translateIdentifier(endBlockValue, "Connection.endBlock must be an Identifier!", currentFunction);
+
+	auto endPortValue = Nan::Get(jsConnection, Nan::New("endPort").ToLocalChecked()).ToLocalChecked();
+	auto endPort = translateIdentifier(endPortValue, "Connection.endPort must be a Number!", currentFunction);
+
+	if (blocksMap.count(startBlockID) == 0)
+	{
+		throw TranslationError("Connection.startBlock does not reference a Block in this function!", currentFunction);
+	}
+	auto& startBlock = blocksMap.at(startBlockID);
+
+	if (blocksMap.count(endBlockID) == 0)
+	{
+		throw TranslationError("Connection.endBlock does not reference a Block in this function", currentFunction);
+	}
+	auto& endBlock = blocksMap.at(endBlockID);
+
+
+	if (startPort < 0)
+	{
+		throw TranslationError("Connection.startPort is out of bounds!");
+	}
+	if (endPort < 0)
+	{
+		throw TranslationError("Connection.endPort is out of bounds!");
+	}
+
+	auto startStatement = std::dynamic_pointer_cast<StatementBlock>(startBlock);
+	auto endStatement = std::dynamic_pointer_cast<StatementBlock>(endBlock);
+	if (startStatement != nullptr)
+	{
+		if (startPort < startStatement->flowConnectionsCount())
+		{
+			if (endStatement == nullptr)
+			{
+				throw TranslationError("Connection.startPort refers to a FlowConnection port, but Connection.endBlock is not a Statement!", currentFunction);
+			}
+			startStatement->setFlowConnection(startPort, ProgramFlowConnection(endStatement));
+			return;
+		}
+		else
+		{
+			//subtract the ProgramFlow outputs, as these Connection types are not differentiated in JS
+			startPort -= startStatement->flowConnectionsCount();
+		}
+	}
+
+	if (endStatement != nullptr)
+	{
+		endPort -= 1; //subtract the one ProgramFlow input, as these Connection types are not differentiated in JS
+	}
+
+	if (startPort < 0 || startPort >= startBlock->outputCount())
+	{
+		throw TranslationError("Connection.startPort is out of bounds!");
+	}
+	if (endPort < 0 || endPort >= endBlock->inputCount())
+	{
+		throw TranslationError("Connection.endPort");
+	}
+
+	endBlock->setInputConnection(endPort, Connection(startBlock, startPort));
+}
+
+Value JSProgramTranslator::translateValue(v8::Local<v8::Value> jsValueValue, Identifier currentFunction, Identifier currentBlock)
+{
+	if (jsValueValue->IsNumber())
+	{
+		return Value(Nan::To<double>(jsValueValue).FromJust());
+	}
+	else if (jsValueValue->IsBoolean())
+	{
+		return Value(Nan::To<bool>(jsValueValue).FromJust());
+	}
+	else
+	{
+		throw TranslationError("Value must be either Boolean or Number type!", currentFunction, currentBlock);
+	}
+}
+
+JSProgramTranslator::Identifier JSProgramTranslator::translateIdentifier(v8::Local<v8::Value> numberValue, std::string errorMessage, Identifier currentFunction)
+{
+	if (!numberValue->IsNumber())
+	{
+		throw TranslationError(errorMessage, currentFunction);
+	}
+	return Nan::To<Identifier>(numberValue).FromJust();
 }
 
 std::vector<Datatype> JSProgramTranslator::translateDatatypeArray(v8::Local<v8::Value> jsArrayValue, std::string errorMessage, Identifier currentFunctionID)

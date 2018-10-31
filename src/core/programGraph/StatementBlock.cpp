@@ -27,3 +27,8 @@ void StatementBlock::setFlowConnections(const std::vector<ProgramFlowConnection>
 	}
 	m_flowConnections = connections;
 }
+
+void StatementBlock::setFlowConnection(size_t index, const ProgramFlowConnection& connection)
+{
+	m_flowConnections.at(index) = connection;
+}

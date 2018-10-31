@@ -90,7 +90,9 @@ void Executor::visit(class VariableWriteBlock& variableWriteBlock)
 void Executor::visit(class IfStatement& ifStatement)
 {
 	auto inputConnection = ifStatement.inputConnections().front();
-	auto conditionValue = inputConnection.accept(m_evaluator).front();
+	auto conditionType = ifStatement.inputTypes().front();
+	auto conditionValue = m_evaluator.evaluateConnection(inputConnection, conditionType);
+
 	if (conditionValue.getBoolean())
 	{
 		executeNext(ifStatement, 0);

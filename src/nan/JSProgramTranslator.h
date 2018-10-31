@@ -36,4 +36,10 @@ protected:
 
 private:
 	Block::Ptr translateBlockDeclaration(Identifier ID, v8::Local<v8::Value> jsBlock, Identifier currentFunctionID);
+	Value translateValue(v8::Local<v8::Value> jsValueValue, Identifier currentFunction, Identifier currentBlock);
+	void translateBlockConnections(v8::Local<v8::Value> jsConnections, std::map<JSProgramTranslator::Identifier, Block::Ptr>& blocksMap, Identifier currentFunction);
+	void translateBlockConnection(v8::Local<v8::Value> jsConnectionValue, std::map<Identifier, Block::Ptr>& blocksMap, Identifier currentFunction);
+
+	Identifier translateIdentifier(v8::Local<v8::Value> numberValue, std::string errorMessage, Identifier currentFunction);
+
 };

@@ -13,6 +13,7 @@ public:
 
 	const std::vector<ProgramFlowConnection>& flowConnections();
 	void setFlowConnections(const std::vector<ProgramFlowConnection>& connections);
+	void setFlowConnection(size_t index, const ProgramFlowConnection& connection);
 
 protected:
 	StatementBlock(size_t inputCount, size_t flowConnectionsCount = 1);

@@ -18,6 +18,7 @@ public:
 	
 	std::vector<Connection> inputConnections() const;
 	virtual void setInputConnections(std::vector<Connection> val);
+	virtual void setInputConnection(size_t index, Connection connection);
 
 	MAKE_VISITABLE_VIRTUAL;
 	

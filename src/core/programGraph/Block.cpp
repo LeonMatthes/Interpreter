@@ -31,3 +31,8 @@ void Block::setInputConnections(std::vector<Connection> val)
 	}
 	m_inputConnections = val;
 }
+
+void Block::setInputConnection(size_t index, Connection connection)
+{
+	m_inputConnections.at(index) = connection;
+}
