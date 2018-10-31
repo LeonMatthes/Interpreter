@@ -80,7 +80,9 @@ NAN_METHOD(JSProgram::run)
 	auto jsResults = v8::Array::New(info.GetIsolate(), results.size());
 	try
 	{
-		results = self->m_program.run({});
+		auto parameters = self->translateParameters(info);
+
+		results = self->m_program.run(parameters);
 	
 		for (size_t i = 0; i < results.size(); i++)
 		{
@@ -115,4 +117,14 @@ v8::Local<v8::Value> JSProgram::translateValue(Value& value)
 		return Nan::New(value.getBoolean());
 		break;
 	}
+}
+
+std::vector<Value> JSProgram::translateParameters(Nan::NAN_METHOD_ARGS_TYPE info)
+{
+	auto parameters = std::vector<Value>();
+	for (size_t i = 0; i < info.Length(); i++)
+	{
+		parameters.push_back(JSProgramTranslator().translateValue(info[i], Nan::Nothing<JSProgramTranslator::Identifier>(), Nan::Nothing<JSProgramTranslator::Identifier>()));
+	}
+	return parameters;
 }

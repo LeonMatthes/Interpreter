@@ -29,6 +29,22 @@ TranslationError::TranslationError(std::string errorMessage, JSProgramTranslator
 	}
 }
 
+TranslationError::TranslationError(std::string errorMessage, Nan::Maybe<JSProgramTranslator::Identifier> functionIdentifier, Nan::Maybe<JSProgramTranslator::Identifier> blockIdentifier)
+{
+	if (functionIdentifier.IsNothing())
+	{
+		throwJSError(errorMessage, Nan::Undefined(), Nan::Undefined());
+	}
+	else if (blockIdentifier.IsNothing())
+	{
+		throwJSError(errorMessage, functionIdentifier.FromJust());
+	}
+	else
+	{
+		throwJSError(errorMessage, functionIdentifier.FromJust(), blockIdentifier.FromJust());
+	}
+}
+
 void TranslationError::throwJSError(std::string message, v8::Local<v8::Value> functionIdentifier, v8::Local<v8::Value> blockIdentifier)
 {
 	auto errorObject = Nan::Error(("TranslationError: " + message).data());

@@ -21,4 +21,5 @@ protected:
 
 	v8::Local<v8::Value> translateValue(Value& value);
 private:
+	std::vector<Value> translateParameters(Nan::NAN_METHOD_ARGS_TYPE info);
 };

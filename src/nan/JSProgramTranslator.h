@@ -18,6 +18,7 @@ public:
 	static NAN_METHOD(Primitives);
 	static std::map<Identifier, PrimitiveFunction&> primitiveIdentifiers();
 	
+	Value translateValue(v8::Local<v8::Value> jsValueValue, Nan::Maybe<Identifier> currentFunction, Nan::Maybe<Identifier> currentBlock);
 protected:
 	static v8::Local<v8::Array> JSProgramTranslator::translateDatatypeArray(v8::Isolate* isolate, std::vector<Datatype> datatypes);
 	
@@ -44,8 +45,10 @@ protected:
 	void translateBlockConnections(v8::Local<v8::Value> jsConnections, std::map<JSProgramTranslator::Identifier, Block::Ptr>& blocksMap, Identifier currentFunction);
 	void translateBlockConnection(v8::Local<v8::Value> jsConnectionValue, std::map<Identifier, Block::Ptr>& blocksMap, Identifier currentFunction);
 
-	Value translateValue(v8::Local<v8::Value> jsValueValue, Identifier currentFunction, Nan::Maybe<Identifier> currentBlock);
 	Identifier translateIdentifier(v8::Local<v8::Value> numberValue, std::string errorMessage, Identifier currentFunction);
 private:
 
+	Block::Ptr translateFunctionBlock(Nan::Maybe<Identifier> ID, v8::Local<v8::Object> jsBlock, Identifier currentFunctionID);
+	void fillVariables(GraphicalFunction& graphical, Identifier ID, v8::Local<v8::Value> jsVariablesValue);
+	void fillVariable(GraphicalFunction& graphical, Identifier ID, v8::Local<v8::Value> variableValue);
 };
