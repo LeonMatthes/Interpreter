@@ -16,6 +16,9 @@ NAN_MODULE_INIT(Init)
 
 	Nan::Set(target, Nan::New("primitives").ToLocalChecked(),
 		Nan::GetFunction(Nan::New<v8::FunctionTemplate>(JSProgramTranslator::Primitives)).ToLocalChecked());
+
+	Nan::Set(target, Nan::New("datatypes").ToLocalChecked(),
+		Nan::GetFunction(Nan::New<v8::FunctionTemplate>(JSProgramTranslator::Datatypes)).ToLocalChecked());
 }
 
 NODE_MODULE(InterpreterNan, Init)

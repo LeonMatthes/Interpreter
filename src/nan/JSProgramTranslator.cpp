@@ -665,3 +665,28 @@ NAN_METHOD(JSProgramTranslator::Primitives)
 		TranslationError("Unknown C++ exception thrown!");
 	}
 }
+
+NAN_METHOD(JSProgramTranslator::Datatypes)
+{
+	try
+	{
+		auto types = std::vector<Datatype>({ 
+			Datatype::BOOLEAN, 
+			Datatype::DOUBLE });
+
+		auto jsArray = v8::Array::New(info.GetIsolate(), types.size());
+		for (size_t i = 0; i < types.size(); i++)
+		{
+			Nan::Set(jsArray, i, Nan::New(""_s + types.at(i)).ToLocalChecked());
+		}
+		info.GetReturnValue().Set(jsArray);
+	}
+	catch (std::exception& e)
+	{
+		TranslationError(e.what());
+	}
+	catch (...)
+	{
+		TranslationError("Unknown C++ error thrown!");
+	}
+}

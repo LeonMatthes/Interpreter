@@ -15,12 +15,13 @@ public:
 
 	class JSProgram* translateProgram(v8::Local<v8::Object> javascriptProgram);
 
+	static NAN_METHOD(Datatypes);
 	static NAN_METHOD(Primitives);
 	static std::map<Identifier, PrimitiveFunction&> primitiveIdentifiers();
 	
 	Value translateValue(v8::Local<v8::Value> jsValueValue, Nan::Maybe<Identifier> currentFunction, Nan::Maybe<Identifier> currentBlock);
 protected:
-	static v8::Local<v8::Array> JSProgramTranslator::translateDatatypeArray(v8::Isolate* isolate, std::vector<Datatype> datatypes);
+	static v8::Local<v8::Array> JSProgramTranslator::datatypeArrayToJS(v8::Isolate* isolate, std::vector<Datatype> datatypes);
 	
 	
 	std::map<Identifier, GraphicalFunction::UPtr> m_functions;
