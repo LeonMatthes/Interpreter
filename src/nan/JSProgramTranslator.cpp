@@ -26,7 +26,7 @@ JSProgramTranslator::JSProgramTranslator()
 class JSProgram* JSProgramTranslator::translateProgram(v8::Local<v8::Object> javascriptProgram)
 {
 	auto jsFunctionsValue = Nan::Get(javascriptProgram, Nan::New("functions").ToLocalChecked()).ToLocalChecked();
-	m_jsFunctionValues = translateMap(jsFunctionsValue);
+	m_jsFunctionValues = translateMap(jsFunctionsValue, "Could not translate Program.functions to Map<Number, Object>");
 	m_functions = std::move(translateFunctionDeclarations(m_jsFunctionValues));
 	fillFunctionDefinitions(m_jsFunctionValues);
 
@@ -93,28 +93,28 @@ std::vector<v8::Local<v8::Value>> JSProgramTranslator::accessMapKeys(v8::Local<v
 	return result;
 }
 
-std::map<JSProgramTranslator::Identifier, v8::Local<v8::Value>> JSProgramTranslator::translateMap(v8::Local<v8::Value> jsMapValue)
+std::map<JSProgramTranslator::Identifier, v8::Local<v8::Value>> JSProgramTranslator::translateMap(v8::Local<v8::Value> jsMapValue, std::string errorMessage)
 {
 	if (!jsMapValue->IsObject())
 	{
-		throw TranslationError("Tried to translate a Map, but it does not seem to be an Object!\nExpected: Map<Number, Object>");
+		throw TranslationError(errorMessage);
 	}
 	auto jsMap = jsMapValue->ToObject();
 
 	auto getFunctionValue = Nan::Get(jsMap, Nan::New("get").ToLocalChecked()).ToLocalChecked();
 	if (!getFunctionValue->IsFunction())
 	{
-		throw TranslationError("Tried to convert a Map, but it doesn't understand 'get'!");
+		throw TranslationError(errorMessage);
 	}
 	auto getFunction = v8::Handle<v8::Function>::Cast(getFunctionValue);
 
-	auto keys = accessMapKeys(jsMap, "Tried to convert a Map, but keys were not accessible!");
+	auto keys = accessMapKeys(jsMap, errorMessage.data());
 	auto result = std::map<Identifier, v8::Local<v8::Value>>();
 	for (auto key : keys)
 	{
 		if (!key->IsNumber())
 		{
-			throw TranslationError("One of the keys in a Map is not a number!");
+			throw TranslationError(errorMessage);
 		}
 		auto keyNumber = Nan::To<Identifier>(key).FromJust();
 
@@ -169,7 +169,7 @@ void JSProgramTranslator::fillFunctionDefinition(Identifier ID, v8::Local<v8::Va
 	}
 	auto jsFunction = jsFunctionValue->ToObject();
 
-	auto jsBlockValues = translateMap(Nan::Get(jsFunction, Nan::New("blocks").ToLocalChecked()).ToLocalChecked());
+	auto jsBlockValues = translateMap(Nan::Get(jsFunction, Nan::New("blocks").ToLocalChecked()).ToLocalChecked(), "Could not translate Function.blocks to Map<Number, Object>");
 	auto blocksMap = translateBlockDeclarations(jsBlockValues, ID);
 
 	auto jsConnections = Nan::Get(jsFunction, Nan::New("connections").ToLocalChecked()).ToLocalChecked();
