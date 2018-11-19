@@ -611,18 +611,58 @@ v8::Local<v8::Array> JSProgramTranslator::datatypeArrayToJS(v8::Isolate* isolate
 	return jsArray;
 }
 
+#include <Constants.h>
+
 std::map<JSProgramTranslator::Identifier, PrimitiveFunction&> JSProgramTranslator::primitiveIdentifiers()
 {
 	return std::map<JSProgramTranslator::Identifier, PrimitiveFunction&>({
-			{ 0, PrimitiveFunction::add },
-			{ 1, PrimitiveFunction::subtract },
-			{ 2, PrimitiveFunction::multiply },
-			{ 3, PrimitiveFunction::divide },
-			{ 4, PrimitiveFunction::smaller },
-			{ 5, PrimitiveFunction::logicalAnd },
-			{ 6, PrimitiveFunction::logicalOr },
-			{ 7, PrimitiveFunction::logicalNot}
+			{ Identifiers::ADD, PrimitiveFunction::add },
+			{ Identifiers::SUBTRACT, PrimitiveFunction::subtract },
+			{ Identifiers::MULTIPLY, PrimitiveFunction::multiply },
+			{ Identifiers::DIVIDE, PrimitiveFunction::divide },
+			{ Identifiers::SMALLER, PrimitiveFunction::smaller },
+			{ Identifiers::LOGICALAND, PrimitiveFunction::logicalAnd },
+			{ Identifiers::LOGICALOR, PrimitiveFunction::logicalOr },
+			{ Identifiers::LOGICALNOT, PrimitiveFunction::logicalNot},
+			{ Identifiers::BOOLTODOUBLE, PrimitiveFunction::castBoolToDouble },
+			{ Identifiers::DOUBLETOBOOL, PrimitiveFunction::castDoubleToBool }
 		});
+}
+
+std::map<Datatype, JSProgramTranslator::Identifier> JSProgramTranslator::castingTable(Datatype type)
+{
+	switch (type)
+	{
+	case Datatype::DOUBLE:
+		return { { Datatype::BOOLEAN, Identifiers::DOUBLETOBOOL } };
+		break;
+	case Datatype::BOOLEAN:
+		return { {Datatype::DOUBLE, Identifiers::BOOLTODOUBLE} };
+		break;
+	}
+	return {};
+}
+
+v8::Local<v8::Value> JSProgramTranslator::datatypeInformation(v8::Isolate* isolate, Datatype type)
+{
+	auto casts = castingTable(type);
+	auto jsCastingTable = v8::Array::New(isolate, casts.size());
+	
+	auto i = 0;
+	for (const auto& cast : casts)
+	{
+		auto jsCast = v8::Object::New(isolate);
+		Nan::Set(jsCast, Nan::New("target").ToLocalChecked(), Nan::New(""_s + cast.first).ToLocalChecked());
+		Nan::Set(jsCast, Nan::New("functionID").ToLocalChecked(), Nan::New(cast.second));
+
+		Nan::Set(jsCastingTable, i++, jsCast);
+	}
+	
+	auto jsDatatype = v8::Object::New(isolate);
+	Nan::Set(jsDatatype, Nan::New("name").ToLocalChecked(), Nan::New(""_s + type).ToLocalChecked());
+	Nan::Set(jsDatatype, Nan::New("casts").ToLocalChecked(), jsCastingTable);
+
+	return jsDatatype;
 }
 
 NAN_METHOD(JSProgramTranslator::Primitives)
@@ -677,7 +717,7 @@ NAN_METHOD(JSProgramTranslator::Datatypes)
 		auto jsArray = v8::Array::New(info.GetIsolate(), types.size());
 		for (size_t i = 0; i < types.size(); i++)
 		{
-			Nan::Set(jsArray, i, Nan::New(""_s + types.at(i)).ToLocalChecked());
+			Nan::Set(jsArray, i, datatypeInformation(info.GetIsolate(), types.at(i)));
 		}
 		info.GetReturnValue().Set(jsArray);
 	}

@@ -44,4 +44,7 @@ public:
 	static PrimitiveFunction logicalAnd;
 	static PrimitiveFunction logicalOr;
 	static PrimitiveFunction logicalNot;
+
+	static PrimitiveFunction castBoolToDouble;
+	static PrimitiveFunction castDoubleToBool;
 };

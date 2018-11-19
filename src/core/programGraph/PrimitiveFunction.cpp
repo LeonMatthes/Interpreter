@@ -89,6 +89,26 @@ PrimitiveFunction PrimitiveFunction::logicalNot(
 		return std::vector<Value>({ Value(result) });
 	});
 
+PrimitiveFunction PrimitiveFunction::castBoolToDouble(
+	"Cast",
+	std::vector<Datatype>({ Datatype::BOOLEAN }),
+	std::vector<Datatype>({ Datatype::DOUBLE }),
+	[](std::vector<Value> inputs) 
+	{
+		auto result = inputs.front().getBoolean() ? 1.0 : 0.0;
+		return std::vector<Value>({ Value(result) });
+	});
+
+PrimitiveFunction PrimitiveFunction::castDoubleToBool(
+	"Cast",
+	std::vector<Datatype>({ Datatype::DOUBLE }),
+	std::vector<Datatype>({Datatype::BOOLEAN}),
+	[](std::vector<Value> inputs)
+	{
+		bool result = inputs.front().getDouble() != 0.0;
+		return std::vector<Value>({ result });
+	});
+
 PrimitiveFunction::PrimitiveFunction(std::string name, std::vector<Datatype> inputTypes, std::vector<Datatype> outputTypes, std::function<std::vector<Value>(std::vector<Value>)> executeFunction)
 	: Function(inputTypes, outputTypes)
 	, m_executeFunction{executeFunction}

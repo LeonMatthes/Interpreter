@@ -18,7 +18,9 @@ public:
 	static NAN_METHOD(Datatypes);
 	static NAN_METHOD(Primitives);
 	static std::map<Identifier, PrimitiveFunction&> primitiveIdentifiers();
+	static std::map<Datatype, Identifier> castingTable(Datatype type);
 	
+	static v8::Local<v8::Value> datatypeInformation(v8::Isolate* isolate, Datatype type);
 	Value translateValue(v8::Local<v8::Value> jsValueValue, Nan::Maybe<Identifier> currentFunction, Nan::Maybe<Identifier> currentBlock);
 protected:
 	static v8::Local<v8::Array> datatypeArrayToJS(v8::Isolate* isolate, std::vector<Datatype> datatypes);
@@ -47,9 +49,9 @@ protected:
 	void translateBlockConnection(v8::Local<v8::Value> jsConnectionValue, std::map<Identifier, Block::Ptr>& blocksMap, Identifier currentFunction);
 
 	Identifier translateIdentifier(v8::Local<v8::Value> numberValue, std::string errorMessage, Identifier currentFunction);
-private:
 
 	Block::Ptr translateFunctionBlock(Nan::Maybe<Identifier> ID, v8::Local<v8::Object> jsBlock, Identifier currentFunctionID);
 	void fillVariables(GraphicalFunction& graphical, Identifier ID, v8::Local<v8::Value> jsVariablesValue);
 	void fillVariable(GraphicalFunction& graphical, Identifier ID, v8::Local<v8::Value> variableValue);
+private:
 };
