@@ -17,7 +17,7 @@ TypeChecker::~TypeChecker()
 
 }
 
-bool TypeChecker::checkInputTypes(class Block& block)
+TypeChecker::VisitorType TypeChecker::checkInputTypes(class Block& block)
 {
 	for (size_t i = 0; i < block.inputConnections().size(); i++)
 	{
@@ -30,35 +30,37 @@ bool TypeChecker::checkInputTypes(class Block& block)
 	return true;
 }
 
-bool TypeChecker::visit(class PrimitiveFunction& primitiveFunction)
+TypeChecker::VisitorType TypeChecker::visit(class PrimitiveFunction& primitiveFunction)
 {
 	THROW_ERROR(InternalError, "TypeChecker visited PrimitiveFunction!");
 }
 
-bool TypeChecker::visit(class ValueBlock& valueBlock)
+TypeChecker::VisitorType TypeChecker::visit(class ValueBlock& valueBlock)
 {
 	//ValueBlocks are always type safe as they don't depend on anything
 	return true;
 }
 
-bool TypeChecker::visit(class ReturnBlock& returnBlock)
+TypeChecker::VisitorType TypeChecker::visit(class ReturnBlock& returnBlock)
 {
 	return checkInputTypes(returnBlock);
 }
 
 #include <programGraph/ExpressionStatement.h>
-bool TypeChecker::visit(class ExpressionStatement& expressionStatement)
+TypeChecker::VisitorType TypeChecker::visit(class ExpressionStatement& expressionStatement)
 {
 	return checkInputTypes(expressionStatement);
 }
 
-bool TypeChecker::visit(class VariableReadBlock& variableReadBlock)
+TypeChecker::VisitorType TypeChecker::visit(class VariableReadBlock& variableReadBlock)
 {
 	return true;
 }
 
-bool TypeChecker::visit(class GraphicalFunction& graphicalFunction)
+TypeChecker::VisitorType TypeChecker::visit(class GraphicalFunction& graphicalFunction)
 {
+	m_currentFunction = &graphicalFunction;
+
 	const auto& expressionBlocks = graphicalFunction.expressionBlocks();
 	for (auto& expression : expressionBlocks)
 	{
@@ -79,33 +81,33 @@ bool TypeChecker::visit(class GraphicalFunction& graphicalFunction)
 	return true;
 }
 
-bool TypeChecker::visit(class FunctionBlock& functionBlock)
+TypeChecker::VisitorType TypeChecker::visit(class FunctionBlock& functionBlock)
 {
 	return checkInputTypes(functionBlock);
 }
 
-bool TypeChecker::visit(class Connection& connection)
+TypeChecker::VisitorType TypeChecker::visit(class Connection& connection)
 {
 	THROW_ERROR(InternalError, "Typechecker visited Connection");
 }
 
 #include <programGraph/VariableWriteBlock.h>
-bool TypeChecker::visit(VariableWriteBlock& variableWriteBlock)
+TypeChecker::VisitorType TypeChecker::visit(VariableWriteBlock& variableWriteBlock)
 {
 	return checkInputTypes(variableWriteBlock);
 }
 
-bool TypeChecker::visit(class IfStatement& ifStatement)
+TypeChecker::VisitorType TypeChecker::visit(class IfStatement& ifStatement)
 {
 	return checkInputTypes(ifStatement);
 }
 
-bool TypeChecker::visit(class WhileStatement& whileStatement)
+TypeChecker::VisitorType TypeChecker::visit(class WhileStatement& whileStatement)
 {
 	return checkInputTypes(whileStatement);
 }
 
-bool TypeChecker::visit(class ParameterAccessBlock& parameterAccess)
+TypeChecker::VisitorType TypeChecker::visit(class ParameterAccessBlock& parameterAccess)
 {
 	return true;
 }

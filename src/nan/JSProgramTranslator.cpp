@@ -42,6 +42,9 @@ class JSProgram* JSProgramTranslator::translateProgram(v8::Local<v8::Object> jav
 	{
 		throw TranslationError("Program.start is not a valid function identifier!");
 	}
+
+	auto functionIdentifiers = functionIDs();
+
 	auto startFunction = std::move(m_functions.at(startFunctionID));
 	m_functions.erase(startFunctionID);
 
@@ -52,7 +55,7 @@ class JSProgram* JSProgramTranslator::translateProgram(v8::Local<v8::Object> jav
 	}
 	functions.clear();
 
-	return new JSProgram(std::move(startFunction), std::move(functions));
+	return new JSProgram(std::move(startFunction), std::move(functions), functionIdentifiers, m_blockIdentifiers);
 }
 
 std::vector<v8::Local<v8::Value>> JSProgramTranslator::accessMapKeys(v8::Local<v8::Object> javascriptMap, const char* errorMessage)
@@ -153,6 +156,18 @@ GraphicalFunction::UPtr JSProgramTranslator::translateFunctionDeclaration(Identi
 	return graphical;
 }
 
+auto JSProgramTranslator::functionIDs() ->std::map<Function*, Identifier>
+{
+	std::map<Function*, Identifier> identifiers;
+	for (const auto& identifierFunctionPair : m_functions)
+	{
+		const auto& identifier = identifierFunctionPair.first;
+		const auto& function = identifierFunctionPair.second;
+		identifiers[function.get()] = identifier;
+	}
+	return identifiers;
+}
+
 void JSProgramTranslator::fillFunctionDefinitions(std::map<Identifier, v8::Local<v8::Value>>& jsDeclarations)
 {
 	for (auto& declaration : m_functions)
@@ -244,9 +259,13 @@ void JSProgramTranslator::checkFunction(Identifier ID)
 std::map<JSProgramTranslator::Identifier, Block::Ptr> JSProgramTranslator::translateBlockDeclarations(std::map<Identifier, v8::Local<v8::Value>> jsBlockValues, Identifier currentFunctionID)
 {
 	auto blocks = std::map<Identifier, Block::Ptr>();
-	for (const auto& block : jsBlockValues)
+	for (const auto& blockIDJsBlockPair : jsBlockValues)
 	{
-		blocks[block.first] = translateBlockDeclaration(Nan::Just<Identifier>(block.first), block.second, currentFunctionID);
+		const auto& blockID = blockIDJsBlockPair.first;
+		const auto& jsBlock = blockIDJsBlockPair.second;
+		auto block = translateBlockDeclaration(Nan::Just<Identifier>(blockID), jsBlock, currentFunctionID);
+		blocks[blockIDJsBlockPair.first] = block;
+		m_blockIdentifiers[block.get()] = blockID;
 	}
 
 	return blocks;

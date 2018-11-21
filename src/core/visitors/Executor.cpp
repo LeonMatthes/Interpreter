@@ -152,7 +152,7 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 {
 	if (parameters.size() != graphicalFunction.inputs().size())
 	{
-		THROW_ERROR(RuntimeError, "Incorrect number of arguments pushed to function!");
+		THROW_ERROR(RuntimeError, "Incorrect number of arguments pushed to function!", &graphicalFunction);
 	}
 
 	for (size_t i = 0; i < parameters.size(); i++)
@@ -160,7 +160,7 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 		const auto& parameter = parameters.at(i);
 		if (parameter.type() != graphicalFunction.inputs().at(i))
 		{
-			THROW_ERROR(RuntimeError, "Incorrect parameter type at parameter index: "_s + std::to_string(i));
+			THROW_ERROR(RuntimeError, "Incorrect parameter type at parameter index: "_s + std::to_string(i), &graphicalFunction);
 		}
 
 	}
@@ -190,7 +190,7 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 
 	if (!graphicalFunction.outputs().empty())
 	{
-		THROW_ERROR(RuntimeError, "graphical function which should return a value, did not reach a return statement!");
+		THROW_ERROR(RuntimeError, "graphical function which should return a value, did not reach a return statement!", &graphicalFunction);
 	}
 
 	return {};
@@ -201,7 +201,7 @@ std::vector<Value> Executor::evaluate(class StatementBlock& statement)
 	auto savedState = m_executedStatements.find(&statement);
 	if (savedState == m_executedStatements.end())
 	{
-		THROW_ERROR(RuntimeError, "Forward data connection detected!");
+		THROW_ERROR(RuntimeError, "Forward data connection detected!", nullptr, &statement);
 	}
 	return savedState->second;
 }

@@ -9,5 +9,7 @@ set(core_src
 	${CMAKE_CURRENT_SOURCE_DIR}/Executor.h
 	${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/TypeChecker.h
+	${CMAKE_CURRENT_SOURCE_DIR}/TypeCheckResult.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/TypeCheckResult.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Visitor.h
 	PARENT_SCOPE)

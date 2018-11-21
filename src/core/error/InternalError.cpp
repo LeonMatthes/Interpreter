@@ -4,7 +4,7 @@ InternalError::InternalError(std::string message)
 	: Error(message)
 {}
 
-std::string InternalError::message()
+std::string InternalError::message() const
 {
 	return InternalError::prefix + Error::message();
 }

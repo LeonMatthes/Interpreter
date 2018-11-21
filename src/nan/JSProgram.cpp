@@ -3,9 +3,22 @@
 #include <TranslationError.h>
 #include <error/Error.h>
 #include <visitors/TypeChecker.h>
+#include <error/RuntimeError.h>
+#include <error/Error.h>
+
+JSProgram::JSProgram(GraphicalFunction::UPtr start, 
+	std::vector<GraphicalFunction::UPtr> functions,
+	const std::map<Function*, JSProgramTranslator::Identifier>& functionIdentifiers,
+	const std::map<Block*, JSProgramTranslator::Identifier>& blockIdentifiers)
+	: m_program(std::move(start), std::move(functions))
+	, m_blockIdentifiers{blockIdentifiers}
+	, m_functionIdentifiers{functionIdentifiers}
+{
+
+}
 
 JSProgram::JSProgram(GraphicalFunction::UPtr start, std::vector<GraphicalFunction::UPtr> functions)
-	: m_program(std::move(start), std::move(functions))
+	: JSProgram(std::move(start), std::move(functions), {}, {})
 {
 
 }
@@ -91,7 +104,7 @@ NAN_METHOD(JSProgram::run)
 	}
 	catch (Error::Ptr e)
 	{
-		Nan::ThrowError(Nan::New(e->message()).ToLocalChecked());
+		self->throwError(e);
 		return;
 	}
 	catch (...)
@@ -101,6 +114,31 @@ NAN_METHOD(JSProgram::run)
 	}
 
 	info.GetReturnValue().Set(jsResults);
+}
+
+void JSProgram::throwError(Error::Ptr error)
+{
+	auto runtimeError = std::dynamic_pointer_cast<RuntimeError>(error);
+	if (!runtimeError)
+	{
+		Nan::ThrowError(Nan::New(error->message()).ToLocalChecked());
+		return;
+	}
+
+	auto jsError = Nan::Error(Nan::New(runtimeError->message()).ToLocalChecked());
+	auto functionIDPair = m_functionIdentifiers.find(runtimeError->function());
+	if (functionIDPair != m_functionIdentifiers.end())
+	{
+		auto functionID = functionIDPair->second;
+		Nan::Set(jsError->ToObject(), Nan::New("functionID").ToLocalChecked(), Nan::New(functionID));
+	}
+	auto blockIDPair = m_blockIdentifiers.find(runtimeError->block());
+	if (blockIDPair != m_blockIdentifiers.end())
+	{
+		auto blockID = blockIDPair->second;
+		Nan::Set(jsError->ToObject(), Nan::New("blockID").ToLocalChecked(), Nan::New(blockID));
+	}
+	Nan::ThrowError(jsError);
 }
 
 v8::Local<v8::Value> JSProgram::translateValue(Value& value)

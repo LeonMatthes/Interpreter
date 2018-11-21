@@ -12,7 +12,7 @@ public:
 	Error(std::string message);
 	virtual ~Error() = default;
 
-	virtual std::string message();
+	virtual std::string message() const;
 
 protected:
 	std::string m_message;

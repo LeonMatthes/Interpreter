@@ -5,7 +5,7 @@ Error::Error(std::string message)
 {
 }
 
-std::string Error::message()
+std::string Error::message() const
 {
 	return m_message;
 }
