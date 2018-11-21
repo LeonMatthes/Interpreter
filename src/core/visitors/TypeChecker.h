@@ -1,10 +1,10 @@
 #pragma once
-
+#include <visitors/TypeCheckResult.h>
 #include <visitors/Visitor.h>
 
-class TypeChecker : public Visitor<bool>
+class TypeChecker : public Visitor<TypeCheckResult>
 {
-	using VisitorType = bool;
+	using VisitorType = TypeCheckResult;
 
 public:
 	TypeChecker();

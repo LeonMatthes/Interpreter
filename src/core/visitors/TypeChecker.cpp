@@ -8,6 +8,7 @@
 #include <programGraph/WhileStatement.h>
 
 TypeChecker::TypeChecker()
+	: m_currentFunction(nullptr)
 {
 
 }
@@ -24,7 +25,7 @@ TypeChecker::VisitorType TypeChecker::checkInputTypes(class Block& block)
 		Connection connection = block.inputConnections().at(i);
 		if (connection.isConnected() && connection.connectedType() != block.inputTypes().at(i))
 		{
-			return false;
+			return TypeCheckResult(m_currentFunction, &block);
 		}
 	}
 	return true;
@@ -61,24 +62,19 @@ TypeChecker::VisitorType TypeChecker::visit(class GraphicalFunction& graphicalFu
 {
 	m_currentFunction = &graphicalFunction;
 
+	auto result = TypeCheckResult();
 	const auto& expressionBlocks = graphicalFunction.expressionBlocks();
 	for (auto& expression : expressionBlocks)
 	{
-		if (!expression->accept(*this))
-		{
-			return false;
-		}
+		result.merge(expression->accept(*this));
 	}
 
 	const auto& statementBlocks = graphicalFunction.statementBlocks();
 	for (auto& statement : statementBlocks)
 	{
-		if (!statement->accept(*this))
-		{
-			return false;
-		}
+		result.merge(statement->accept(*this));
 	}
-	return true;
+	return result;
 }
 
 TypeChecker::VisitorType TypeChecker::visit(class FunctionBlock& functionBlock)

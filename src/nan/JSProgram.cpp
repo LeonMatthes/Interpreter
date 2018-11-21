@@ -34,6 +34,7 @@ NAN_MODULE_INIT(JSProgram::Init)
 	ctor->SetClassName(Nan::New("JSProgram").ToLocalChecked());
 
 	Nan::SetPrototypeMethod(ctor, "run", run);
+	Nan::SetPrototypeMethod(ctor, "typeCheck", typeCheck);
 
 	target->Set(Nan::New("Program").ToLocalChecked(), ctor->GetFunction());
 }
@@ -89,6 +90,11 @@ NAN_METHOD(JSProgram::run)
 {
 	auto* self = Nan::ObjectWrap::Unwrap<JSProgram>(info.This());
 
+	if (!self->assertTypeCheckBeforeRun(info.GetIsolate()))
+	{
+		return;
+	}
+
 	auto results = std::vector<Value>();
 	auto jsResults = v8::Array::New(info.GetIsolate(), results.size());
 	try
@@ -116,6 +122,15 @@ NAN_METHOD(JSProgram::run)
 	info.GetReturnValue().Set(jsResults);
 }
 
+NAN_METHOD(JSProgram::typeCheck)
+{
+	auto* self = Nan::ObjectWrap::Unwrap<JSProgram>(info.This());
+
+	auto checkResult = self->typeCheck();
+
+	info.GetReturnValue().Set(self->translateTypeCheck(checkResult, info.GetIsolate()));
+}
+
 void JSProgram::throwError(Error::Ptr error)
 {
 	auto runtimeError = std::dynamic_pointer_cast<RuntimeError>(error);
@@ -139,6 +154,84 @@ void JSProgram::throwError(Error::Ptr error)
 		Nan::Set(jsError->ToObject(), Nan::New("blockID").ToLocalChecked(), Nan::New(blockID));
 	}
 	Nan::ThrowError(jsError);
+}
+
+auto JSProgram::translateTypeCheck(TypeCheckResult checkResult, v8::Isolate* isolate) ->v8::Local<v8::Value>
+{
+	auto offenderCount = std::count_if(checkResult.offenders.begin(), checkResult.offenders.end(), [this](const auto& offender) {
+		return m_functionIdentifiers.find(offender.first) != m_functionIdentifiers.end();
+	});
+
+	auto jsResult = v8::Object::New(isolate);
+	Nan::Set(jsResult, Nan::New("succeeded").ToLocalChecked(), Nan::New(checkResult.succeeded));
+
+	auto jsOffenders = v8::Array::New(isolate, offenderCount);
+	auto index = 0;
+	for (const auto& offender : checkResult.offenders)
+	{
+		if (m_functionIdentifiers.find(offender.first) != m_functionIdentifiers.end())
+		{
+			auto jsOffender = v8::Object::New(isolate);
+
+			Nan::Set(jsOffender, Nan::New("functionID").ToLocalChecked(), Nan::New(m_functionIdentifiers.at(offender.first)));
+			Nan::Set(jsOffender, Nan::New("blockIDs").ToLocalChecked(), translateBlocks(offender.second, isolate));
+
+			jsOffenders->Set(index++, jsOffender);
+		}
+	}
+
+	Nan::Set(jsResult, Nan::New("offenders").ToLocalChecked(), jsOffenders);
+	return jsResult;
+}
+
+auto JSProgram::translateBlocks(std::set<class Block*> blocks, v8::Isolate* isolate) ->v8::Local<v8::Array>
+{
+	auto blockCount = std::count_if(blocks.begin(), blocks.end(), [this](auto* block) {
+		return m_blockIdentifiers.find(block) != m_blockIdentifiers.end();
+	});
+	auto jsBlocks = v8::Array::New(isolate, blockCount);
+
+	auto index = 0;
+	for (const auto& block : blocks)
+	{
+		if (m_blockIdentifiers.find(block) != m_blockIdentifiers.end())
+		{
+			jsBlocks->Set(index++, Nan::New(m_blockIdentifiers.at(block)));
+		}
+	}
+	return jsBlocks;
+}
+
+auto JSProgram::assertTypeCheckBeforeRun(v8::Isolate* isolate) ->bool
+{
+	if (m_typeChecked)
+	{
+		return m_typeChecked;
+	}
+
+	auto checkResult = typeCheck();
+	if (!checkResult)
+	{
+		auto jsError = Nan::Error(Nan::New("Program did not pass type check!").ToLocalChecked());
+		Nan::Set(jsError->ToObject(), Nan::New("checkResult").ToLocalChecked(), translateTypeCheck(checkResult, isolate));
+		Nan::ThrowError(jsError);
+	}
+
+	return checkResult;
+}
+
+auto JSProgram::typeCheck() ->TypeCheckResult
+{
+	auto result = TypeCheckResult();
+	auto checker = TypeChecker();
+	for (const auto& function : m_program.functions())
+	{
+		result.merge(function->accept(checker));
+	}
+	result.merge(m_program.startFunction()->accept(checker));
+
+	m_typeChecked = result;
+	return result;
 }
 
 v8::Local<v8::Value> JSProgram::translateValue(Value& value)

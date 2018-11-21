@@ -247,13 +247,6 @@ void JSProgramTranslator::checkFunction(Identifier ID)
 	{
 		throw TranslationError("Function did not pass DAG check!", ID);
 	}
-
-	auto typeChecker = TypeChecker();
-	if (!function.accept(typeChecker))
-	{
-		throw TranslationError("Function did not pass type check!", ID);
-	}
-
 }
 
 std::map<JSProgramTranslator::Identifier, Block::Ptr> JSProgramTranslator::translateBlockDeclarations(std::map<Identifier, v8::Local<v8::Value>> jsBlockValues, Identifier currentFunctionID)
