@@ -25,3 +25,4 @@
 		if(!thrown)\
 			FAIL() << "Expected Error Type: " << #error_type << "\nActually: It throws nothing!";\
 	}
+
