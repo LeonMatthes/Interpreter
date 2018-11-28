@@ -11,7 +11,7 @@ public:
 	virtual std::vector<Datatype> inputTypes() const override;
 	virtual std::vector<Datatype> outputTypes() const override;
 
-	MAKE_VISITABLE;
+	OVERRIDE_VISITABLE;
 
 protected:
 	const GraphicalFunction& m_function;

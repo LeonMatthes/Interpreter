@@ -12,7 +12,7 @@ class Connection
 public:
 	Connection();
 	Connection(std::shared_ptr<Block> block, size_t output);
-	virtual ~Connection();;
+	virtual ~Connection();
 
 	bool isConnected() const;
 	std::shared_ptr<Block> connectedBlock() const;

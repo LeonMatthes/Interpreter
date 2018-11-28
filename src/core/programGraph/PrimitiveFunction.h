@@ -16,7 +16,7 @@ public:
 	std::vector<Value> operator()(std::vector<Value> inputs) const;
 	std::string name() const;
 
-	MAKE_VISITABLE;
+	OVERRIDE_VISITABLE;
 protected:
 	PrimitiveFunction(
 		std::string name,

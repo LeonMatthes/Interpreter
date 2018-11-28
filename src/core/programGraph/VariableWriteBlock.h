@@ -10,7 +10,7 @@ public:
 	VariableWriteBlock(class GraphicalFunction& owningFunction, VariableIdentifier identifier);
 	virtual ~VariableWriteBlock() = default;
 
-	MAKE_VISITABLE;
+	OVERRIDE_VISITABLE;
 
 	virtual std::vector<Datatype> inputTypes() const override;
 	virtual std::vector<Datatype> outputTypes() const override;

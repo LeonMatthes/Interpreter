@@ -32,6 +32,12 @@ public:
 	MAKE_VISITABLE_TYPED(std::vector<Value>)\
 	MAKE_VISITABLE_TYPED(void)
 
+#define OVERRIDE_VISITABLE_TYPED(R) virtual R accept(Visitor<R>& visitor) override {return visitor.visit(*this);}
+#define OVERRIDE_VISITABLE \
+	OVERRIDE_VISITABLE_TYPED(TypeCheckResult)\
+	OVERRIDE_VISITABLE_TYPED(std::vector<Value>)\
+	OVERRIDE_VISITABLE_TYPED(void)
+
 #define MAKE_VISITABLE_VIRTUAL_TYPED(R) virtual R accept(Visitor<R>& visitory) = 0;
 #define MAKE_VISITABLE_VIRTUAL \
 	MAKE_VISITABLE_VIRTUAL_TYPED(TypeCheckResult)\
@@ -39,7 +45,7 @@ public:
 	MAKE_VISITABLE_VIRTUAL_TYPED(void)
 
 //For testing purposes
-#define MOCK_VISITABLE_TYPED(R) virtual R accept(Visitor<R>& visitor) { throw std::logic_error("Error: Function not implemented"); }
+#define MOCK_VISITABLE_TYPED(R) virtual R accept(Visitor<R>& visitor) override { throw std::logic_error("Error: Function not implemented"); }
 #define MOCK_VISITABLE \
 	MOCK_VISITABLE_TYPED(TypeCheckResult)\
 	MOCK_VISITABLE_TYPED(std::vector<Value>)\

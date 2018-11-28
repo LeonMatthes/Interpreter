@@ -158,7 +158,7 @@ void JSProgram::throwError(Error::Ptr error)
 
 auto JSProgram::translateTypeCheck(TypeCheckResult checkResult, v8::Isolate* isolate) ->v8::Local<v8::Value>
 {
-	auto offenderCount = std::count_if(checkResult.offenders.begin(), checkResult.offenders.end(), [this](const auto& offender) {
+	auto offenderCount = std::count_if(checkResult.offenders.begin(), checkResult.offenders.end(), [this](std::pair<Function*, std::set<Block*>> offender) {
 		return m_functionIdentifiers.find(offender.first) != m_functionIdentifiers.end();
 	});
 
@@ -186,7 +186,7 @@ auto JSProgram::translateTypeCheck(TypeCheckResult checkResult, v8::Isolate* iso
 
 auto JSProgram::translateBlocks(std::set<class Block*> blocks, v8::Isolate* isolate) ->v8::Local<v8::Array>
 {
-	auto blockCount = std::count_if(blocks.begin(), blocks.end(), [this](auto* block) {
+	auto blockCount = std::count_if(blocks.begin(), blocks.end(), [this](Block* block) {
 		return m_blockIdentifiers.find(block) != m_blockIdentifiers.end();
 	});
 	auto jsBlocks = v8::Array::New(isolate, blockCount);

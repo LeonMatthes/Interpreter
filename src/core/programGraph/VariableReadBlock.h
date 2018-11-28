@@ -14,7 +14,7 @@ public:
 
 	const VariableIdentifier& variableIdentifier() const;
 
-	MAKE_VISITABLE;
+	OVERRIDE_VISITABLE;
 
 protected:
 	const GraphicalFunction& m_owningFunction;

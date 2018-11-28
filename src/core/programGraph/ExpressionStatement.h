@@ -24,7 +24,7 @@ public:
 
 	class ExpressionBlock& expression();
 
-	MAKE_VISITABLE;
+	OVERRIDE_VISITABLE;
 protected:
 	
 	std::shared_ptr<class ExpressionBlock> m_expression;
