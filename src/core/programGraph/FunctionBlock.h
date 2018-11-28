@@ -21,7 +21,7 @@ public:
 
 	Function& function() const;
 	
-	MAKE_VISITABLE;
+	OVERRIDE_VISITABLE;
 protected:
 	Function& m_function;
 private:

@@ -33,7 +33,7 @@ public:
 	const std::unordered_map<VariableIdentifier, Datatype>& variables() const;
 
 
-	MAKE_VISITABLE;
+	OVERRIDE_VISITABLE;
 
 protected:
 	std::vector<ExpressionBlock::Ptr> m_expressionBlocks;
