@@ -29,7 +29,7 @@ install:
   - cmake --build .
 
 script:
-  - ./Interpreter-Tests
+  - LSAN_OPTIONS=verbosity=1:log_threads=1 ./Interpreter-Tests
   
 after_success:
   - eval "${UPLOAD_COVERAGE}"
