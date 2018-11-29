@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "description": "An Interpreter for the MrWoC language",
     "dependencies": {
-        "cmake-js": "^3.7.3",
+        "cmake-js": "^4.0.1",
         "nan": "^2.10.0"
     },
     "scripts": {
