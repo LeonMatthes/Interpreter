@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.1.3)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_CXX_FLAGS_ADDRESSSANITIZER 
-	"${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=adress"
-	STRING)
+
+
+
 
 #------------------- Core --------------------
 project(Interpreter-Core)
@@ -24,6 +24,19 @@ if(${CMAKE_VERSION} VERSION_GREATER "3.8.0")
 		PREFIX "core"
 		FILES ${core_src})
 endif()
+
+#---------------- custom build types -------------
+set(CMAKE_CXX_FLAGS_ADDRESSSANITIZER 
+	"${CMAKE_CXX_FLAGS_DEBUG} -Wall -fsanitize=address"
+	CACHE STRING
+	"Flags used when running a build with the adress sanitizer"
+	FORCE)
+
+set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
+	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel AddressSanitizer"
+	FORCE)
+
+message("Generated with build type: ${CMAKE_BUILD_TYPE}")
 
 #------------------- Tests -------------------
 set(INTERPRETER_TESTS FALSE CACHE BOOL "Enable/Disable build of test executable")
