@@ -150,6 +150,9 @@ std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction
 
 std::vector<Value> Executor::evaluate(class GraphicalFunction& graphicalFunction, std::vector<Value> parameters)
 {
+	int adress_sanitizer_test[10];
+	int test = adress_sanitizer_test[10]; //This should fail!
+
 	if (parameters.size() != graphicalFunction.inputs().size())
 	{
 		THROW_ERROR(RuntimeError, "Incorrect number of arguments pushed to function!", &graphicalFunction);
