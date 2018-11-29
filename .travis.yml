@@ -14,6 +14,8 @@ matrix:
       compiler: gcc
     - os: linux
       compiler: clang
+      env:
+        - CMAKE_ARGUMENTS="-DCMAKE_BUILD_TYPE=AdressSanitizer"
     - os: osx
       compiler: clang
 

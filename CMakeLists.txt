@@ -3,6 +3,9 @@ cmake_minimum_required(VERSION 3.1.3)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_FLAGS_ADDRESSSANITIZER 
+	"${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=adress"
+	STRING)
 
 #------------------- Core --------------------
 project(Interpreter-Core)
