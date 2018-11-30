@@ -15,7 +15,6 @@ matrix:
       compiler: gcc
       env:
         - BUILD_TYPE="AddressSanitizer"
-        - CMAKE_ARGUMENTS="-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
     - os: linux
       compiler: clang
       env:
