@@ -29,7 +29,13 @@ endif()
 set(CMAKE_CXX_FLAGS_ADDRESSSANITIZER 
 	"${CMAKE_CXX_FLAGS_DEBUG} -Wall -fsanitize=address"
 	CACHE STRING
-	"Flags used when running a build with the adress sanitizer"
+	"Compiler Flags used when running a build with the adress sanitizer"
+	FORCE)
+
+set(CMAKE_EXE_LINKER_FLAGS_MYRELEASE
+	"${CMAKE_EXE_LINKER_FLAGS_DEBUG} -fsanitize=address"
+	CACHE STRING
+	"Linker Flags used when running a build with the address sanitizer"
 	FORCE)
 
 set(CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
