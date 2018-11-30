@@ -7,17 +7,22 @@ matrix:
     - os: linux
       compiler: gcc
       env:
+        - BUILD_TYPE="Debug"
         - CMAKE_ARGUMENTS="-DINTERPRETER_COVERAGE:BOOL=TRUE"
         - INSTALL_COVERALLS="pip install --user cpp-coveralls"
         - UPLOAD_COVERAGE="coveralls --root .. --include src/core"
     - os: osx
       compiler: gcc
+      env:
+        - BUILD_TYPE="AddressSanitizer"
     - os: linux
       compiler: clang
       env:
-        - CMAKE_ARGUMENTS="-DCMAKE_BUILD_TYPE=AddressSanitizer"
+        - BUILD_TYPE="AddressSanitizer"
     - os: osx
       compiler: clang
+      env:
+        - BUILD_TYPE="AddressSanitizer"
 
 before_install:
   - mkdir build
@@ -25,7 +30,7 @@ before_install:
   - eval "${INSTALL_COVERALLS}"
 
 install:
-  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE ${CMAKE_ARGUMENTS}
+  - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${CMAKE_ARGUMENTS}
   - cmake --build .
 
 script:
