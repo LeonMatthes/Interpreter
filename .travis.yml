@@ -11,12 +11,10 @@ matrix:
         - CMAKE_ARGUMENTS="-DINTERPRETER_COVERAGE:BOOL=TRUE"
         - MATRIX_BEFORE_INSTALL="pip install --user cpp-coveralls"
         - UPLOAD_COVERAGE="coveralls --root .. --include src/core"
-    - os: osx
-      osx_image: xcode8
+    - os: linux
       compiler: gcc
       env:
         - BUILD_TYPE="AddressSanitizer"
-        - MATRIX_BEFORE_INSTALL="CC=gcc-4.9 && CXX=g++-4.9"
     - os: linux
       compiler: clang
       env:
