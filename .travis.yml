@@ -12,6 +12,7 @@ matrix:
         - MATRIX_BEFORE_INSTALL="pip install --user cpp-coveralls"
         - UPLOAD_COVERAGE="coveralls --root .. --include src/core"
     - os: osx
+      osx_image: xcode8
       compiler: gcc
       env:
         - BUILD_TYPE="AddressSanitizer"
