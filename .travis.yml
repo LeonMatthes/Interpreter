@@ -15,7 +15,7 @@ matrix:
       compiler: gcc
       env:
         - BUILD_TYPE="AddressSanitizer"
-        - MATRIX_BEFORE_INSTALL="CC=gcc-4.9 && CXX=g++-4.9 && CXX --version"
+        - MATRIX_BEFORE_INSTALL="CC=gcc-4.9 && CXX=g++-4.9"
     - os: linux
       compiler: clang
       env:
