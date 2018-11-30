@@ -9,12 +9,13 @@ matrix:
       env:
         - BUILD_TYPE="Debug"
         - CMAKE_ARGUMENTS="-DINTERPRETER_COVERAGE:BOOL=TRUE"
-        - INSTALL_COVERALLS="pip install --user cpp-coveralls"
+        - MATRIX_BEFORE_INSTALL="pip install --user cpp-coveralls"
         - UPLOAD_COVERAGE="coveralls --root .. --include src/core"
     - os: osx
       compiler: gcc
       env:
         - BUILD_TYPE="AddressSanitizer"
+        - MATRIX_BEFORE_INSTALL="CC=gcc-4.9 && CXX=g++-4.9 && CXX --version"
     - os: linux
       compiler: clang
       env:
@@ -27,7 +28,7 @@ matrix:
 before_install:
   - mkdir build
   - cd build
-  - eval "${INSTALL_COVERALLS}"
+  - eval "${MATRIX_BEFORE_INSTALL}"
 
 install:
   - cmake .. -DINTERPRETER_TESTS:BOOL=TRUE -DCMAKE_BUILD_TYPE=${BUILD_TYPE} ${CMAKE_ARGUMENTS}
