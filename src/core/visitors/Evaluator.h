@@ -11,20 +11,20 @@ public:
 	Evaluator(class Executor& executor);
 	virtual ~Evaluator();
 
-	virtual std::vector<Value> visit(class GraphicalFunction& graphicalFunction) override;
-	virtual std::vector<Value> visit(class FunctionBlock& functionBlock) override;
-	virtual std::vector<Value> visit(class Connection& connection) override;
-	virtual std::vector<Value> visit(class ValueBlock& valueBlock) override;
-	virtual std::vector<Value> visit(class PrimitiveFunction& primitiveFunction) override;
-	virtual std::vector<Value> visit(class ParameterAccessBlock& parameterAccess) override;
+	std::vector<Value> visit(class GraphicalFunction& graphicalFunction) override;
+	std::vector<Value> visit(class FunctionBlock& functionBlock) override;
+	std::vector<Value> visit(class Connection& connection) override;
+	std::vector<Value> visit(class ValueBlock& valueBlock) override;
+	std::vector<Value> visit(class PrimitiveFunction& primitiveFunction) override;
+	std::vector<Value> visit(class ParameterAccessBlock& parameterAccess) override;
 
 
-	virtual std::vector<Value> visit(class ReturnBlock& ReturnBlock) override;
-	virtual std::vector<Value> visit(class ExpressionStatement& expressionStatement) override;
-	virtual std::vector<Value> visit(class VariableReadBlock& variableReadBlock) override;
-	virtual std::vector<Value> visit(class VariableWriteBlock& variableWriteBlock) override;
-	virtual std::vector<Value> visit(class IfStatement& ifStatement) override;
-	virtual std::vector<Value> visit(class WhileStatement& whileStatement) override;
+	std::vector<Value> visit(class ReturnBlock& ReturnBlock) override;
+	std::vector<Value> visit(class ExpressionStatement& expressionStatement) override;
+	std::vector<Value> visit(class VariableReadBlock& variableReadBlock) override;
+	std::vector<Value> visit(class VariableWriteBlock& variableWriteBlock) override;
+	std::vector<Value> visit(class IfStatement& ifStatement) override;
+	std::vector<Value> visit(class WhileStatement& whileStatement) override;
 
 	void pushParameters(std::vector<Value> parameters);
 	Value evaluateConnection(class Connection& connection, Datatype type);
