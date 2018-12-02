@@ -26,19 +26,19 @@ public:
 	Executor();
 	virtual ~Executor();
 
-	virtual void visit(class GraphicalFunction& graphicalFunction) override;
-	virtual void visit(class FunctionBlock& functionBlock) override;
-	virtual void visit(class Connection& connection) override;
-	virtual void visit(class ValueBlock& valueBlock) override;
-	virtual void visit(class PrimitiveFunction& primitiveFunction) override;
-	virtual void visit(class VariableReadBlock& variableReadBlock) override;
-	virtual void visit(class ParameterAccessBlock& parameterAccess) override;
+	void visit(class GraphicalFunction& graphicalFunction) override;
+	void visit(class FunctionBlock& functionBlock) override;
+	void visit(class Connection& connection) override;
+	void visit(class ValueBlock& valueBlock) override;
+	void visit(class PrimitiveFunction& primitiveFunction) override;
+	void visit(class VariableReadBlock& variableReadBlock) override;
+	void visit(class ParameterAccessBlock& parameterAccess) override;
 
-	virtual void visit(class ReturnBlock& returnBlock) override;
-	virtual void visit(class ExpressionStatement& expressionStatement) override;
-	virtual void visit(class VariableWriteBlock& variableWriteBlock) override;
-	virtual void visit(class IfStatement& ifStatement) override;
-	virtual void visit(class WhileStatement& whileStatement) override;
+	void visit(class ReturnBlock& returnBlock) override;
+	void visit(class ExpressionStatement& expressionStatement) override;
+	void visit(class VariableWriteBlock& variableWriteBlock) override;
+	void visit(class IfStatement& ifStatement) override;
+	void visit(class WhileStatement& whileStatement) override;
 	
 	bool executeNext(class StatementBlock& statement);
 	bool executeNext(class StatementBlock& statement, size_t flowConnectionIndex);

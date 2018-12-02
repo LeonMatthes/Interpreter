@@ -426,7 +426,6 @@ void JSProgramTranslator::fillVariables(GraphicalFunction& graphical, Identifier
 	{
 		fillVariable(graphical, ID, jsVariables->Get(i));
 	}
-
 }
 
 void JSProgramTranslator::fillVariable(GraphicalFunction& graphical, Identifier ID, v8::Local<v8::Value> variableValue)
