@@ -606,7 +606,7 @@ NAN_METHOD(JSProgramTranslator::Primitives)
     } catch (Error::Ptr e) {
         TranslationError(e->message());
     } catch (TranslationError e) {
-        ;
+		return;
     } catch (...) {
         TranslationError("Unknown C++ exception thrown!");
     }
@@ -625,6 +625,8 @@ NAN_METHOD(JSProgramTranslator::Datatypes)
         info.GetReturnValue().Set(jsArray);
     } catch (std::exception& e) {
         TranslationError(e.what());
+    } catch (TranslationError e) {
+        return;
     } catch (...) {
         TranslationError("Unknown C++ error thrown!");
     }
