@@ -13,4 +13,4 @@ namespace Identifiers
 	const JSProgramTranslator::Identifier LOGICALNOT		= 7;
 	const JSProgramTranslator::Identifier BOOLTODOUBLE		= 8;
 	const JSProgramTranslator::Identifier DOUBLETOBOOL		= 9;
-}
+        } // namespace Identifiers
