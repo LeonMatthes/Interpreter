@@ -343,3 +343,30 @@ TEST_F(TestExecutor, ParameterTypes)
 
 	ASSERT_THROW_INTERPRETER(m_executor.evaluate(graphical, { Value(input2), Value(input1) }), RuntimeError);
 }
+
+TEST_F(TestExecutor, ParametersArePassedToGraphicalFunction) 
+{
+	auto testType = Datatype::DOUBLE;
+
+	auto graphical1 = GraphicalFunction({ testType }, { testType });
+	auto returnStatement1 = std::make_shared<ReturnBlock>(graphical1);
+	auto parameterAccess1 = std::make_shared<ParameterAccessBlock>(graphical1);
+	returnStatement1->setInputConnection(0, Connection(parameterAccess1, 0));
+	graphical1.setStatementBlocks({ returnStatement1 });
+	graphical1.setExpressionBlocks({ parameterAccess1 });
+
+	auto graphical2 = GraphicalFunction({ testType }, { testType });
+	auto returnStatement2 = std::make_shared<ReturnBlock>(graphical2);
+	auto functionCall2 = std::make_shared<FunctionBlock>(graphical1);
+	auto parameterAccess2 = std::make_shared<ParameterAccessBlock>(graphical2);
+	returnStatement2->setInputConnection(0, Connection(functionCall2, 0));
+	functionCall2->setInputConnection(0, Connection(parameterAccess2, 0));
+
+	graphical2.setStatementBlocks({ returnStatement2 });
+	graphical2.setExpressionBlocks({ functionCall2, parameterAccess2 });
+	
+	auto testValue = 10.0;
+	auto parameters = std::vector<Value>();
+	parameters.emplace_back(testValue);
+	ASSERT_EQ(parameters, m_executor.evaluate(graphical2, parameters));
+}

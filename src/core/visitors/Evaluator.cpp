@@ -18,7 +18,7 @@ Evaluator::~Evaluator()
 
 std::vector<Value> Evaluator::visit(class GraphicalFunction& graphicalFunction)
 {
-	return m_executor.evaluate(graphicalFunction);
+	return m_executor.evaluate(graphicalFunction, m_callStack.top());
 }
 
 std::vector<Value> Evaluator::visit(class FunctionBlock& functionBlock)
