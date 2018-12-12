@@ -606,7 +606,7 @@ NAN_METHOD(JSProgramTranslator::Primitives)
     } catch (Error::Ptr e) {
         TranslationError(e->message());
     } catch (TranslationError e) {
-		return;
+        return;
     } catch (...) {
         TranslationError("Unknown C++ exception thrown!");
     }

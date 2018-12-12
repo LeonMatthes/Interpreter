@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <visitors/Executor.h>
+#include <visitors/RecursiveExecutor.h>
 #include <testProgramGraph/MockFunction.h>
 #include <programGraph/ReturnBlock.h>
 #include <programGraph/ValueBlock.h>
@@ -11,7 +11,7 @@
 class TestExecutor : public ::testing::Test
 {
 protected:
-	Executor m_executor;
+	RecursiveExecutor m_executor;
 };
 
 TEST_F(TestExecutor, EmptyReturnBlock)

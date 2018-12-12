@@ -1,58 +1,12 @@
 #pragma once
 
-#include <map>
-#include <programGraph/GraphicalFunction.h>
-#include <programGraph/Value.h>
-#include <stack>
-#include <unordered_map>
-#include <vector>
-#include <visitors/Evaluator.h>
-#include <visitors/Visitor.h>
-
-struct Return
-{
-	std::vector<Value> m_values;
-};
-
-struct StackFrame
-{
-	std::map<VariableIdentifier, Value> m_variables;
-	std::vector<Value> m_parameters;
-};
-
-class Executor : public Visitor<void>
-{
+class Executor : public Visitor<void> {
 public:
-	Executor();
-	virtual ~Executor();
+    virtual ~Executor() = default;
 
-	void visit(class GraphicalFunction& graphicalFunction) override;
-	void visit(class FunctionBlock& functionBlock) override;
-	void visit(class Connection& connection) override;
-	void visit(class ValueBlock& valueBlock) override;
-	void visit(class PrimitiveFunction& primitiveFunction) override;
-	void visit(class VariableReadBlock& variableReadBlock) override;
-	void visit(class ParameterAccessBlock& parameterAccess) override;
-
-	void visit(class ReturnBlock& returnBlock) override;
-	void visit(class ExpressionStatement& expressionStatement) override;
-	void visit(class VariableWriteBlock& variableWriteBlock) override;
-	void visit(class IfStatement& ifStatement) override;
-	void visit(class WhileStatement& whileStatement) override;
-	
-	bool executeNext(class StatementBlock& statement);
-	bool executeNext(class StatementBlock& statement, size_t flowConnectionIndex);
-
-	std::vector<Value> evaluate(class StatementBlock& statement);
-	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
-	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction, std::vector<Value> parameters);
-	Value variableValue(const VariableIdentifier& identifier);
-	std::vector<Value> parameters() const;
-protected:
-	Evaluator m_evaluator;
-	std::unordered_map<class StatementBlock*, std::vector<Value>> m_executedStatements;
-	std::stack<StackFrame, std::vector<StackFrame>> m_callStack;
-
-	void throwExpressionError();
-private:
+    virtual std::vector<Value> evaluate(class StatementBlock& statement) = 0;
+    virtual std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction) = 0;
+    virtual std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction, std::vector<Value> parameters) = 0;
+    virtual Value variableValue(const VariableIdentifier& identifier) = 0;
+    virtual std::vector<Value> parameters() const = 0;
 };

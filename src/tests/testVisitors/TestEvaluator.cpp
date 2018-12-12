@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <visitors/Evaluator.h>
-#include <visitors/Executor.h>
+#include <visitors/RecursiveExecutor.h>
 #include <testProgramGraph/MockFunction.h>
 #include <programGraph/Value.h>
 #include <programGraph/ValueBlock.h>
@@ -10,7 +10,7 @@
 #include <error/Error.h>
 
 
-class MockExecutor : public Executor
+class MockExecutor : public RecursiveExecutor
 {
 public:
 	virtual void visit(class GraphicalFunction& graphicalFunction) override
