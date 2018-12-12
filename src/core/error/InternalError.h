@@ -2,16 +2,15 @@
 
 #include <error/Error.h>
 
-class InternalError : public Error
-{
+class InternalError : public Error {
 public:
-	explicit InternalError(std::string message);
-	~InternalError() override = default;
+    explicit InternalError(std::string message);
+    ~InternalError() override = default;
 
-	std::string message() const override;
+    std::string message() const override;
 
-	static const std::string prefix;
+    static const std::string prefix;
+
 protected:
-	
 private:
 };

@@ -70,13 +70,13 @@ TEST_F(TestEvaluator, PrimitiveFunction)
 
 TEST_F(TestEvaluator, Connection)
 {
-	ValueBlock::Ptr block = std::make_shared<ValueBlock>(Value(false));
-	Connection connection(block, 0);
-	EXPECT_EQ(Value(false), connection.accept(m_evaluator).at(0));
+    ValueBlock::Ptr block = std::make_shared<ValueBlock>(Value(false));
+    Connection connection(block, 0);
+    EXPECT_EQ(Value(false), connection.accept(m_evaluator).at(0));
 
-	block = std::make_shared<ValueBlock>(Value(true));
-	connection = Connection(block, 0);
-	EXPECT_EQ(Value(true), connection.accept(m_evaluator).at(0));
+    block = std::make_shared<ValueBlock>(Value(true));
+    connection = Connection(block, 0);
+    EXPECT_EQ(Value(true), connection.accept(m_evaluator).at(0));
 }
 
 TEST_F(TestEvaluator, FunctionBlock)

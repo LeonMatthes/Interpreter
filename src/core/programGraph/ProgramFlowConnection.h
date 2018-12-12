@@ -2,19 +2,19 @@
 
 #include <memory>
 
-class ProgramFlowConnection
-{
+class ProgramFlowConnection {
 public:
-	explicit ProgramFlowConnection(const std::shared_ptr<class StatementBlock>& statement);
-	ProgramFlowConnection();
-	virtual ~ProgramFlowConnection();
+    explicit ProgramFlowConnection(const std::shared_ptr<class StatementBlock>& statement);
+    ProgramFlowConnection();
+    virtual ~ProgramFlowConnection();
 
-	bool isConnected() const;
-	std::shared_ptr<class StatementBlock> connectedStatement() const;
+    bool isConnected() const;
+    std::shared_ptr<class StatementBlock> connectedStatement() const;
 
-	bool operator==(const ProgramFlowConnection& other) const;
+    bool operator==(const ProgramFlowConnection& other) const;
 
 protected:
-	std::weak_ptr<class StatementBlock> m_statement;
+    std::weak_ptr<class StatementBlock> m_statement;
+
 private:
 };

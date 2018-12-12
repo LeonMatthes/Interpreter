@@ -3,16 +3,16 @@
 #include <visitors/Visitor.h>
 
 //this class exists to differentiate Expressions from Statements
-class ExpressionBlock : public Block
-{
+class ExpressionBlock : public Block {
 public:
-	using Ptr = std::shared_ptr<ExpressionBlock>;
+    using Ptr = std::shared_ptr<ExpressionBlock>;
 
-	explicit ExpressionBlock(size_t inputCount);
-	
-	~ExpressionBlock() override;
+    explicit ExpressionBlock(size_t inputCount);
 
-	MAKE_VISITABLE_VIRTUAL;
+    ~ExpressionBlock() override;
+
+    MAKE_VISITABLE_VIRTUAL;
+
 protected:
 private:
 };

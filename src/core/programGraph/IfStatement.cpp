@@ -1,20 +1,19 @@
 #include <programGraph/IfStatement.h>
 
-
 IfStatement::IfStatement()
-	: StatementBlock(1, 2)
-{}
+    : StatementBlock(1, 2)
+{
+}
 
 IfStatement::~IfStatement()
-= default;
+    = default;
 
 std::vector<Datatype> IfStatement::inputTypes() const
 {
-	return { Datatype::BOOLEAN };
+    return { Datatype::BOOLEAN };
 }
 
 std::vector<Datatype> IfStatement::outputTypes() const
 {
-	return {};
+    return {};
 }
-

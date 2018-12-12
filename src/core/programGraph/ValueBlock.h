@@ -3,23 +3,22 @@
 #include <programGraph/ExpressionBlock.h>
 #include <programGraph/Value.h>
 
-class ValueBlock : public ExpressionBlock
-{
+class ValueBlock : public ExpressionBlock {
 public:
-	ValueBlock() = delete;
-	explicit ValueBlock(const Value& value);
+    ValueBlock() = delete;
+    explicit ValueBlock(const Value& value);
 
-	~ValueBlock() override;
+    ~ValueBlock() override;
 
-	std::vector<Datatype> inputTypes() const override;
-	std::vector<Datatype> outputTypes() const override;
+    std::vector<Datatype> inputTypes() const override;
+    std::vector<Datatype> outputTypes() const override;
 
-	OVERRIDE_VISITABLE;
+    OVERRIDE_VISITABLE;
 
-	Value value() const;
+    Value value() const;
+
 protected:
-	Value m_value;
+    Value m_value;
 
 private:
-
 };

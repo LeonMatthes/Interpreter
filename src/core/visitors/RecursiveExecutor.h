@@ -7,8 +7,8 @@
 #include <unordered_map>
 #include <vector>
 #include <visitors/Evaluator.h>
-#include <visitors/Visitor.h>
 #include <visitors/Executor.h>
+#include <visitors/Visitor.h>
 
 struct Return {
     std::vector<Value> m_values;

@@ -2,12 +2,12 @@
 
 #include <utility>
 
-Error::Error(std::string  message)
-	: m_message(std::move(message))
+Error::Error(std::string message)
+    : m_message(std::move(message))
 {
 }
 
 std::string Error::message() const
 {
-	return m_message;
+    return m_message;
 }

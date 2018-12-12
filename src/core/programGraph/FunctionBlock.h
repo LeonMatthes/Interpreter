@@ -8,21 +8,22 @@
 
 class Function;
 
-class FunctionBlock : public ExpressionBlock
-{
+class FunctionBlock : public ExpressionBlock {
 public:
-	using Ptr = std::shared_ptr<FunctionBlock>;
+    using Ptr = std::shared_ptr<FunctionBlock>;
 
-	explicit FunctionBlock(Function& function);
-	~FunctionBlock() override;
+    explicit FunctionBlock(Function& function);
+    ~FunctionBlock() override;
 
-	std::vector<Datatype> inputTypes() const override;
-	std::vector<Datatype> outputTypes() const override;
+    std::vector<Datatype> inputTypes() const override;
+    std::vector<Datatype> outputTypes() const override;
 
-	Function& function() const;
-	
-	OVERRIDE_VISITABLE;
+    Function& function() const;
+
+    OVERRIDE_VISITABLE;
+
 protected:
-	Function& m_function;
+    Function& m_function;
+
 private:
 };

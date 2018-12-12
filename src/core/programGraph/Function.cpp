@@ -5,23 +5,23 @@
 #include <utility>
 
 Function::Function(std::vector<Datatype> inputs, std::vector<Datatype> outputs)
-	: m_inputs(std::move( std::move(inputs) ))
-	, m_outputs(std::move( std::move(outputs) ))
-{}
+    : m_inputs(std::move(std::move(inputs)))
+    , m_outputs(std::move(std::move(outputs)))
+{
+}
 
 Function::Function()
-= default;
+    = default;
 
 Function::~Function()
-= default;
+    = default;
 
 const std::vector<Datatype>& Function::outputs() const
 {
-	return m_outputs;
+    return m_outputs;
 }
 
 const std::vector<Datatype>& Function::inputs() const
 {
-	return m_inputs;
+    return m_inputs;
 }
-
