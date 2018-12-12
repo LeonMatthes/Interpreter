@@ -6,10 +6,12 @@ class RuntimeError : public Error
 public:
 	using Ptr = std::shared_ptr<RuntimeError>;
 
-	RuntimeError(const std::string& message, class Function* function = nullptr, class Block* block = nullptr);
-	virtual ~RuntimeError();
+	explicit RuntimeError(const std::string& message, class Function* function, class Block* block);
+	explicit RuntimeError(const std::string& message, class Function* function);
+	explicit RuntimeError(const std::string& message);
+	~RuntimeError() override;
 
-	virtual std::string message() const override;
+	std::string message() const override;
 	class Function* function() const;
 	class Block* block() const;
 protected:

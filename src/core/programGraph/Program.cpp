@@ -1,5 +1,5 @@
-#include <programGraph/Program.h>
 #include <error/InternalError.h>
+#include <programGraph/Program.h>
 
 Program::Program(GraphicalFunction::UPtr startFunction, std::vector<GraphicalFunction::UPtr> functions)
 {
@@ -18,10 +18,12 @@ Program::Program(Program&& other)
 }
 
 #include <visitors/Executor.h>
+
+#include <utility>
 std::vector<Value> Program::run(std::vector<Value> parameters)
 {
 	auto executor = Executor();
-	return executor.evaluate(*m_startFunction, parameters);
+	return executor.evaluate(*m_startFunction, std::move(parameters));
 }
 
 std::vector<GraphicalFunction::UPtr>& Program::functions()

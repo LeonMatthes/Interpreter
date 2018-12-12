@@ -1,6 +1,6 @@
+#include <error/InternalError.h>
 #include <programGraph/VariableWriteBlock.h>
 #include <utility/Literals.h>
-#include <error/InternalError.h>
 
 VariableWriteBlock::VariableWriteBlock(class GraphicalFunction& owningFunction, VariableIdentifier identifier)
 	: StatementBlock(1, 1)

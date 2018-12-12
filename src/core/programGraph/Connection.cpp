@@ -1,8 +1,8 @@
-#include <programGraph/Connection.h>
-#include <programGraph/Block.h>
 #include <error/InternalError.h>
+#include <programGraph/Block.h>
+#include <programGraph/Connection.h>
 
-Connection::Connection(std::shared_ptr<Block> block, size_t output)
+Connection::Connection(const std::shared_ptr<Block>& block, size_t output)
 	: m_block{ block }
 	, m_output{ output }
 {
@@ -13,11 +13,11 @@ Connection::Connection(std::shared_ptr<Block> block, size_t output)
 }
 
 Connection::Connection()
-	: m_block{}
+	 
 {}
 
 Connection::~Connection()
-{}
+= default;
 
 bool Connection::isConnected() const
 {

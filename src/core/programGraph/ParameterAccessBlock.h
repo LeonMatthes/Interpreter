@@ -5,11 +5,11 @@
 class ParameterAccessBlock : public ExpressionBlock
 {
 public:
-	ParameterAccessBlock(const GraphicalFunction& function);
-	virtual ~ParameterAccessBlock() = default;
+	explicit ParameterAccessBlock(const GraphicalFunction& graphical);
+	~ParameterAccessBlock() override = default;
 
-	virtual std::vector<Datatype> inputTypes() const override;
-	virtual std::vector<Datatype> outputTypes() const override;
+	std::vector<Datatype> inputTypes() const override;
+	std::vector<Datatype> outputTypes() const override;
 
 	OVERRIDE_VISITABLE;
 

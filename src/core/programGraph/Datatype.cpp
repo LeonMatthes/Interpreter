@@ -1,7 +1,7 @@
-#include <programGraph/Datatype.h>
 #include <error/InternalError.h>
+#include <programGraph/Datatype.h>
 
-std::string operator+(std::string str, Datatype type)
+std::string operator+(const std::string& str, Datatype type)
 {
 	switch (type)
 	{

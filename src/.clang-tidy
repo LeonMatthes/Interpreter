@@ -1,0 +1,5 @@
+Checks: '*,-llvm-header-guard,-google-build-using-namespace,-clang-analyzer-alpha.*,-google-runtime-int,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-type-union-access,-hicpp-explicit-conversions,-fuchsia-overloaded-operator'
+HeaderFilter: 'src(\\|\/)(core|tests|nan).*\.h'
+CheckOptions:
+  - key: cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor
+    value: '1'

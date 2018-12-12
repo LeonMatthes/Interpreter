@@ -27,6 +27,6 @@ protected:
 	
 	VisitorType checkInputTypes(class Block& block);
 
-	GraphicalFunction* m_currentFunction;
+	GraphicalFunction* m_currentFunction{nullptr};
 private:
 };

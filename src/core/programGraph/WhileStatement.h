@@ -6,10 +6,10 @@ class WhileStatement : public StatementBlock
 {
 public:
 	WhileStatement();
-	virtual ~WhileStatement() = default;
+	~WhileStatement() override = default;
 
-	virtual std::vector<Datatype> inputTypes() const override;
-	virtual std::vector<Datatype> outputTypes() const override;
+	std::vector<Datatype> inputTypes() const override;
+	std::vector<Datatype> outputTypes() const override;
 
 	OVERRIDE_VISITABLE;
 

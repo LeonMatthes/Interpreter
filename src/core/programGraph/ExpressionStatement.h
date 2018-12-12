@@ -1,6 +1,6 @@
 #pragma once
-#include <programGraph/StatementBlock.h>
 #include <memory>
+#include <programGraph/StatementBlock.h>
 
 class ExpressionStatement : public StatementBlock
 {
@@ -13,14 +13,14 @@ public:
 	}
 
 	//This should probably be a unique_ptr, rather than a shared_ptr, but it does not quite fit with the Translator architecture
-	ExpressionStatement(std::shared_ptr<class ExpressionBlock> expression);
+	explicit ExpressionStatement(std::shared_ptr<class ExpressionBlock> expression);
 	ExpressionStatement(const ExpressionStatement&) = delete;
-	virtual ~ExpressionStatement();
+	~ExpressionStatement() override;
 
-	virtual std::vector<Datatype> inputTypes() const override;
-	virtual std::vector<Datatype> outputTypes() const override;
+	std::vector<Datatype> inputTypes() const override;
+	std::vector<Datatype> outputTypes() const override;
 
-	virtual void setInputConnections(std::vector<Connection> val) override;
+	void setInputConnections(std::vector<Connection> val) override;
 
 	class ExpressionBlock& expression();
 

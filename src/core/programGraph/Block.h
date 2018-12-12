@@ -1,8 +1,8 @@
 #pragma once
-#include <vector>
 #include <memory>
-#include <programGraph/Datatype.h>
 #include <programGraph/Connection.h>
+#include <programGraph/Datatype.h>
+#include <vector>
 
 class Block
 {
@@ -11,6 +11,7 @@ public:
 	using WPtr = std::weak_ptr<Block>;
 	using UPtr = std::unique_ptr<Block>;
 	
+	Block() = delete;
 	virtual ~Block();
 
 	virtual std::vector<Datatype> inputTypes() const = 0;
@@ -25,8 +26,7 @@ public:
 	size_t inputCount();
 	size_t outputCount();
 protected:
-	Block() = delete;
-	Block(size_t inputCount);
+	explicit Block(size_t inputCount);
 	
 	std::vector<Connection> m_inputConnections;
 private:

@@ -5,7 +5,7 @@
 class ProgramFlowConnection
 {
 public:
-	ProgramFlowConnection(std::shared_ptr<class StatementBlock> statement);
+	explicit ProgramFlowConnection(const std::shared_ptr<class StatementBlock>& statement);
 	ProgramFlowConnection();
 	virtual ~ProgramFlowConnection();
 

@@ -1,20 +1,20 @@
-#include <visitors/Evaluator.h>
-#include <visitors/Executor.h>
-#include <programGraph/ValueBlock.h>
-#include <programGraph/PrimitiveFunction.h>
+#include <error/InternalError.h>
+#include <programGraph/ExpressionStatement.h>
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/GraphicalFunction.h>
-#include <programGraph/ExpressionStatement.h>
+#include <programGraph/PrimitiveFunction.h>
+#include <programGraph/ValueBlock.h>
 #include <programGraph/VariableReadBlock.h>
 #include <programGraph/VariableWriteBlock.h>
-#include <error/InternalError.h>
+#include <visitors/Evaluator.h>
+#include <visitors/Executor.h>
 
 Evaluator::Evaluator(class Executor& executor)
 	: m_executor(executor)
 {}
 
 Evaluator::~Evaluator()
-{}
+= default;
 
 std::vector<Value> Evaluator::visit(class GraphicalFunction& graphicalFunction)
 {
@@ -62,7 +62,7 @@ std::vector<Value> Evaluator::visit(class ValueBlock& valueBlock)
 	return { valueBlock.value() };
 }
 
-std::vector<Value> Evaluator::visit(class ReturnBlock& ReturnBlock)
+std::vector<Value> Evaluator::visit(class ReturnBlock&  /*ReturnBlock*/)
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
@@ -82,22 +82,22 @@ std::vector<Value> Evaluator::visit(class VariableWriteBlock& variableWriteBlock
 	return m_executor.evaluate(variableWriteBlock);
 }
 
-std::vector<Value> Evaluator::visit(class IfStatement& ifStatement)
+std::vector<Value> Evaluator::visit(class IfStatement&  /*ifStatement*/)
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-std::vector<Value> Evaluator::visit(class WhileStatement& whileStatement)
+std::vector<Value> Evaluator::visit(class WhileStatement&  /*whileStatement*/)
 {
 	throw std::logic_error("The method or operation is not implemented.");
 }
 
-std::vector<Value> Evaluator::visit(class ParameterAccessBlock& parameterAccess)
+std::vector<Value> Evaluator::visit(class ParameterAccessBlock&  /*parameterAccess*/)
 {
 	return m_executor.parameters();
 }
 
-void Evaluator::pushParameters(std::vector<Value> parameters)
+void Evaluator::pushParameters(const std::vector<Value>& parameters)
 {
 	m_callStack.push(parameters);
 }

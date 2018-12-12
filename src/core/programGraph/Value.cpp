@@ -1,5 +1,5 @@
-#include <programGraph/Value.h>
 #include <error/InternalError.h>
+#include <programGraph/Value.h>
 
 Value::Value()
 	: Value(false)
@@ -37,9 +37,7 @@ Value::Value(Datatype datatype)
 }
 
 Value::~Value()
-{
-
-}
+= default;
 
 bool Value::operator==(const Value& RHS) const
 {
@@ -73,7 +71,6 @@ void Value::assertType(Datatype type) const
 bool Value::getBoolean() const
 {
 	assertType(Datatype::BOOLEAN);
-
 	return m_data.m_boolean;
 }
 

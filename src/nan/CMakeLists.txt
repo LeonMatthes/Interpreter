@@ -10,4 +10,6 @@ set(nan_src
 	${CMAKE_CURRENT_SOURCE_DIR}/JSProgramTranslator.h
 	${CMAKE_CURRENT_SOURCE_DIR}/TranslationError.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/TranslationError.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Utilities.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Utilities.h
 	PARENT_SCOPE)

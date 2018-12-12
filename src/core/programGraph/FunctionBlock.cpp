@@ -1,5 +1,5 @@
-#include <programGraph/FunctionBlock.h>
 #include <programGraph/Function.h>
+#include <programGraph/FunctionBlock.h>
 
 FunctionBlock::FunctionBlock(Function& _function)
 	: ExpressionBlock(_function.inputs().size())
@@ -7,7 +7,7 @@ FunctionBlock::FunctionBlock(Function& _function)
 {}
 
 FunctionBlock::~FunctionBlock()
-{}
+= default;
 
 std::vector<Datatype> FunctionBlock::inputTypes() const
 {

@@ -1,18 +1,18 @@
 #include <programGraph/ProgramFlowConnection.h>
 
-#include <programGraph/StatementBlock.h>
 #include <error/InternalError.h>
+#include <programGraph/StatementBlock.h>
 
 ProgramFlowConnection::ProgramFlowConnection()
 	: m_statement(std::shared_ptr<StatementBlock>(nullptr))
 {}
 
-ProgramFlowConnection::ProgramFlowConnection(std::shared_ptr<StatementBlock> statement)
+ProgramFlowConnection::ProgramFlowConnection(const std::shared_ptr<StatementBlock>& statement)
 	: m_statement(statement)
 {}
 
 ProgramFlowConnection::~ProgramFlowConnection()
-{}
+= default;
 
 bool ProgramFlowConnection::isConnected() const
 {

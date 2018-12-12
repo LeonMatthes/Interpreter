@@ -1,5 +1,5 @@
-#include <programGraph/VariableReadBlock.h>
 #include <error/InternalError.h>
+#include <programGraph/VariableReadBlock.h>
 #include <utility/Literals.h>
 
 VariableReadBlock::VariableReadBlock(const GraphicalFunction& owningFunction, VariableIdentifier identifier) : ExpressionBlock(0)
@@ -13,7 +13,7 @@ VariableReadBlock::VariableReadBlock(const GraphicalFunction& owningFunction, Va
 }
 
 VariableReadBlock::~VariableReadBlock()
-{}
+= default;
 
 std::vector<Datatype> VariableReadBlock::inputTypes() const
 {

@@ -1,5 +1,9 @@
 #include <programGraph/PrimitiveFunction.h>
 
+#include <utility>
+
+#include <utility>
+
 //////////////////////////////////////////////////////////////////////////
 //					Math Primitives
 //////////////////////////////////////////////////////////////////////////
@@ -106,19 +110,19 @@ PrimitiveFunction PrimitiveFunction::castDoubleToBool(
 	[](std::vector<Value> inputs)
 	{
 		bool result = inputs.front().getDouble() != 0.0;
-		return std::vector<Value>({ result });
+		return std::vector<Value>( static_cast<std::vector<class Value, class std::allocator<class Value> >::size_type>(result) );
 	});
 
 PrimitiveFunction::PrimitiveFunction(std::string name, std::vector<Datatype> inputTypes, std::vector<Datatype> outputTypes, std::function<std::vector<Value>(std::vector<Value>)> executeFunction)
-	: Function(inputTypes, outputTypes)
-	, m_executeFunction{executeFunction}
-	, m_name{name}
+	: Function(std::move(inputTypes), std::move(outputTypes))
+	, m_executeFunction{std::move(std::move(executeFunction))}
+	, m_name{std::move(std::move(name))}
 {}
 
 
 std::vector<Value> PrimitiveFunction::operator()(std::vector<Value> inputs) const
 {
-	return m_executeFunction(inputs);
+	return m_executeFunction(std::move(inputs));
 }
 
 std::string PrimitiveFunction::name() const

@@ -6,11 +6,11 @@ class ReturnBlock : public StatementBlock
 {
 public:
 	ReturnBlock() = delete;
-	ReturnBlock(class Function& function);
-	virtual ~ReturnBlock();
+	explicit ReturnBlock(class Function& function);
+	~ReturnBlock() override;
 
-	virtual std::vector<Datatype> inputTypes() const override;
-	virtual std::vector<Datatype> outputTypes() const override;
+	std::vector<Datatype> inputTypes() const override;
+	std::vector<Datatype> outputTypes() const override;
 
 	OVERRIDE_VISITABLE;
 

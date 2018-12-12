@@ -1,23 +1,21 @@
-#include <visitors/Executor.h>
-#include <programGraph/ReturnBlock.h>
-#include <error/InternalError.h>
-#include <programGraph/GraphicalFunction.h>
-#include <programGraph/ExpressionStatement.h>
-#include <error/RuntimeError.h>
-#include <programGraph/VariableWriteBlock.h>
-#include <programGraph/IfStatement.h>
-#include <programGraph/WhileStatement.h>
 #include <algorithm>
+#include <error/InternalError.h>
+#include <error/RuntimeError.h>
+#include <programGraph/ExpressionStatement.h>
+#include <programGraph/GraphicalFunction.h>
+#include <programGraph/IfStatement.h>
+#include <programGraph/ReturnBlock.h>
+#include <programGraph/VariableWriteBlock.h>
+#include <programGraph/WhileStatement.h>
 #include <utility/Literals.h>
+#include <visitors/Executor.h>
 
 Executor::Executor()
 	: m_evaluator(*this)
 {}
 
 Executor::~Executor()
-{
-
-}
+= default;
 
 void Executor::visit(class GraphicalFunction& graphicalFunction)
 {
@@ -27,22 +25,22 @@ void Executor::visit(class GraphicalFunction& graphicalFunction)
 	}
 }
 
-void Executor::visit(class FunctionBlock& functionBlock)
+void Executor::visit(class FunctionBlock&  /*functionBlock*/)
 {
 	throwExpressionError();
 }
 
-void Executor::visit(class Connection& connection)
+void Executor::visit(class Connection&  /*connection*/)
 {
 	throwExpressionError();
 }
 
-void Executor::visit(class ValueBlock& valueBlock)
+void Executor::visit(class ValueBlock&  /*valueBlock*/)
 {
 	throwExpressionError();
 }
 
-void Executor::visit(class PrimitiveFunction& primitiveFunction)
+void Executor::visit(class PrimitiveFunction&  /*primitiveFunction*/)
 {
 	throwExpressionError();
 }
@@ -69,7 +67,7 @@ void Executor::visit(class ExpressionStatement& expressionStatement)
 }
 
 
-void Executor::visit(class VariableReadBlock& variableReadBlock)
+void Executor::visit(class VariableReadBlock&  /*variableReadBlock*/)
 {
 	throwExpressionError();
 }
@@ -115,7 +113,7 @@ void Executor::visit(class WhileStatement& whileStatement)
 	executeNext(whileStatement);
 }
 
-void Executor::visit(class ParameterAccessBlock& parameterAccess)
+void Executor::visit(class ParameterAccessBlock&  /*parameterAccess*/)
 {
 	throwExpressionError();
 }
@@ -206,7 +204,7 @@ std::vector<Value> Executor::evaluate(class StatementBlock& statement)
 	return savedState->second;
 }
 
-Value Executor::variableValue(VariableIdentifier identifier)
+Value Executor::variableValue(const VariableIdentifier& identifier)
 {
 	return m_callStack.top().m_variables.at(identifier);
 }

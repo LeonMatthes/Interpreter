@@ -1,12 +1,14 @@
-#include <programGraph/GraphicalFunction.h>
 #include <error/InternalError.h>
+#include <programGraph/GraphicalFunction.h>
 #include <utility/Literals.h>
 
+#include <utility>
+
 GraphicalFunction::GraphicalFunction()
-{}
+= default;
 
 GraphicalFunction::GraphicalFunction(std::vector<Datatype> inputs, std::vector<Datatype> outputs)
-	: Function(inputs, outputs)
+	: Function(std::move(inputs), std::move(outputs))
 {}
 
 GraphicalFunction::GraphicalFunction(GraphicalFunction&& other)
@@ -16,7 +18,7 @@ GraphicalFunction::GraphicalFunction(GraphicalFunction&& other)
 {}
 
 GraphicalFunction::~GraphicalFunction()
-{}
+= default;
 
 const std::vector<ExpressionBlock::Ptr>& GraphicalFunction::expressionBlocks() const
 {
@@ -25,7 +27,7 @@ const std::vector<ExpressionBlock::Ptr>& GraphicalFunction::expressionBlocks() c
 
 void GraphicalFunction::setExpressionBlocks(std::vector<ExpressionBlock::Ptr> blocks)
 {
-	m_expressionBlocks = blocks;
+	m_expressionBlocks = std::move(blocks);
 }
 
 const std::vector<StatementBlock::Ptr>& GraphicalFunction::statementBlocks() const
@@ -35,15 +37,15 @@ const std::vector<StatementBlock::Ptr>& GraphicalFunction::statementBlocks() con
 
 void GraphicalFunction::setStatementBlocks(std::vector<StatementBlock::Ptr> blocks)
 {
-	m_statementBlocks = blocks;
+	m_statementBlocks = std::move(blocks);
 }
 
-void GraphicalFunction::addVariable(VariableIdentifier identifier, Datatype type)
+void GraphicalFunction::addVariable(const VariableIdentifier& identifier, Datatype type)
 {
 	m_variables[identifier] = type;
 }
 
-Datatype GraphicalFunction::variableType(VariableIdentifier identifier) const
+Datatype GraphicalFunction::variableType(const VariableIdentifier& identifier) const
 {
 	if (!hasVariable(identifier))
 	{
@@ -52,7 +54,7 @@ Datatype GraphicalFunction::variableType(VariableIdentifier identifier) const
 	return m_variables.at(identifier);
 }
 
-bool GraphicalFunction::hasVariable(VariableIdentifier identifier) const
+bool GraphicalFunction::hasVariable(const VariableIdentifier& identifier) const
 {
 	return m_variables.find(identifier) != m_variables.end();
 }

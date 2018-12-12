@@ -1,15 +1,13 @@
 #include <programGraph/ValueBlock.h>
 
 
-ValueBlock::ValueBlock(Value value)
+ValueBlock::ValueBlock(const Value& value)
 	: ExpressionBlock(0)
 	, m_value(value)
 {}
 
 ValueBlock::~ValueBlock()
-{
-
-}
+= default;
 
 std::vector<Datatype> ValueBlock::inputTypes() const
 {

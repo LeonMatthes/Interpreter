@@ -1,7 +1,9 @@
 #include <error/InternalError.h>
 
+#include <utility>
+
 InternalError::InternalError(std::string message)
-	: Error(message)
+	: Error(std::move(message))
 {}
 
 std::string InternalError::message() const

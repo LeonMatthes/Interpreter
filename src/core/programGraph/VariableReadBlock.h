@@ -7,10 +7,10 @@ class VariableReadBlock : public ExpressionBlock
 {
 public:
 	VariableReadBlock(const GraphicalFunction& owningFunction, VariableIdentifier identifier);
-	virtual ~VariableReadBlock();
+	~VariableReadBlock() override;
 
-	virtual std::vector<Datatype> inputTypes() const override;
-	virtual std::vector<Datatype> outputTypes() const override;
+	std::vector<Datatype> inputTypes() const override;
+	std::vector<Datatype> outputTypes() const override;
 
 	const VariableIdentifier& variableIdentifier() const;
 

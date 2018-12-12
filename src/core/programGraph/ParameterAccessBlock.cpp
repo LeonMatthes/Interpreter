@@ -1,6 +1,6 @@
-#include <programGraph/ParameterAccessBlock.h>
-#include <error/InternalError.h>
 #include <error/Error.h>
+#include <error/InternalError.h>
+#include <programGraph/ParameterAccessBlock.h>
 #include <utility/Literals.h>
 
 ParameterAccessBlock::ParameterAccessBlock(const GraphicalFunction& graphical)

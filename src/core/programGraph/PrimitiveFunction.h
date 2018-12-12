@@ -1,9 +1,9 @@
 #pragma once
 
-#include <programGraph/Function.h>
 #include <functional>
-#include <vector>
+#include <programGraph/Function.h>
 #include <programGraph/Value.h>
+#include <vector>
 
 class PrimitiveFunction : public Function
 {
@@ -11,7 +11,7 @@ class PrimitiveFunction : public Function
 	//						INSTANCE
 	//////////////////////////////////////////////////////////////////////////
 public:
-	virtual ~PrimitiveFunction() = default;
+	~PrimitiveFunction() override = default;
 
 	std::vector<Value> operator()(std::vector<Value> inputs) const;
 	std::string name() const;

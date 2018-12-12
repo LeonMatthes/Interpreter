@@ -1,18 +1,14 @@
-#include <visitors/DAGChecker.h>
-#include <programGraph/GraphicalFunction.h>
-#include <programGraph/FunctionBlock.h>
 #include <algorithm>
+#include <programGraph/FunctionBlock.h>
+#include <programGraph/GraphicalFunction.h>
 #include <vector>
+#include <visitors/DAGChecker.h>
 
 DAGChecker::DAGChecker()
-{
-
-}
+= default;
 
 DAGChecker::~DAGChecker()
-{
-
-}
+= default;
 
 bool DAGChecker::check(GraphicalFunction& functionGraph)
 {

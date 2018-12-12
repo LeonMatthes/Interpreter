@@ -1,13 +1,13 @@
 #pragma once
 #include <programGraph/GraphicalFunction.h>
-#include <vector>
 #include <programGraph/Value.h>
+#include <vector>
 
 class Program
 {
 public:
 	Program(GraphicalFunction::UPtr startFunction, std::vector<GraphicalFunction::UPtr> functions);
-	Program(Program&&); //For use with auto, do NOT use program after moving it!
+	Program(Program&& /*other*/); //For use with auto, do NOT use program after moving it!
 	virtual ~Program() = default;
 
 	std::vector<Value> run(std::vector<Value> parameters);

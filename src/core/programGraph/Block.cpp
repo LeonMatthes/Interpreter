@@ -1,12 +1,12 @@
-#include <programGraph/Block.h>
 #include <error/InternalError.h>
+#include <programGraph/Block.h>
 
 Block::Block(size_t inputCount)
 	: m_inputConnections(inputCount)
 {}
 
 Block::~Block()
-{}
+= default;
 
 size_t Block::inputCount()
 {

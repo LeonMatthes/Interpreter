@@ -2,13 +2,11 @@
 #include <programGraph/Datatype.h>
 #include <string>
 
+
 class Value
 {
 public:
 	Value();
-	Value(bool b);
-	Value(double d);
-	Value(Datatype datatype);
 	virtual ~Value();
 
 	bool getBoolean() const;
@@ -17,12 +15,18 @@ public:
 
 	void assertType(Datatype type) const;
 
-	bool operator==(const Value& RHS) const;
+	// These implicit conversions are allowed for readability
+	Value(bool b); // NOLINT(google-explicit-constructor)
+	Value(double d); // NOLINT(google-explicit-constructor)
+	Value(Datatype datatype); // NOLINT(google-explicit-constructor)
+	bool operator==(const Value& RHS) const; // NOLINT(google-explicit-constructor)
 protected:
 	Datatype m_type;
-	union {
+
+	union Data {
 		double m_double;
 		bool m_boolean;
-	} m_data;
+	};
+	Value::Data m_data{ 0.0 };
 private:
 };

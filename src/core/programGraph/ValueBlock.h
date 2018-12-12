@@ -7,12 +7,12 @@ class ValueBlock : public ExpressionBlock
 {
 public:
 	ValueBlock() = delete;
-	ValueBlock(Value value);
+	explicit ValueBlock(const Value& value);
 
-	~ValueBlock();
+	~ValueBlock() override;
 
-	virtual std::vector<Datatype> inputTypes() const override;
-	virtual std::vector<Datatype> outputTypes() const override;
+	std::vector<Datatype> inputTypes() const override;
+	std::vector<Datatype> outputTypes() const override;
 
 	OVERRIDE_VISITABLE;
 

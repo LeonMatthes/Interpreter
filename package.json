@@ -4,7 +4,8 @@
     "description": "An Interpreter for the MrWoC language",
     "dependencies": {
         "cmake-js": "^4.0.1",
-        "nan": "^2.10.0"
+        "nan": "^2.10.0",
+        "npm": "^6.5.0"
     },
     "scripts": {
         "install": "cmake-js compile --CDINTERPRETER_NAN:BOOL=TRUE --CDINTERPRETER_TESTS:BOOL=FALSE"

@@ -7,8 +7,22 @@ RuntimeError::RuntimeError(const std::string& message, class Function* function 
 	, m_Block(block)
 {}
 
+
+RuntimeError::RuntimeError(const std::string& message, class Function* function)
+	:RuntimeError(message, function, nullptr)
+{
+
+}
+
+
+RuntimeError::RuntimeError(const std::string& message)
+	: RuntimeError(message, nullptr, nullptr)
+{
+
+}
+
 RuntimeError::~RuntimeError()
-{}
+= default;
 
 std::string RuntimeError::message() const
 {

@@ -1,9 +1,9 @@
-#include <nan.h>
-#include <string>
 #include <JSProgram.h>
-#include <iostream>
 #include <JSProgramTranslator.h>
 #include <TranslationError.h>
+#include <iostream>
+#include <nan.h>
+#include <string>
 
 NAN_METHOD(Testing)
 {

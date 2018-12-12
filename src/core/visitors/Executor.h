@@ -1,13 +1,13 @@
 #pragma once
 
-#include <visitors/Visitor.h>
-#include <visitors/Evaluator.h>
-#include <vector>
-#include <programGraph/Value.h>
-#include <programGraph/GraphicalFunction.h>
-#include <unordered_map>
 #include <map>
+#include <programGraph/GraphicalFunction.h>
+#include <programGraph/Value.h>
 #include <stack>
+#include <unordered_map>
+#include <vector>
+#include <visitors/Evaluator.h>
+#include <visitors/Visitor.h>
 
 struct Return
 {
@@ -46,7 +46,7 @@ public:
 	std::vector<Value> evaluate(class StatementBlock& statement);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction);
 	std::vector<Value> evaluate(class GraphicalFunction& graphicalFunction, std::vector<Value> parameters);
-	Value variableValue(VariableIdentifier identifier);
+	Value variableValue(const VariableIdentifier& identifier);
 	std::vector<Value> parameters() const;
 protected:
 	Evaluator m_evaluator;

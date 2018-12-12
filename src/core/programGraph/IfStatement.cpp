@@ -6,7 +6,7 @@ IfStatement::IfStatement()
 {}
 
 IfStatement::~IfStatement()
-{}
+= default;
 
 std::vector<Datatype> IfStatement::inputTypes() const
 {

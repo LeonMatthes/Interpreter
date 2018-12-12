@@ -1,12 +1,12 @@
 #pragma once
-#include <programGraph/Function.h>
+#include <memory>
 #include <programGraph/ExpressionBlock.h>
+#include <programGraph/Function.h>
 #include <programGraph/StatementBlock.h>
-#include <visitors/Visitor.h>
-#include <vector>
 #include <string>
 #include <unordered_map>
-#include <memory>
+#include <vector>
+#include <visitors/Visitor.h>
 
 using VariableIdentifier = std::string;
 
@@ -19,7 +19,7 @@ public:
 	GraphicalFunction(GraphicalFunction&& other); //Move needed for auto
 	GraphicalFunction(const GraphicalFunction&) = delete;
 	GraphicalFunction();
-	virtual ~GraphicalFunction();
+	~GraphicalFunction() override;
 	
 	const std::vector<ExpressionBlock::Ptr>& expressionBlocks() const;
 	void setExpressionBlocks(std::vector<ExpressionBlock::Ptr> blocks);
@@ -27,9 +27,9 @@ public:
 	const std::vector<StatementBlock::Ptr>& statementBlocks() const;
 	void setStatementBlocks(std::vector<StatementBlock::Ptr> blocks);
 
-	void addVariable(VariableIdentifier identifier, Datatype type);
-	Datatype variableType(VariableIdentifier identifier) const;
-	bool hasVariable(VariableIdentifier identifier) const;
+	void addVariable(const VariableIdentifier& identifier, Datatype type);
+	Datatype variableType(const VariableIdentifier& identifier) const;
+	bool hasVariable(const VariableIdentifier& identifier) const;
 	const std::unordered_map<VariableIdentifier, Datatype>& variables() const;
 
 

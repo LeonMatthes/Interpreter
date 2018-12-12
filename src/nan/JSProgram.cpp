@@ -4,15 +4,18 @@
 #include <error/Error.h>
 #include <visitors/TypeChecker.h>
 #include <error/RuntimeError.h>
+
+#include <utility>
 #include <error/Error.h>
+#include <Utilities.h>
 
 JSProgram::JSProgram(GraphicalFunction::UPtr start, 
 	std::vector<GraphicalFunction::UPtr> functions,
-	const std::map<Function*, JSProgramTranslator::Identifier>& functionIdentifiers,
-	const std::map<Block*, JSProgramTranslator::Identifier>& blockIdentifiers)
+	std::map<Function*, JSProgramTranslator::Identifier>  functionIdentifiers,
+	std::map<Block*, JSProgramTranslator::Identifier>  blockIdentifiers)
 	: m_program(std::move(start), std::move(functions))
-	, m_blockIdentifiers{blockIdentifiers}
-	, m_functionIdentifiers{functionIdentifiers}
+	, m_blockIdentifiers{std::move(blockIdentifiers)}
+	, m_functionIdentifiers{std::move(functionIdentifiers)}
 {
 
 }
@@ -57,7 +60,7 @@ NAN_METHOD(JSProgram::New)
 	}
 
 	JSProgramTranslator translator;
-	auto jsProgram = (JSProgram*)(nullptr);
+	auto jsProgram = static_cast<JSProgram*>(nullptr);
 	try
 	{
 		jsProgram = translator.translateProgram(info[0]->ToObject());
@@ -96,7 +99,7 @@ NAN_METHOD(JSProgram::run)
 	}
 
 	auto results = std::vector<Value>();
-	auto jsResults = v8::Array::New(info.GetIsolate(), results.size());
+	auto jsResults = v8::Array::New(info.GetIsolate(), checked_cast<int>(results.size()));
 	try
 	{
 		auto parameters = self->translateParameters(info);
@@ -105,7 +108,7 @@ NAN_METHOD(JSProgram::run)
 	
 		for (size_t i = 0; i < results.size(); i++)
 		{
-			jsResults->Set(i, self->translateValue(results.at(i)));
+			jsResults->Set(checked_cast<uint32_t>(i), self->translateValue(results.at(i)));
 		}
 	}
 	catch (Error::Ptr e)
@@ -165,7 +168,7 @@ auto JSProgram::translateTypeCheck(TypeCheckResult checkResult, v8::Isolate* iso
 	auto jsResult = v8::Object::New(isolate);
 	Nan::Set(jsResult, Nan::New("succeeded").ToLocalChecked(), Nan::New(checkResult.succeeded));
 
-	auto jsOffenders = v8::Array::New(isolate, offenderCount);
+	auto jsOffenders = v8::Array::New(isolate, checked_cast<int>(offenderCount));
 	auto index = 0;
 	for (const auto& offender : checkResult.offenders)
 	{
@@ -189,7 +192,7 @@ auto JSProgram::translateBlocks(std::set<class Block*> blocks, v8::Isolate* isol
 	auto blockCount = std::count_if(blocks.begin(), blocks.end(), [this](Block* block) {
 		return m_blockIdentifiers.find(block) != m_blockIdentifiers.end();
 	});
-	auto jsBlocks = v8::Array::New(isolate, blockCount);
+	auto jsBlocks = v8::Array::New(isolate, checked_cast<int>(blockCount));
 
 	auto index = 0;
 	for (const auto& block : blocks)
@@ -217,7 +220,7 @@ auto JSProgram::assertTypeCheckBeforeRun(v8::Isolate* isolate) ->bool
 		Nan::ThrowError(jsError);
 	}
 
-	return checkResult;
+	return checkResult.succeeded;
 }
 
 auto JSProgram::typeCheck() ->TypeCheckResult
@@ -230,7 +233,7 @@ auto JSProgram::typeCheck() ->TypeCheckResult
 	}
 	result.merge(m_program.startFunction()->accept(checker));
 
-	m_typeChecked = result;
+	m_typeChecked = result.succeeded;
 	return result;
 }
 
@@ -255,7 +258,8 @@ std::vector<Value> JSProgram::translateParameters(Nan::NAN_METHOD_ARGS_TYPE info
 	auto parameters = std::vector<Value>();
 	for (size_t i = 0; i < info.Length(); i++)
 	{
-		parameters.push_back(JSProgramTranslator().translateValue(info[i], Nan::Nothing<JSProgramTranslator::Identifier>(), Nan::Nothing<JSProgramTranslator::Identifier>()));
+		auto value = JSProgramTranslator().translateValue(info[checked_cast<int>(i)], Nan::Nothing<JSProgramTranslator::Identifier>(), Nan::Nothing<JSProgramTranslator::Identifier>());
+		parameters.emplace_back(value);
 	}
 	return parameters;
 }

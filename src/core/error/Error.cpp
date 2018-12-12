@@ -1,7 +1,9 @@
 #include <error/Error.h>
 
-Error::Error(std::string message)
-	: m_message(message)
+#include <utility>
+
+Error::Error(std::string  message)
+	: m_message(std::move(message))
 {
 }
 

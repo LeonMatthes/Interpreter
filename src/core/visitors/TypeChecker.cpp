@@ -1,22 +1,18 @@
-#include <visitors/TypeChecker.h>
 #include <error/InternalError.h>
-#include <vector>
-#include <programGraph/GraphicalFunction.h>
 #include <programGraph/FunctionBlock.h>
-#include <programGraph/ReturnBlock.h>
+#include <programGraph/GraphicalFunction.h>
 #include <programGraph/IfStatement.h>
+#include <programGraph/ReturnBlock.h>
 #include <programGraph/WhileStatement.h>
+#include <vector>
+#include <visitors/TypeChecker.h>
 
 TypeChecker::TypeChecker()
-	: m_currentFunction(nullptr)
-{
-
-}
+	 
+= default;
 
 TypeChecker::~TypeChecker()
-{
-
-}
+= default;
 
 TypeChecker::VisitorType TypeChecker::checkInputTypes(class Block& block)
 {
@@ -28,18 +24,18 @@ TypeChecker::VisitorType TypeChecker::checkInputTypes(class Block& block)
 			return TypeCheckResult(m_currentFunction, &block);
 		}
 	}
-	return true;
+	return VisitorType(true);
 }
 
-TypeChecker::VisitorType TypeChecker::visit(class PrimitiveFunction& primitiveFunction)
+TypeChecker::VisitorType TypeChecker::visit(class PrimitiveFunction&  /*primitiveFunction*/)
 {
 	THROW_ERROR(InternalError, "TypeChecker visited PrimitiveFunction!");
 }
 
-TypeChecker::VisitorType TypeChecker::visit(class ValueBlock& valueBlock)
+TypeChecker::VisitorType TypeChecker::visit(class ValueBlock&  /*valueBlock*/)
 {
 	//ValueBlocks are always type safe as they don't depend on anything
-	return true;
+	return VisitorType(true);
 }
 
 TypeChecker::VisitorType TypeChecker::visit(class ReturnBlock& returnBlock)
@@ -53,9 +49,9 @@ TypeChecker::VisitorType TypeChecker::visit(class ExpressionStatement& expressio
 	return checkInputTypes(expressionStatement);
 }
 
-TypeChecker::VisitorType TypeChecker::visit(class VariableReadBlock& variableReadBlock)
+TypeChecker::VisitorType TypeChecker::visit(class VariableReadBlock&  /*variableReadBlock*/)
 {
-	return true;
+	return VisitorType(true);
 }
 
 TypeChecker::VisitorType TypeChecker::visit(class GraphicalFunction& graphicalFunction)
@@ -82,7 +78,7 @@ TypeChecker::VisitorType TypeChecker::visit(class FunctionBlock& functionBlock)
 	return checkInputTypes(functionBlock);
 }
 
-TypeChecker::VisitorType TypeChecker::visit(class Connection& connection)
+TypeChecker::VisitorType TypeChecker::visit(class Connection&  /*connection*/)
 {
 	THROW_ERROR(InternalError, "Typechecker visited Connection");
 }
@@ -103,7 +99,7 @@ TypeChecker::VisitorType TypeChecker::visit(class WhileStatement& whileStatement
 	return checkInputTypes(whileStatement);
 }
 
-TypeChecker::VisitorType TypeChecker::visit(class ParameterAccessBlock& parameterAccess)
+TypeChecker::VisitorType TypeChecker::visit(class ParameterAccessBlock&  /*parameterAccess*/)
 {
-	return true;
+	return VisitorType(true);
 }

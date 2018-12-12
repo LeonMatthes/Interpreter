@@ -24,8 +24,8 @@ public:
 
 };
 
-#include <vector>
 #include <programGraph/Value.h>
+#include <vector>
 #define MAKE_VISITABLE_TYPED(R) virtual R accept(Visitor<R>& visitor) {return visitor.visit(*this);}
 #define MAKE_VISITABLE \
 	MAKE_VISITABLE_TYPED(TypeCheckResult)\

@@ -1,9 +1,9 @@
 #pragma once
-#include <nan.h>
-#include <programGraph/GraphicalFunction.h>
-#include <programGraph/Block.h>
 #include <cstdint>
 #include <map>
+#include <nan.h>
+#include <programGraph/Block.h>
+#include <programGraph/GraphicalFunction.h>
 
 class JSProgramTranslator
 {

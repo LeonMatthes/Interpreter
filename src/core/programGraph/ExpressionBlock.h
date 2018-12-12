@@ -8,9 +8,9 @@ class ExpressionBlock : public Block
 public:
 	using Ptr = std::shared_ptr<ExpressionBlock>;
 
-	ExpressionBlock(size_t inputCount);
+	explicit ExpressionBlock(size_t inputCount);
 	
-	virtual ~ExpressionBlock();
+	~ExpressionBlock() override;
 
 	MAKE_VISITABLE_VIRTUAL;
 protected:

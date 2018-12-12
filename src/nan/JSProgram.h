@@ -1,20 +1,20 @@
 #pragma once
+#include <JSProgramTranslator.h>
+#include <error/Error.h>
 #include <nan.h>
 #include <programGraph/Program.h>
 #include <programGraph/Value.h>
 #include <vector>
-#include <JSProgramTranslator.h>
-#include <error/Error.h>
 
 class JSProgram : public Nan::ObjectWrap
 {
 public:
 	JSProgram(GraphicalFunction::UPtr start, 
 		std::vector<GraphicalFunction::UPtr> functions,
-		const std::map<Function*, JSProgramTranslator::Identifier>& functionIdentifiers,
-		const std::map<Block*, JSProgramTranslator::Identifier>& blockIdentifiers);
+		std::map<Function*, JSProgramTranslator::Identifier>  functionIdentifiers,
+		std::map<Block*, JSProgramTranslator::Identifier>  blockIdentifiers);
 	JSProgram(GraphicalFunction::UPtr start, std::vector<GraphicalFunction::UPtr> functions);
-	virtual ~JSProgram() = default;
+	~JSProgram() override = default;
 	
 	static NAN_MODULE_INIT(Init);
 	static NAN_METHOD(New);

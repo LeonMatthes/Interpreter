@@ -5,4 +5,4 @@ ExpressionBlock::ExpressionBlock(size_t inputCount)
 {}
 
 ExpressionBlock::~ExpressionBlock()
-{}
+= default;

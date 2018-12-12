@@ -19,6 +19,7 @@
 #include <programGraph/FunctionBlock.h>
 #include <programGraph/VariableReadBlock.h>
 #include <programGraph/VariableWriteBlock.h>
+#include <Utilities.h>
 
 JSProgramTranslator::JSProgramTranslator()
 {}
@@ -424,7 +425,7 @@ void JSProgramTranslator::fillVariables(GraphicalFunction& graphical, Identifier
 
 	for (size_t i = 0; i < jsVariables->Length(); i++)
 	{
-		fillVariable(graphical, ID, jsVariables->Get(i));
+		fillVariable(graphical, ID, jsVariables->Get(checked_cast<uint32_t>(i)));
 	}
 }
 
@@ -463,7 +464,7 @@ void JSProgramTranslator::translateBlockConnections(v8::Local<v8::Value> jsConne
 
 	for (size_t i = 0; i < jsConnections->Length(); i++)
 	{
-		translateBlockConnection(jsConnections->Get(i), blocksMap, currentFunction);
+		translateBlockConnection(jsConnections->Get(checked_cast<uint32_t>(i)), blocksMap, currentFunction);
 	}
 }
 
@@ -525,7 +526,7 @@ void JSProgramTranslator::translateBlockConnection(v8::Local<v8::Value> jsConnec
 		else
 		{
 			//subtract the ProgramFlow outputs, as these Connection types are not differentiated in JS
-			startPort -= startStatement->flowConnectionsCount();
+			startPort -= checked_cast<uint32_t>(startStatement->flowConnectionsCount());
 		}
 	}
 
@@ -613,11 +614,11 @@ Datatype JSProgramTranslator::translateDatatype(v8::Local<v8::Value> jsDatatype,
 
 v8::Local<v8::Array> JSProgramTranslator::datatypeArrayToJS(v8::Isolate* isolate, std::vector<Datatype> datatypes)
 {
-	auto jsArray = v8::Array::New(isolate, datatypes.size());
+	auto jsArray = v8::Array::New(isolate, checked_cast<int>(datatypes.size()));
 	for (size_t i = 0; i < datatypes.size(); i++)
 	{
 		auto jsType = Nan::New(""_s + datatypes.at(i)).ToLocalChecked();
-		Nan::Set(jsArray, i, jsType);
+		Nan::Set(jsArray, checked_cast<uint32_t>(i), jsType);
 	}
 	return jsArray;
 }
@@ -657,7 +658,7 @@ std::map<Datatype, JSProgramTranslator::Identifier> JSProgramTranslator::casting
 v8::Local<v8::Value> JSProgramTranslator::datatypeInformation(v8::Isolate* isolate, Datatype type)
 {
 	auto casts = castingTable(type);
-	auto jsCastingTable = v8::Array::New(isolate, casts.size());
+	auto jsCastingTable = v8::Array::New(isolate, checked_cast<int>(casts.size()));
 	
 	auto i = 0;
 	for (const auto& cast : casts)
@@ -681,7 +682,7 @@ NAN_METHOD(JSProgramTranslator::Primitives)
 	try
 	{
 		auto identifiers = JSProgramTranslator::primitiveIdentifiers();
-		auto primitivesArray = v8::Array::New(info.GetIsolate(), identifiers.size());
+		auto primitivesArray = v8::Array::New(info.GetIsolate(), checked_cast<int>(identifiers.size()));
 		auto count = 0;
 
 		for (const auto& identifier : identifiers)
@@ -725,10 +726,10 @@ NAN_METHOD(JSProgramTranslator::Datatypes)
 			Datatype::BOOLEAN, 
 			Datatype::DOUBLE });
 
-		auto jsArray = v8::Array::New(info.GetIsolate(), types.size());
+		auto jsArray = v8::Array::New(info.GetIsolate(), checked_cast<int>(types.size()));
 		for (size_t i = 0; i < types.size(); i++)
 		{
-			Nan::Set(jsArray, i, datatypeInformation(info.GetIsolate(), types.at(i)));
+			Nan::Set(jsArray, checked_cast<uint32_t>(i), datatypeInformation(info.GetIsolate(), types.at(i)));
 		}
 		info.GetReturnValue().Set(jsArray);
 	}

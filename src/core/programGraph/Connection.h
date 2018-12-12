@@ -1,9 +1,9 @@
 #pragma once
 #pragma once
-#include <programGraph/Datatype.h>
-#include <visitors/Visitor.h>
 #include <cstddef>
 #include <memory>
+#include <programGraph/Datatype.h>
+#include <visitors/Visitor.h>
 
 class Block;
 
@@ -11,7 +11,7 @@ class Connection
 {
 public:
 	Connection();
-	Connection(std::shared_ptr<Block> block, size_t output);
+	Connection(const std::shared_ptr<Block>& block, size_t output);
 	virtual ~Connection();
 
 	bool isConnected() const;
@@ -23,6 +23,6 @@ public:
 
 protected:
 	std::weak_ptr<Block> m_block;
-	size_t m_output;
+	size_t m_output{};
 private:
 };

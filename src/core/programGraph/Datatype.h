@@ -6,4 +6,4 @@ enum class Datatype {
 	BOOLEAN
 };
 
-std::string operator+(std::string str, Datatype type);
+std::string operator+(const std::string& str, Datatype type);

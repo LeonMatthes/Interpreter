@@ -1,6 +1,6 @@
+#include <programGraph/Function.h>
 #include <programGraph/ReturnBlock.h>
 #include <programGraph/StatementBlock.h>
-#include <programGraph/Function.h>
 
 ReturnBlock::ReturnBlock(Function& function)
 	: StatementBlock(function.outputs().size(), 0)
@@ -8,9 +8,7 @@ ReturnBlock::ReturnBlock(Function& function)
 {}
 
 ReturnBlock::~ReturnBlock()
-{
-
-}
+= default;
 
 std::vector<Datatype> ReturnBlock::inputTypes() const
 {
