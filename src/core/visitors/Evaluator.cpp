@@ -6,6 +6,7 @@
 #include <programGraph/ValueBlock.h>
 #include <programGraph/VariableReadBlock.h>
 #include <programGraph/VariableWriteBlock.h>
+#include <programGraph/GraphicalFunction.h>
 #include <visitors/Evaluator.h>
 #include <visitors/Executor.h>
 

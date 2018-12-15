@@ -1,4 +1,6 @@
 #pragma once
+#include <programGraph/GraphicalFunction.h>
+#include <visitors/Visitor.h>
 
 class Executor : public Visitor<void> {
 public:
