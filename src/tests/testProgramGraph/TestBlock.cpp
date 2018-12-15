@@ -10,12 +10,12 @@ public:
         : Block(inputTypes().size())
     {
     }
-    virtual std::vector<Datatype> inputTypes() const override
+    std::vector<Datatype> inputTypes() const override
     {
         return { Datatype::DOUBLE, Datatype::BOOLEAN };
     }
 
-    virtual std::vector<Datatype> outputTypes() const override
+    std::vector<Datatype> outputTypes() const override
     {
         return { Datatype::BOOLEAN, Datatype::DOUBLE };
     }

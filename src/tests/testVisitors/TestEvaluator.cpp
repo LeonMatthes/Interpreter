@@ -13,28 +13,28 @@
 class MockExecutor : public RecursiveExecutor
 {
 public:
-	virtual void visit(class GraphicalFunction& graphicalFunction) override
-	{
+    void visit(class GraphicalFunction& graphicalFunction) override
+    {
+        throw std::logic_error("The method or operation is not implemented.");
+	}
+
+        void visit(class FunctionBlock& functionBlock) override
+        {
 		throw std::logic_error("The method or operation is not implemented.");
 	}
 
-	virtual void visit(class FunctionBlock& functionBlock) override
-	{
+        void visit(class Connection& connection) override
+        {
 		throw std::logic_error("The method or operation is not implemented.");
 	}
 
-	virtual void visit(class Connection& connection) override
-	{
+        void visit(class ValueBlock& valueBlock) override
+        {
 		throw std::logic_error("The method or operation is not implemented.");
 	}
 
-	virtual void visit(class ValueBlock& valueBlock) override
-	{
-		throw std::logic_error("The method or operation is not implemented.");
-	}
-
-	virtual void visit(class PrimitiveFunction& primitiveFunction) override
-	{
+        void visit(class PrimitiveFunction& primitiveFunction) override
+        {
 		throw std::logic_error("The method or operation is not implemented.");
 	}
 };

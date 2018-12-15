@@ -12,8 +12,8 @@ TEST(TestProgram, TestEmptyCreation)
 
 TEST(TestProgram, TestOnlyStartFunction)
 {
-	auto graphical = GraphicalFunction::UPtr(new GraphicalFunction());
-	ASSERT_NO_THROW(Program(std::move(graphical), {}));
+    auto graphical = std::make_unique<GraphicalFunction>();
+    ASSERT_NO_THROW(Program(std::move(graphical), {}));
 }
 
 #include <programGraph/ReturnBlock.h>
@@ -21,7 +21,7 @@ TEST(TestProgram, TestOnlyStartFunction)
 TEST(TestProgram, TestRunFalseReturn)
 {
 	auto returnType = Datatype::BOOLEAN;
-	auto graphical = GraphicalFunction::UPtr(new GraphicalFunction({}, { returnType }));
+	auto graphical = std::make_unique<GraphicalFunction>(std::vector<Datatype>(), std::vector<Datatype>({ returnType }));
 	auto returnStmt = std::make_shared<ReturnBlock>(*graphical);
 	graphical->setStatementBlocks({ returnStmt });
 
@@ -35,7 +35,7 @@ TEST(TestProgram, TestRunFalseReturn)
 TEST(TestProgram, TestRunTrueReturn)
 {
 	auto returnType = Datatype::BOOLEAN;
-	auto graphical = GraphicalFunction::UPtr(new GraphicalFunction({}, { returnType }));
+	auto graphical = std::make_unique<GraphicalFunction>(std::vector<Datatype>(), std::vector<Datatype>({ returnType }));
 	auto returnStmt = std::make_shared<ReturnBlock>(*graphical);
 	auto returnValue = Value(true);
 	auto valueBlock = std::make_shared<ValueBlock>(returnValue);
@@ -48,11 +48,13 @@ TEST(TestProgram, TestRunTrueReturn)
 }
 
 #include <programGraph/ParameterAccessBlock.h>
+
+#include <memory>
 TEST(TestProgram, TestRunParameters)
 {
 	auto input1 = Datatype::BOOLEAN;
 	auto input2 = Datatype::DOUBLE;
-	auto graphical = GraphicalFunction::UPtr(new GraphicalFunction({ input1, input2 }, { input1, input2 }));
+	auto graphical = std::make_unique<GraphicalFunction>(std::vector<Datatype>({ input1, input2 }), std::vector<Datatype>({ input1, input2 }));
 	auto returnStatement = std::make_shared<ReturnBlock>(*graphical);
 	auto parameterAccess = std::make_shared<ParameterAccessBlock>(*graphical);
 	returnStatement->setInputConnections({ Connection(parameterAccess, 0), Connection(parameterAccess, 1) });

@@ -12,16 +12,16 @@ public:
 	MockStatementBlock(size_t inputCount, size_t flowConnectionsCount = 1) 
 		: StatementBlock(inputCount, flowConnectionsCount) 
 	{}
-	
-	virtual ~MockStatementBlock() = default;
 
-	virtual std::vector<Datatype> inputTypes() const override
-	{
+        ~MockStatementBlock() override = default;
+
+        std::vector<Datatype> inputTypes() const override
+        {
 		return std::vector<Datatype>(inputConnections().size());
 	}
 
-	virtual std::vector<Datatype> outputTypes() const override
-	{
+        std::vector<Datatype> outputTypes() const override
+        {
 		throw std::logic_error("The method or operation is not implemented.");
 	}
 

@@ -8,11 +8,11 @@ class TestVariableReadBlock : public ::testing::Test
 {
 public:
 	TestVariableReadBlock() = default;
-	virtual ~TestVariableReadBlock() = default;
-protected:
+        ~TestVariableReadBlock() override = default;
 
-	virtual void SetUp() override
-	{
+    protected:
+        void SetUp() override
+        {
 		graphical.addVariable(identifier, type);
 	}
 	

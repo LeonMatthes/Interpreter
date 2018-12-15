@@ -12,9 +12,7 @@ Connection::Connection(const std::shared_ptr<Block>& block, size_t output)
 }
 
 Connection::Connection()
-
-{
-}
+    = default;
 
 Connection::~Connection()
     = default;

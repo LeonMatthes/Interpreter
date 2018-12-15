@@ -9,11 +9,11 @@ class TestVariableWriteBlock : public ::testing::Test
 {
 public:
 	TestVariableWriteBlock() = default;
-	virtual ~TestVariableWriteBlock() = default;
-protected:
+        ~TestVariableWriteBlock() override = default;
 
-	virtual void SetUp() override
-	{
+    protected:
+        void SetUp() override
+        {
 		graphical.addVariable(identifier, type);
 	}
 
