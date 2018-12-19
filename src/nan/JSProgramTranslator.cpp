@@ -560,20 +560,14 @@ std::map<Datatype, JSProgramTranslator::Identifier> JSProgramTranslator::casting
 v8::Local<v8::Value> JSProgramTranslator::datatypeInformation(v8::Isolate* isolate, Datatype type)
 {
     auto casts = castingTable(type);
-    auto jsCastingTable = v8::Array::New(isolate, checked_cast<int>(casts.size()));
-
-    auto i = 0;
+    auto jsCastingMap = Nan::New<v8::Object>();
     for (const auto& cast : casts) {
-        auto jsCast = v8::Object::New(isolate);
-        Nan::Set(jsCast, Nan::New("target").ToLocalChecked(), Nan::New(""_s + cast.first).ToLocalChecked());
-        Nan::Set(jsCast, Nan::New("functionID").ToLocalChecked(), Nan::New(cast.second));
-
-        Nan::Set(jsCastingTable, i++, jsCast);
+        Nan::Set(jsCastingMap, Nan::New(""_s + cast.first).ToLocalChecked(), Nan::New(cast.second));
     }
 
     auto jsDatatype = v8::Object::New(isolate);
     Nan::Set(jsDatatype, Nan::New("name").ToLocalChecked(), Nan::New(""_s + type).ToLocalChecked());
-    Nan::Set(jsDatatype, Nan::New("casts").ToLocalChecked(), jsCastingTable);
+    Nan::Set(jsDatatype, Nan::New("casts").ToLocalChecked(), jsCastingMap);
 
     return jsDatatype;
 }
