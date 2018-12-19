@@ -1,4 +1,4 @@
-#include <programGraph/PrimitiveFunction.h>
+﻿#include <programGraph/PrimitiveFunction.h>
 
 #include <utility>
 
@@ -84,7 +84,7 @@ PrimitiveFunction PrimitiveFunction::logicalNot(
     });
 
 PrimitiveFunction PrimitiveFunction::castBoolToDouble(
-    "Cast",
+    std::string(u8"Boolean ⇒ Double"),
     std::vector<Datatype>({ Datatype::BOOLEAN }),
     std::vector<Datatype>({ Datatype::DOUBLE }),
     [](std::vector<Value> inputs) {
@@ -93,7 +93,7 @@ PrimitiveFunction PrimitiveFunction::castBoolToDouble(
     });
 
 PrimitiveFunction PrimitiveFunction::castDoubleToBool(
-    "Cast",
+    "Double ⇒ Boolean",
     std::vector<Datatype>({ Datatype::DOUBLE }),
     std::vector<Datatype>({ Datatype::BOOLEAN }),
     [](std::vector<Value> inputs) {
