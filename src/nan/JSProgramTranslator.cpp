@@ -588,8 +588,8 @@ NAN_METHOD(JSProgramTranslator::Primitives)
             Nan::Set(primitiveObject, Nan::New("outputs").ToLocalChecked(), JSProgramTranslator::datatypeArrayToJS(info.GetIsolate(), primitiveFunction.outputs()));
             Nan::Set(primitiveObject, Nan::New("name").ToLocalChecked(), Nan::New(primitiveFunction.name()).ToLocalChecked());
             Nan::Set(primitiveObject,
-                Nan::New("blockType").ToLocalChecked(),
-                Nan::New(primitiveFunction.isStatement() ? "Statement" : "Expression").ToLocalChecked());
+                Nan::New("callType").ToLocalChecked(),
+                Nan::New(primitiveFunction.isStatement() ? "ExpressionStatement" : "Function").ToLocalChecked());
 
             Nan::Set(primitivesArray, count++, primitiveObject);
         }
